@@ -2,18 +2,21 @@ name: Generate Annual Transit Data
 
 on:
   schedule:
-    - cron: '0 17 1 9 *'
+    # Runs March 1st at 9:00 AM UTC every year
+    - cron: '0 9 1 3 *'
+
   workflow_dispatch:
     inputs:
       year:
-        description: 'Year to generate data for (defaults to next year)'
+        description: 'Year to generate data for (leave blank for next year)'
         required: false
         default: ''
 
 jobs:
   generate:
     runs-on: ubuntu-latest
-    
+    timeout-minutes: 600  # Allow up to 10 hours for the full generation
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -27,22 +30,47 @@ jobs:
             echo "year=$(date -d '+1 year' +'%Y')" >> $GITHUB_OUTPUT
           fi
 
-      - name: Trigger transit generation
+      - name: Trigger transit generation on Netlify
         run: |
-          curl -X POST \
+          echo "Triggering generation for year ${{ steps.year.outputs.year }}..."
+          curl -s -X POST \
             -H "Content-Type: application/json" \
             -d '{"secret":"${{ secrets.GENERATION_SECRET }}","year":${{ steps.year.outputs.year }}}' \
             https://keys-to-the-stars.netlify.app/.netlify/functions/generate-transits
+          echo "Generation started. The Netlify function will push the file to GitHub when complete."
 
-      - name: Pull generated file
+      - name: Poll GitHub for the generated file
         run: |
-          sleep 120
-          curl -o public/transits-${{ steps.year.outputs.year }}.json \
-            https://keys-to-the-stars.netlify.app/transits-${{ steps.year.outputs.year }}.json
+          FILENAME="public/transits-${{ steps.year.outputs.year }}.json"
+          echo "Waiting for $FILENAME to appear in the repo..."
+          
+          MAX_ATTEMPTS=100   # 100 attempts x 5 min = ~8 hours max wait
+          ATTEMPT=0
+          
+          while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
+            ATTEMPT=$((ATTEMPT + 1))
+            echo "Check $ATTEMPT of $MAX_ATTEMPTS..."
+            
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              "https://api.github.com/repos/${{ github.repository }}/contents/$FILENAME")
+            
+            if [ "$STATUS" = "200" ]; then
+              echo "File found! Generation complete."
+              exit 0
+            fi
+            
+            echo "File not ready yet (HTTP $STATUS). Waiting 5 minutes..."
+            sleep 300
+          done
+          
+          echo "Timed out waiting for file after 8 hours."
+          exit 1
 
-      - name: Commit and push data file
+      - name: Trigger Netlify redeploy
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add public/transits-*.json
-          git diff --staged --quiet || git commit -m "Auto
+          echo "File is in the repo. Triggering Netlify redeploy..."
+          # If you have a Netlify build hook URL, add it as a secret NETLIFY_BUILD_HOOK
+          # and uncomment the line below:
+          # curl -s -X POST "${{ secrets.NETLIFY_BUILD_HOOK }}"
+          echo "Done. Netlify will redeploy automatically on the next git push, or add a NETLIFY_BUILD_HOOK secret to trigger it here."
