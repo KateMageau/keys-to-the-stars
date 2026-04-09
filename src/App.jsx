@@ -287,15 +287,6 @@ const COMBINATIONS = {
 };
 
 // ─── TODAY'S TRANSITS ────────────────────────────────────────────────────────
-const TODAY_TRANSITS = [
-  { id: 1, planet: "sun",     sign: "aries",    aspect: "trine",       planet2: "saturn",  sign2: "sagittarius", start: "Mar 28", end: "Apr 4",  duration: "7 days",    time: "6:14 AM PST" },
-  { id: 2, planet: "moon",    sign: "pisces",   aspect: "conjunction", planet2: "neptune", sign2: "pisces",      start: "Apr 1",  end: "Apr 2",  duration: "~24 hours", time: "2:33 AM PST" },
-  { id: 3, planet: "venus",   sign: "taurus",   aspect: "square",      planet2: "pluto",   sign2: "aquarius",    start: "Mar 25", end: "Apr 8",  duration: "14 days",   time: "Ongoing" },
-  { id: 4, planet: "mercury", sign: "aries",    aspect: "sextile",     planet2: "jupiter", sign2: "gemini",      start: "Apr 1",  end: "Apr 5",  duration: "4 days",    time: "11:08 AM PST" },
-  { id: 5, planet: "saturn",  sign: "aries",    aspect: "opposition",  planet2: "neptune", sign2: "pisces",      start: "Feb 10", end: "Jun 30", duration: "~5 months", time: "Ongoing" },
-];
-
-// ─── THIS WEEK TRANSITS ───────────────────────────────────────────────────────
 // ─── CALENDAR EVENTS (April 2026) ─────────────────────────────────────────────
 // Each event: { label, symbol, time, duration, type: "transit"|"moon"|"void" }
 const CALENDAR_EVENTS = {
@@ -611,6 +602,15 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 .hc-top { font-size: 0.6rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--lav-deep); margin-bottom: 0.25rem; }
 .hc-name { font-family: 'Playfair Display', serif; font-size: 0.98rem; color: var(--text); margin-bottom: 0.3rem; }
 .hc-body { font-size: 0.8rem; line-height: 1.68; color: var(--text-mid); }
+
+/* Unified sky tile card — used for moon, aspects, planets in signs */
+.sky-card { background: white; border: 1px solid var(--bg-mid); border-radius: 8px; padding: 0.7rem 0.9rem; margin-bottom: 0.5rem; display: flex; flex-direction: column; gap: 0.25rem; }
+.sky-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
+.sky-card-title { font-family: 'Playfair Display', serif; font-size: 0.92rem; color: var(--text); flex: 1; }
+.sky-card-pill { font-size: 0.62rem; background: var(--bg-light); color: var(--lav-deep); border-radius: 20px; padding: 0.15rem 0.55rem; white-space: nowrap; border: 1px solid rgba(120,60,180,0.12); flex-shrink: 0; }
+.sky-card-body { font-size: 0.78rem; line-height: 1.65; color: var(--text-mid); }
+.sky-card-sub { font-size: 0.68rem; color: var(--text-light); }
+.sky-section-label { font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--lav-deep); margin-bottom: 0.5rem; margin-top: 0.85rem; }
 .placeholder-note { font-style: italic; font-size: 0.82rem; color: var(--text-light);
   line-height: 1.7; border-left: 3px solid var(--lav); padding-left: 0.85rem; }
 
@@ -811,8 +811,7 @@ function TransitRow({ t }) {
           {s2 && <><span className="in-word">in</span><span className={`tw ${words.has("s2")?"on":""}`} onClick={e=>tap(e,"s2")}>{s2.symbol} {s2.name}</span></>}
         </div>
         <div className="t-right">
-          <span className="dur-pill">{t.duration} aspect</span>
-          {t.signDuration && <span className="dur-pill" style={{background:"var(--bg-light)",color:"var(--text-light)"}}>{t.signDuration} in sign</span>}
+          <span className="dur-pill">{t.duration}</span>
           <span className="t-time">{t.time}</span>
         </div>
       </div>
@@ -935,8 +934,14 @@ export default function Skyward() {
   const daysInCurrentMonth = new Date(currentYear, currentMonth, 0).getDate();
   const currentMonthStartDow = new Date(currentYear, currentMonth - 1, 1).getDay();
 
-  const [transitData, setTransitData]     = useState(null);
-  const [dataLoading, setDataLoading]     = useState(true);
+  const [transitData, setTransitData] = useState(null);
+  const [dataLoading, setDataLoading] = useState(true);
+  const [aspectRanges, setAspectRanges] = useState({}); // aspect key → {start, end}
+  const [planetSignRanges, setPlanetSignRanges] = useState({}); // "planet-sign" → {start, end}
+
+  const MONTH_ABBR = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+  const fmtDate = (year, month, day) => `${MONTH_ABBR[month-1]} ${day}`;
 
   useEffect(() => {
     fetch(`/transits-${currentYear}.json`)
@@ -944,9 +949,44 @@ export default function Skyward() {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
         return r.json();
       })
-      .then(json => { setTransitData(json); setDataLoading(false); })
+      .then(json => {
+        setTransitData(json);
+        setDataLoading(false);
+
+        // ── Option A: build lookup tables in one pass ──────────────────────
+        const aspectMap = {};   // "planet1-aspect-planet2" → { start, end }
+        const signMap   = {};   // "planet-sign" → { start, end }
+
+        const allMonthKeys = Object.keys(json).sort();
+        for (const mk of allMonthKeys) {
+          const [yr, mo] = mk.split("-").map(Number);
+          const days = Object.keys(json[mk]).sort((a,b) => Number(a)-Number(b));
+          for (const dk of days) {
+            const d = Number(dk);
+            const dayData = json[mk][dk];
+            if (!dayData || dayData.error) continue;
+
+            // Aspect ranges
+            for (const a of (dayData.aspects || [])) {
+              const key = `${a.planet1}-${a.aspect}-${a.planet2}`;
+              if (!aspectMap[key]) aspectMap[key] = { start: fmtDate(yr,mo,d), end: fmtDate(yr,mo,d), startY:yr, startM:mo, startD:d };
+              aspectMap[key].end = fmtDate(yr,mo,d);
+            }
+
+            // Planet sign ranges
+            for (const [pname, pdata] of Object.entries(dayData.planets || {})) {
+              if (!pdata?.sign) continue;
+              const key = `${pname}-${pdata.sign}`;
+              if (!signMap[key]) signMap[key] = { start: fmtDate(yr,mo,d), end: fmtDate(yr,mo,d) };
+              signMap[key].end = fmtDate(yr,mo,d);
+            }
+          }
+        }
+        setAspectRanges(aspectMap);
+        setPlanetSignRanges(signMap);
+      })
       .catch(err => { console.error("Transit data fetch failed:", err.message); setDataLoading(false); });
-  }, [currentYear]);
+  }, [currentYear]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Convert JSON day data → calendar event rows
   const buildCalendarEvents = (dayData) => {
@@ -1010,25 +1050,17 @@ export default function Skyward() {
   const activeCalendarEvents = Object.keys(liveCalendarEvents).length > 0 ? liveCalendarEvents : CALENDAR_EVENTS;
   const activeDayPhase       = Object.keys(liveDayPhase).length > 0       ? liveDayPhase       : DAY_PHASE;
 
-  // Today's transits from live data
-  const liveTodayTransits = [];
-  if (transitData && transitData[monthKey]?.[currentDay]?.aspects) {
-    transitData[monthKey][currentDay].aspects.slice(0, 5).forEach((a, i) => {
-      liveTodayTransits.push({
-        id: i + 1,
-        planet:  a.planet1, sign:  a.sign1  || "aries",
-        aspect:  a.aspect,
-        planet2: a.planet2, sign2: a.sign2  || "aries",
-        duration: "", time: "",
-      });
-    });
-  }
-  const activeTodayTransits = liveTodayTransits.length > 0 ? liveTodayTransits : TODAY_TRANSITS;
-
   // Moon bar data from live data
   const todayMoon = transitData?.[monthKey]?.[currentDay]?.moon || null;
 
-  // Day navigation — view up to 6 days ahead
+  // Helper: format a date range pill string
+  const dateRangePill = (key, map) => {
+    const r = map[key];
+    if (!r) return null;
+    return r.start === r.end ? r.start : `${r.start}–${r.end}`;
+  };
+
+  // Day navigation — go back 1 day OR forward up to 6 days
   const viewDate = new Date(today);
   viewDate.setDate(today.getDate() + viewDay);
   const viewDayNum   = viewDate.getDate();
@@ -1040,44 +1072,7 @@ export default function Skyward() {
   const viewDayName = DAY_NAMES_FULL[viewDate.getDay()];
 
   const viewDayData = transitData?.[viewMonthKey]?.[viewDayNum] || null;
-  const viewTransits = viewDayData?.aspects || [];
-
-  // Split into short-term and long-term transits
-  // Short-term = aspects lasting ~hours to ~1 day (moon aspects, some inner planet)
-  // Long-term = aspects lasting more than 1 day
   const outerPlanets = ["jupiter","saturn","uranus","neptune","pluto"];
-  const shortTermTransits = [];
-  const longTermTransits  = [];
-  viewTransits.forEach((a, i) => {
-    const involvesMoon = a.planet1 === "moon" || a.planet2 === "moon";
-    const bothOuter = outerPlanets.includes(a.planet1) && outerPlanets.includes(a.planet2);
-    const innerToOuter = (outerPlanets.includes(a.planet1) || outerPlanets.includes(a.planet2)) && !bothOuter && !involvesMoon;
-
-    // Aspect duration (how long the exact aspect lasts)
-    const aspectDuration = bothOuter ? "weeks–months"
-      : involvesMoon ? "hours"
-      : innerToOuter ? "~1 week"
-      : "2–5 days";
-
-    // Planet-in-sign duration (background context)
-    const signDuration = outerPlanets.includes(a.planet1)
-      ? a.planet1 === "jupiter" ? "~1 yr" : a.planet1 === "saturn" ? "~2.5 yrs" : "yrs"
-      : a.planet1 === "sun" ? "~1 mo" : a.planet1 === "moon" ? "~2.5 days" : "weeks";
-
-    const t = {
-      id: i + 1,
-      planet: a.planet1, sign: a.sign1 || "aries",
-      aspect: a.aspect,
-      planet2: a.planet2, sign2: a.sign2 || "aries",
-      duration: aspectDuration,
-      signDuration,
-      time: "",
-    };
-
-    // Moon aspects and same-day aspects = short-term; anything > 1 day = long-term
-    if (involvesMoon) shortTermTransits.push(t);
-    else longTermTransits.push(t);
-  });
 
   const [showLongTerm, setShowLongTerm] = useState(false);
   const [chartError, setChartError] = useState(null);
@@ -1267,9 +1262,9 @@ export default function Skyward() {
           {/* TODAY */}
           <section className="sec">
             <div className="sec-hdr">
-              <span className="sec-title">{viewDay === 0 ? "Today's Sky" : `${viewDayName}, ${viewMonthName} ${viewDayNum}`}</span>
+              <span className="sec-title">{viewDay === 0 ? "Today's Sky" : viewDay === -1 ? `Yesterday, ${viewMonthName} ${viewDayNum}` : `${viewDayName}, ${viewMonthName} ${viewDayNum}`}</span>
               <div style={{ display:"flex", gap:"0.4rem", alignItems:"center" }}>
-                {viewDay > 0 && (
+                {viewDay > -1 && (
                   <button className="see-more no-print" onClick={() => setViewDay(v => v - 1)}>← Back</button>
                 )}
                 {viewDay < 6 && (
@@ -1277,98 +1272,164 @@ export default function Skyward() {
                 )}
               </div>
             </div>
-            {viewDay === 0 && <span style={{fontSize:"0.68rem",color:"var(--text-light)",fontStyle:"italic",display:"block",marginBottom:"0.5rem"}}>Browse up to 6 days ahead using the arrows above.</span>}
+
             {dataLoading && (
               <div style={{ color:"var(--text-light)", fontStyle:"italic", fontSize:"0.83rem", padding:"0.5rem 0" }}>
                 Loading sky data...
               </div>
             )}
 
-            {/* Moon in Sign — same style as section header */}
+            {/* ── Moon in Sign ─────────────────────────────────────── */}
             {(() => {
-              const moonSign = viewDayData?.moon?.sign || (viewDay === 0 ? todayMoon?.sign : null);
-              const moonPhase = viewDayData?.moon?.phase || (viewDay === 0 ? todayMoon?.phase : null);
-              const moonSymbol = viewDayData?.moon?.sign_symbol || (viewDay === 0 ? todayMoon?.sign_symbol : null);
+              const moonSign   = viewDayData?.moon?.sign || null;
+              const moonPhase  = viewDayData?.moon?.phase || null;
+              const moonSymbol = viewDayData?.moon?.sign_symbol || "";
               if (!moonSign) return null;
-              const moonMeaning = COMBINATIONS[`moon-${moonSign}`];
-              const phaseName = MOON_PHASES[moonPhase]?.name || cap(moonPhase?.replace(/_/g," ") || "");
+              const moonKey    = `moon-${moonSign}`;
+              const rangeKey   = `moon-${moonSign}`;
+              const pill       = dateRangePill(rangeKey, planetSignRanges);
+              const phaseName  = MOON_PHASES[moonPhase]?.name || cap(moonPhase?.replace(/_/g," ") || "");
+              const moonMeaning = COMBINATIONS[moonKey];
               return (
-                <div style={{ marginBottom:"1rem" }}>
-                  <div className="sec-hdr" style={{ marginBottom:"0.35rem" }}>
-                    <span className="sec-title" style={{ fontSize:"1rem" }}>☽ Moon in {cap(moonSign)} {moonSymbol}</span>
-                    <span className="sec-meta">{phaseName}{todayMoon?.illumination ? ` · ${Math.round(todayMoon.illumination)}%` : ""}</span>
-                  </div>
-                  {moonMeaning && (
-                    <div style={{ fontSize:"0.78rem", color:"var(--text-light)", lineHeight:1.6 }}>
-                      {moonMeaning.slice(0, 200)}{moonMeaning.length > 200 ? "…" : ""}
+                <>
+                  <div className="sky-section-label">Moon</div>
+                  <div className="sky-card">
+                    <div className="sky-card-top">
+                      <span className="sky-card-title">☽ Moon in {cap(moonSign)} {moonSymbol}</span>
+                      {pill && <span className="sky-card-pill">{pill}</span>}
                     </div>
-                  )}
-                </div>
+                    <div className="sky-card-sub">{phaseName}{viewDayData?.moon?.illumination ? ` · ${Math.round(viewDayData.moon.illumination)}%` : ""}</div>
+                    {moonMeaning && <div className="sky-card-body">{moonMeaning.slice(0,180)}{moonMeaning.length > 180 ? "…" : ""}</div>}
+                  </div>
+                </>
               );
             })()}
 
-            {/* Aspects */}
-            <div style={{ fontSize:"0.58rem", letterSpacing:"0.16em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.5rem" }}>
-              Aspects
-            </div>
-            {shortTermTransits.length > 0
-              ? shortTermTransits.map(t => <TransitRow key={t.id} t={t} />)
-              : !dataLoading && <div style={{ fontSize:"0.78rem", color:"var(--text-light)", fontStyle:"italic", marginBottom:"0.5rem" }}>No exact aspects today.</div>
-            }
-
-            {/* Long-term transits */}
-            <div style={{ fontSize:"0.58rem", letterSpacing:"0.16em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.5rem", marginTop:"0.85rem", display:"flex", alignItems:"center", gap:"0.75rem" }}>
-              Long-term aspects
-              {longTermTransits.length > 0 && (
-                <button className="see-more no-print" onClick={() => setShowLongTerm(v => !v)} style={{fontSize:"0.58rem"}}>
-                  {showLongTerm ? "Collapse ↑" : `Show ${longTermTransits.length} ↓`}
-                </button>
-              )}
-            </div>
-            {longTermTransits.length === 0
-              ? <div style={{ fontSize:"0.75rem", color:"var(--text-light)", fontStyle:"italic" }}>No major outer planet aspects active.</div>
-              : showLongTerm && longTermTransits.map(t => <TransitRow key={t.id} t={t} />)
-            }
-
-            {/* Planets in Signs */}
+            {/* ── Planetary Aspects & Transitions ──────────────────── */}
             {(() => {
-              const pd = transitData?.[viewMonthKey]?.[viewDayNum]?.planets;
-              if (!pd) return null;
-              const planetDurations = {
-                sun:"~1 month", moon:"~2.5 days", mercury:"2–3 weeks",
-                venus:"3–4 weeks", mars:"~6 weeks", jupiter:"~1 year",
-                saturn:"~2.5 years", uranus:"~7 years", neptune:"~14 years", pluto:"~20 years"
-              };
+              // Sign ingresses for this day
+              const pd = viewDayData?.planets || {};
+              const ingresses = [];
+              Object.entries(pd).forEach(([pname, pdata]) => {
+                if (!pdata?.sign) return;
+                const rangeKey = `${pname}-${pdata.sign}`;
+                const r = planetSignRanges[rangeKey];
+                // It's an ingress if this is the first day of that planet-sign combo
+                if (r && r.start === fmtDate(viewYear, viewMonthNum, viewDayNum)) {
+                  ingresses.push({ pname, pdata, rangeKey, r });
+                }
+              });
+
+              const allAspects = viewDayData?.aspects || [];
+              if (allAspects.length === 0 && ingresses.length === 0) return null;
+
               return (
-                <div style={{ marginTop:"1rem" }}>
-                  <div style={{ fontSize:"0.58rem", letterSpacing:"0.16em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.5rem" }}>
-                    Planets in Signs
-                  </div>
-                  <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(160px, 1fr))", gap:"0.4rem" }}>
-                    {Object.entries(pd).map(([name, p]) => {
-                      if (!p?.sign) return null;
-                      const planet = PLANETS[name];
-                      const sign = SIGNS[p.sign];
-                      if (!planet || !sign) return null;
-                      return (
-                        <div key={name} style={{ background:"var(--bg-light)", borderRadius:6, padding:"0.4rem 0.6rem", fontSize:"0.72rem", color:"var(--text-mid)" }}>
-                          <span style={{ fontWeight:600 }}>{planet.symbol} {planet.name}</span>
-                          <span style={{ color:"var(--lav-deep)", margin:"0 0.3rem" }}>in</span>
-                          {sign.symbol} {sign.name}
-                          {p.retrograde && <span style={{ color:"var(--lav-deep)", marginLeft:"0.3rem", fontSize:"0.65rem" }}>℞</span>}
-                          <div style={{ fontSize:"0.62rem", color:"var(--text-light)", marginTop:"0.1rem" }}>{planetDurations[name]}</div>
+                <>
+                  <div className="sky-section-label" style={{ marginTop:"0.85rem" }}>Planetary Aspects &amp; Transitions</div>
+
+                  {/* Sign ingresses first */}
+                  {ingresses.map(({ pname, pdata, rangeKey }) => {
+                    const planet = PLANETS[pname];
+                    const sign   = SIGNS[pdata.sign];
+                    if (!planet || !sign) return null;
+                    const pill = dateRangePill(rangeKey, planetSignRanges);
+                    return (
+                      <div key={`ingress-${pname}`} className="sky-card" style={{ borderLeft:"3px solid var(--gold-lt)" }}>
+                        <div className="sky-card-top">
+                          <span className="sky-card-title">{planet.symbol} {planet.name} enters {sign.symbol} {sign.name}</span>
+                          {pill && <span className="sky-card-pill">{pill}</span>}
                         </div>
-                      );
-                    })}
-                  </div>
-                </div>
+                        <div className="sky-card-sub">Sign change today</div>
+                      </div>
+                    );
+                  })}
+
+                  {/* Aspects — short term first, then long term collapsed */}
+                  {allAspects.filter(a => a.planet1 === "moon" || a.planet2 === "moon").map((a, i) => {
+                    const p1 = PLANETS[a.planet1], p2 = PLANETS[a.planet2];
+                    const asp = ASPECTS[a.aspect];
+                    const s1 = SIGNS[a.sign1], s2 = SIGNS[a.sign2];
+                    if (!p1 || !p2 || !asp) return null;
+                    const key = `${a.planet1}-${a.aspect}-${a.planet2}`;
+                    const pill = dateRangePill(key, aspectRanges);
+                    return (
+                      <div key={`short-${i}`} className="sky-card">
+                        <div className="sky-card-top">
+                          <span className="sky-card-title">{p1.symbol} {p1.name}{s1 ? ` in ${s1.symbol} ${s1.name}` : ""} {asp.symbol} {asp.name} {p2.symbol} {p2.name}{s2 ? ` in ${s2.symbol} ${s2.name}` : ""}</span>
+                          {pill && <span className="sky-card-pill">{pill}</span>}
+                        </div>
+                        <div className="sky-card-sub">~hours · tap words above to learn more</div>
+                      </div>
+                    );
+                  })}
+
+                  {(() => {
+                    const nonMoon = allAspects.filter(a => a.planet1 !== "moon" && a.planet2 !== "moon");
+                    if (nonMoon.length === 0) return null;
+                    return (
+                      <>
+                        <div style={{ fontSize:"0.58rem", letterSpacing:"0.14em", textTransform:"uppercase", color:"var(--lav-deep)", marginTop:"0.6rem", marginBottom:"0.4rem", display:"flex", alignItems:"center", gap:"0.6rem" }}>
+                          Longer aspects
+                          <button className="see-more no-print" onClick={() => setShowLongTerm(v => !v)} style={{fontSize:"0.58rem"}}>
+                            {showLongTerm ? "Collapse ↑" : `Show ${nonMoon.length} ↓`}
+                          </button>
+                        </div>
+                        {showLongTerm && nonMoon.map((a, i) => {
+                          const p1 = PLANETS[a.planet1], p2 = PLANETS[a.planet2];
+                          const asp = ASPECTS[a.aspect];
+                          const s1 = SIGNS[a.sign1], s2 = SIGNS[a.sign2];
+                          if (!p1 || !p2 || !asp) return null;
+                          const key = `${a.planet1}-${a.aspect}-${a.planet2}`;
+                          const pill = dateRangePill(key, aspectRanges);
+                          const bothOuter = outerPlanets.includes(a.planet1) && outerPlanets.includes(a.planet2);
+                          const dur = bothOuter ? "weeks–months" : "days";
+                          return (
+                            <div key={`long-${i}`} className="sky-card">
+                              <div className="sky-card-top">
+                                <span className="sky-card-title">{p1.symbol} {p1.name}{s1 ? ` in ${s1.symbol} ${s1.name}` : ""} {asp.symbol} {asp.name} {p2.symbol} {p2.name}{s2 ? ` in ${s2.symbol} ${s2.name}` : ""}</span>
+                                {pill && <span className="sky-card-pill">{pill}</span>}
+                              </div>
+                              <div className="sky-card-sub">{dur} · tap words above to learn more</div>
+                            </div>
+                          );
+                        })}
+                      </>
+                    );
+                  })()}
+                </>
               );
             })()}
 
-            {/* Fallback to hardcoded if no live data */}
-            {!dataLoading && shortTermTransits.length === 0 && longTermTransits.length === 0 && !transitData && (
-              activeTodayTransits.map(t => <TransitRow key={t.id} t={t} />)
-            )}
+            {/* ── Planets in Signs ─────────────────────────────────── */}
+            {(() => {
+              const pd = viewDayData?.planets;
+              if (!pd) return null;
+              const planetOrder = ["sun","moon","mercury","venus","mars","jupiter","saturn","uranus","neptune","pluto"];
+              return (
+                <>
+                  <div className="sky-section-label" style={{ marginTop:"0.85rem" }}>Planets in Signs</div>
+                  {planetOrder.map(name => {
+                    const p = pd[name];
+                    if (!p?.sign) return null;
+                    const planet = PLANETS[name];
+                    const sign   = SIGNS[p.sign];
+                    if (!planet || !sign) return null;
+                    const rangeKey = `${name}-${p.sign}`;
+                    const pill = dateRangePill(rangeKey, planetSignRanges);
+                    const combo = COMBINATIONS[`${name}-${p.sign}`];
+                    return (
+                      <div key={name} className="sky-card">
+                        <div className="sky-card-top">
+                          <span className="sky-card-title">{planet.symbol} {planet.name} in {sign.symbol} {sign.name}{p.retrograde ? " ℞" : ""}</span>
+                          {pill && <span className="sky-card-pill">{pill}</span>}
+                        </div>
+                        {combo && <div className="sky-card-body">{combo.slice(0,160)}{combo.length > 160 ? "…" : ""}</div>}
+                      </div>
+                    );
+                  })}
+                </>
+              );
+            })()}
 
             {viewDay === 0 && DAY_SUMMARIES[currentDay] && (
               <div className="summary-block">
@@ -1382,7 +1443,7 @@ export default function Skyward() {
           <section className="sec">
             <div className="sec-hdr">
               <span className="sec-title">This Week</span>
-              <span className="sec-meta">Aspects & sign changes · collapse days with no activity</span>
+              <span className="sec-meta">Aspects & sign changes · days with nothing notable are skipped</span>
               <button className="see-more no-print" onClick={() => setShowWeek(v => !v)}>
                 {showWeek ? "Collapse ↑" : "See more ↓"}
               </button>
@@ -1393,50 +1454,98 @@ export default function Skyward() {
               </div>
             )}
             {showWeek && (() => {
-              const weekDays = [];
+              const weekItems = [];
               for (let i = 1; i <= 7; i++) {
                 const d = new Date(today);
                 d.setDate(today.getDate() + i);
-                const dNum = d.getDate();
-                const mKey = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
+                const dNum  = d.getDate();
+                const dMo   = d.getMonth() + 1;
+                const dYr   = d.getFullYear();
+                const mKey  = `${dYr}-${String(dMo).padStart(2,"0")}`;
                 const dayData = transitData?.[mKey]?.[dNum];
-                if (!dayData) return null;
-                // Only show days with aspects or moon ingress
-                const hasAspects = dayData.aspects?.length > 0;
-                const hasIngress = dayData.moon?.ingress;
-                if (!hasAspects && !hasIngress) return null;
-                weekDays.push({ d, dNum, mKey, dayData });
-              }
-              if (weekDays.length === 0) return (
-                <div style={{ color:"var(--text-light)", fontSize:"0.83rem", fontStyle:"italic" }}>No notable aspects this week.</div>
-              );
-              return weekDays.map(({ d, dNum, dayData }) => {
+                if (!dayData) continue;
+
+                // Check for sign changes
+                const pd = dayData.planets || {};
+                const dayIngresses = [];
+                Object.entries(pd).forEach(([pname, pdata]) => {
+                  if (!pdata?.sign) return;
+                  const rk = `${pname}-${pdata.sign}`;
+                  const r  = planetSignRanges[rk];
+                  if (r && r.start === fmtDate(dYr, dMo, dNum)) dayIngresses.push({ pname, pdata });
+                });
+
+                // Moon ingress
+                const moonIngress = dayData.moon?.ingress;
+                const nonMoonAspects = (dayData.aspects || []).filter(a => a.planet1 !== "moon" && a.planet2 !== "moon").slice(0,2);
+                const moonAspects    = (dayData.aspects || []).filter(a => a.planet1 === "moon" || a.planet2 === "moon").slice(0,2);
+
+                const hasAnything = moonIngress || dayIngresses.length > 0 || nonMoonAspects.length > 0 || moonAspects.length > 0;
+                if (!hasAnything) continue;
+
                 const dName = DAY_NAMES_FULL[d.getDay()];
                 const mName = MONTH_NAMES_FULL[d.getMonth()];
-                return (
-                  <div key={dNum} style={{ marginBottom:"0.75rem" }}>
+
+                weekItems.push(
+                  <div key={`week-${dNum}`} style={{ marginBottom:"1rem" }}>
                     <div className="week-date-lbl">{dName}, {mName} {dNum}</div>
-                    {dayData.moon?.ingress && (
-                      <div style={{ fontSize:"0.75rem", color:"var(--text-mid)", marginBottom:"0.25rem", fontStyle:"italic" }}>
-                        ☽ Moon enters {cap(dayData.moon.ingress)} {dayData.moon.sign_symbol || ""}
-                      </div>
-                    )}
-                    {dayData.aspects?.filter(a => {
-                      const both = ["jupiter","saturn","uranus","neptune","pluto"];
-                      return !(both.includes(a.planet1) && both.includes(a.planet2));
-                    }).slice(0,3).map((a, i) => (
-                      <TransitRow key={i} t={{
-                        id: i,
-                        planet: a.planet1, sign: a.sign1 || "aries",
-                        aspect: a.aspect,
-                        planet2: a.planet2, sign2: a.sign2 || "aries",
-                        duration: a.planet1 === "moon" || a.planet2 === "moon" ? "hours" : "2–5 days",
-                        time: "",
-                      }} />
-                    ))}
+
+                    {moonIngress && (() => {
+                      const sign = SIGNS[moonIngress];
+                      const rk   = `moon-${moonIngress}`;
+                      const pill = dateRangePill(rk, planetSignRanges);
+                      return (
+                        <div className="sky-card">
+                          <div className="sky-card-top">
+                            <span className="sky-card-title">☽ Moon enters {sign?.symbol || ""} {cap(moonIngress)}</span>
+                            {pill && <span className="sky-card-pill">{pill}</span>}
+                          </div>
+                          <div className="sky-card-sub">Moon sign change</div>
+                        </div>
+                      );
+                    })()}
+
+                    {dayIngresses.map(({ pname, pdata }) => {
+                      const planet = PLANETS[pname];
+                      const sign   = SIGNS[pdata.sign];
+                      if (!planet || !sign) return null;
+                      const rk   = `${pname}-${pdata.sign}`;
+                      const pill = dateRangePill(rk, planetSignRanges);
+                      return (
+                        <div key={`ing-${pname}`} className="sky-card" style={{ borderLeft:"3px solid var(--gold-lt)" }}>
+                          <div className="sky-card-top">
+                            <span className="sky-card-title">{planet.symbol} {planet.name} enters {sign.symbol} {sign.name}</span>
+                            {pill && <span className="sky-card-pill">{pill}</span>}
+                          </div>
+                          <div className="sky-card-sub">Planet sign change</div>
+                        </div>
+                      );
+                    })}
+
+                    {[...moonAspects, ...nonMoonAspects].map((a, ai) => {
+                      const p1  = PLANETS[a.planet1], p2 = PLANETS[a.planet2];
+                      const asp = ASPECTS[a.aspect];
+                      const s1  = SIGNS[a.sign1], s2 = SIGNS[a.sign2];
+                      if (!p1 || !p2 || !asp) return null;
+                      const key  = `${a.planet1}-${a.aspect}-${a.planet2}`;
+                      const pill = dateRangePill(key, aspectRanges);
+                      const dur  = a.planet1 === "moon" || a.planet2 === "moon" ? "hours" : "days";
+                      return (
+                        <div key={`asp-${ai}`} className="sky-card">
+                          <div className="sky-card-top">
+                            <span className="sky-card-title">{p1.symbol} {p1.name}{s1 ? ` in ${s1.symbol} ${s1.name}` : ""} {asp.symbol} {asp.name} {p2.symbol} {p2.name}{s2 ? ` in ${s2.symbol} ${s2.name}` : ""}</span>
+                            {pill && <span className="sky-card-pill">{pill}</span>}
+                          </div>
+                          <div className="sky-card-sub">{dur}</div>
+                        </div>
+                      );
+                    })}
                   </div>
                 );
-              });
+              }
+              return weekItems.length > 0 ? weekItems : (
+                <div style={{ color:"var(--text-light)", fontSize:"0.83rem", fontStyle:"italic" }}>No notable aspects this week.</div>
+              );
             })()}
           </section>
 
