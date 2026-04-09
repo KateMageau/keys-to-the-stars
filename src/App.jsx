@@ -1025,6 +1025,7 @@ function PhaseCard({ phaseKey }) {
 // ─── MAIN APP ────────────────────────────────────────────────────────────────
 export default function Skyward() {
   const [showWeek, setShowWeek] = useState(false);
+  const [showGlossary, setShowGlossary] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null);
   const [viewDay, setViewDay] = useState(0); // 0 = today, 1-6 = days ahead
   const [birthData, setBirthData] = useState(() => {
@@ -1978,6 +1979,13 @@ export default function Skyward() {
             <div style={{ marginBottom:"1.5rem" }}>
               <div style={{ fontSize:"0.6rem", letterSpacing:"0.15em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.65rem" }}>Astrology Reading List</div>
               <div style={{ display:"flex", flexWrap:"wrap", gap:"0.75rem" }}>
+                <a href="/glossary" className="resource-card" style={{flexBasis:"100%"}}>
+                  <div className="rc-emoji">📖</div>
+                  <div>
+                    <div className="rc-title">Astrology Glossary</div>
+                    <div className="rc-sub">Plain-language definitions for every term in this app — planets, signs, aspects, houses, moon phases, and more.</div>
+                  </div>
+                </a>
                 <a href="https://bookshop.org/lists/astrology-kate-mageau-counseling-llc?aid=98002" target="_blank" rel="noopener noreferrer" className="resource-card" style={{flexBasis:"100%"}}>
                   <div className="rc-emoji">✨</div>
                   <div>
@@ -2045,6 +2053,57 @@ export default function Skyward() {
                 </div>
               </a>
             </div>
+          </section>
+
+          {/* MINI GLOSSARY — for SEO, collapsible */}
+          <section className="sec" id="glossary" style={{ borderBottom:"none" }}>
+            <div className="sec-hdr">
+              <span className="sec-title">Astrology Glossary</span>
+              <span className="sec-meta">Common terms · plain language</span>
+              <button className="see-more no-print" onClick={() => setShowGlossary(v => !v)}>
+                {showGlossary ? "Collapse ↑" : "Expand ↓"}
+              </button>
+            </div>
+            {!showGlossary && (
+              <div style={{ fontSize:"0.875rem", color:"#555", fontStyle:"italic" }}>
+                New to astrology? Expand for plain-language definitions of the most common terms, or visit the <a href="/glossary" style={{ color:"var(--lav-deep)", textDecoration:"underline" }}>full glossary</a>.
+              </div>
+            )}
+            {showGlossary && (
+              <div>
+                {[
+                  { q:"What is Mercury retrograde?", a:"Mercury retrograde is a period — roughly three weeks, three times a year — when Mercury appears to move backward in the sky. In astrology, it is associated with miscommunications, delays, and the value of reviewing rather than initiating." },
+                  { q:"What is a birth chart?", a:"A birth chart is a map of the sky at the exact moment and place you were born. It shows where every planet was positioned in the zodiac at that moment. It is not a prediction — it is a map of tendencies and themes." },
+                  { q:"What is a rising sign?", a:"Your rising sign (also called your ascendant) is the zodiac sign that was crossing the eastern horizon when you were born. It changes approximately every two hours and shapes how you present yourself to the world." },
+                  { q:"What is a transit?", a:"A transit is the current movement of a planet through the sky. When astrologers discuss today's transits, they mean the aspects the moving planets are forming right now — considered active influences on the current moment." },
+                  { q:"What is a full moon?", a:"A full moon occurs when the Sun and Moon are exactly opposite each other and the Moon is fully illuminated. It marks the culmination of the lunar cycle and is associated with heightened emotion, completion, and release." },
+                  { q:"What is a new moon?", a:"A new moon occurs when the Sun and Moon are at the same degree of the zodiac. It marks the beginning of the lunar cycle and is associated with setting intentions and beginning new chapters." },
+                  { q:"What is void of course moon?", a:"The moon is void of course after it makes its last major aspect in a zodiac sign and before it enters the next sign. Traditionally it is a quiet in-between period better suited for rest than for launching new endeavors." },
+                  { q:"What is an aspect in astrology?", a:"An aspect is a specific angular relationship between two planets. Conjunctions (0°) blend energies, sextiles (60°) open opportunities, squares (90°) create productive friction, trines (120°) flow harmoniously, and oppositions (180°) create polarity and awareness." },
+                  { q:"What are the astrological houses?", a:"The twelve houses of a birth chart each govern a different area of life — self, money, communication, home, creativity, health, relationships, transformation, philosophy, career, community, and the unconscious." },
+                  { q:"What is a conjunction?", a:"A conjunction occurs when two planets occupy the same degree of the zodiac. Their energies fully merge. It is considered the most powerful aspect type because the two planetary energies are completely blended." },
+                  { q:"What is a moon sign?", a:"Your moon sign is the zodiac sign the Moon occupied when you were born. It represents the emotional self — how you process feelings and what you need to feel safe." },
+                  { q:"What is a sun sign?", a:"Your sun sign is the zodiac sign the Sun occupied during the month you were born. It represents the core self — identity, vitality, and conscious will. Sun sign horoscopes use only this placement." },
+                  { q:"What is whole sign houses?", a:"Whole sign houses is one of the oldest house systems in astrology. Each house corresponds exactly to one zodiac sign, beginning with your rising sign. This app uses whole sign houses for clarity and simplicity." },
+                  { q:"What is a sextile?", a:"A sextile is a 60° angle between two planets. It is an opportunity aspect — the planets cooperate naturally, but some initiative is required to activate the potential. A small effort yields disproportionate results." },
+                  { q:"What is a trine?", a:"A trine is a 120° angle between two planets. It is the most harmonious aspect — the planets flow easily together without resistance. Trines represent natural gifts that may be taken for granted precisely because they come so easily." },
+                ].map((item, i) => (
+                  <details key={i} style={{ borderBottom:"1px solid var(--bg-mid)", padding:"0.65rem 0" }}>
+                    <summary style={{ fontSize:"0.875rem", fontWeight:500, color:"#111", cursor:"pointer", fontFamily:"'Playfair Display', serif" }}>
+                      {item.q}
+                    </summary>
+                    <p style={{ fontSize:"0.875rem", color:"#333", lineHeight:1.7, marginTop:"0.5rem", paddingLeft:"0.5rem" }}>
+                      {item.a}
+                    </p>
+                  </details>
+                ))}
+                <div style={{ marginTop:"1rem", fontSize:"0.8rem", color:"#555" }}>
+                  <a href="/glossary" style={{ color:"var(--lav-deep)", textDecoration:"underline", fontFamily:"'Montserrat', sans-serif", fontWeight:500 }}>
+                    View the full glossary — 110+ terms →
+                  </a>
+                </div>
+              </div>
+            )}
           </section>
 
         </div>
