@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Astrology Glossary — Keys to the Stars</title>
+  <meta name="description" content="Plain-language definitions for astrology terms. What is Mercury retrograde? What is a rising sign? What is a transit? Learn astrology concepts clearly." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Lato:wght@300;400&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --lav: #c5b8d8; --lav-mid: #9b88b8; --lav-deep: #7c6a9e;
+      --dusk: #2a1f3d; --dusk-mid: #1e1530; --ink: #1a1428;
+      --bg: #f0ecf7; --bg-mid: #e4ddf0; --bg-light: #f7f4fb;
+      --text: #1a1428; --gold: #c9a84c; --gold-lt: #e8cc7a;
+      --moon: #7ab8c4;
+    }
+    body {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      background: var(--dusk-mid);
+      color: var(--lav);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .site-header {
+      background: linear-gradient(135deg, var(--dusk) 0%, #1a1040 100%);
+      padding: 2rem 2rem 1.5rem;
+      border-bottom: 2px solid rgba(197,184,216,0.18);
+      text-align: center;
+    }
+    .site-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--lav);
+      letter-spacing: 0.05em;
+    }
+    .site-header h1 em { color: var(--gold-lt); font-style: italic; }
+    .site-header p {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(197,184,216,0.45);
+      margin-top: 0.4rem;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 0.85rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--gold-lt);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid rgba(232,204,122,0.3);
+      padding-bottom: 1px;
+      transition: border-color 0.2s;
+    }
+    .back-link:hover { border-color: var(--gold-lt); }
+
+    /* ── Main layout ── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* ── Page intro ── */
+    .page-intro {
+      background: rgba(197,184,216,0.07);
+      border: 1px solid rgba(197,184,216,0.15);
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 2.5rem;
+      text-align: center;
+    }
+    .page-intro h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--lav);
+      margin-bottom: 0.75rem;
+    }
+    .page-intro p {
+      font-size: 0.92rem;
+      line-height: 1.75;
+      color: rgba(197,184,216,0.75);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ── Category nav ── */
+    .cat-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+    }
+    .cat-nav a {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      color: var(--lav-mid);
+      text-decoration: none;
+      padding: 0.3rem 0.9rem;
+      border: 1px solid rgba(197,184,216,0.2);
+      border-radius: 20px;
+      transition: all 0.15s;
+      background: rgba(197,184,216,0.05);
+    }
+    .cat-nav a:hover {
+      background: rgba(197,184,216,0.12);
+      border-color: rgba(197,184,216,0.4);
+      color: var(--lav);
+    }
+
+    /* ── Category section ── */
+    .category {
+      margin-bottom: 3rem;
+    }
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(197,184,216,0.15);
+    }
+    .category-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--gold-lt);
+      letter-spacing: 0.04em;
+    }
+    .category-header .cat-symbol {
+      font-size: 1.2rem;
+      opacity: 0.7;
+    }
+
+    /* ── Term card ── */
+    .term-card {
+      background: rgba(197,184,216,0.06);
+      border: 1px solid rgba(197,184,216,0.12);
+      border-radius: 10px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 0.75rem;
+      transition: border-color 0.2s;
+    }
+    .term-card:hover { border-color: rgba(197,184,216,0.25); }
+    .term-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--lav);
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+    .term-card h3 .term-symbol {
+      color: var(--gold-lt);
+      margin-right: 0.4rem;
+      font-style: normal;
+    }
+    .term-card p {
+      font-size: 0.875rem;
+      line-height: 1.75;
+      color: rgba(197,184,216,0.8);
+    }
+    .term-card .term-meta {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--lav-deep);
+      margin-bottom: 0.35rem;
+    }
+
+    /* ── Featured terms (top 15) ── */
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 3rem;
+    }
+    .featured-card {
+      background: rgba(197,184,216,0.09);
+      border: 1px solid rgba(232,204,122,0.2);
+      border-radius: 10px;
+      padding: 1.1rem 1.4rem;
+      transition: border-color 0.2s;
+    }
+    .featured-card:hover { border-color: rgba(232,204,122,0.4); }
+    .featured-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      color: var(--gold-lt);
+      margin-bottom: 0.4rem;
+      line-height: 1.4;
+    }
+    .featured-card p {
+      font-size: 0.82rem;
+      line-height: 1.7;
+      color: rgba(197,184,216,0.75);
+    }
+    .featured-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    /* ── Footer ── */
+    .glossary-footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      border-top: 1px solid rgba(197,184,216,0.12);
+      margin-top: 2rem;
+    }
+    .glossary-footer p {
+      font-size: 0.82rem;
+      color: rgba(197,184,216,0.45);
+      margin-bottom: 0.75rem;
+    }
+    .glossary-footer a {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--gold-lt);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(232,204,122,0.3);
+      padding-bottom: 1px;
+    }
+    .glossary-footer a:hover { border-color: var(--gold-lt); }
+    .back-to-top {
+      display: inline-block;
+      margin-top: 1.5rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--lav-mid);
+      text-decoration: none;
+      padding: 0.4rem 1.2rem;
+      border: 1px solid rgba(197,184,216,0.2);
+      border-radius: 20px;
+      transition: all 0.15s;
+    }
+    .back-to-top:hover {
+      background: rgba(197,184,216,0.1);
+      color: var(--lav);
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 1.5rem 1rem 3rem; }
+      .featured-grid { grid-template-columns: 1fr; }
+      .term-card { padding: 0.85rem 1rem; }
+      .page-intro { padding: 1.25rem 1.25rem; }
+    }
+  </style>
+</head>
+<body id="top">
+
+  <header class="site-header">
+    <h1>Keys to the <em>Stars</em></h1>
+    <p>Astrology Glossary · Plain-language definitions</p>
+    <a href="/" class="back-link">← Back to the app</a>
+  </header>
+
+  <main class="container">
+
+    <div class="page-intro">
+      <h2>Learn Astrology, One Term at a Time</h2>
+      <p>Every word in astrology has a specific meaning. This glossary covers planets, signs, aspects, houses, moon phases, and more — written for people who are curious, not for people who already know everything.</p>
+    </div>
+
+    <nav class="cat-nav" aria-label="Glossary categories">
+      <a href="#common">Common Questions</a>
+      <a href="#planets">Planets</a>
+      <a href="#signs">Signs</a>
+      <a href="#aspects">Aspects</a>
+      <a href="#houses">Houses</a>
+      <a href="#moon-phases">Moon Phases</a>
+      <a href="#planet-in-sign">Planet in Sign</a>
+    </nav>
+
+    <!-- ── COMMON QUESTIONS ── -->
+    <section class="category" id="common">
+      <div class="category-header">
+        <span class="cat-symbol">✦</span>
+        <h2>Common Questions</h2>
+      </div>
+
+      <div class="term-card">
+        <div class="term-meta">Transit · Beginner</div>
+        <h3>What is Mercury retrograde?</h3>
+        <p>Mercury retrograde is a period — roughly three weeks, three times a year — when Mercury appears to move backward in the sky from Earth's perspective. It isn't actually moving backward; it's an optical effect caused by the relative speeds of Earth and Mercury in their orbits. In astrology, Mercury governs communication, travel, and technology. Retrograde periods are traditionally associated with miscommunications, delays, and the need to review rather than initiate. It's a good time to revisit, revise, and reconsider — not necessarily a time to avoid all action.</p>
+      </div>
+
+      <div class="term-card">
+        <div class="term-meta">Natal Chart · Beginner</div>
+        <h3>What is a birth chart?</h3>
+        <p>A birth chart — also called a natal chart — is a map of the sky at the exact moment and place you were born. It shows where every planet was positioned in the zodiac at that moment, which sign was rising on the eastern horizon, and how the planets relate to each other. It is not a prediction of your life. It is a map of tendencies, themes, and patterns — a snapshot of the sky that astrologers interpret as symbolically meaningful to the person born under it.</p>
+      </div>
+
+      <div class="term-card">
+        <div class="term-meta">Natal Chart · Beginner</div>
+        <h3>What is a rising sign?</h3>
+        <p>Your rising sign — also called your ascendant — is the zodiac sign that was crossing the eastern horizon at the moment you were born. It changes approximately every two hours, which is why birth time matters for chart calculations. The rising sign is considered the "mask" or outer presentation of a person — how you come across to others before they know you well. In whole sign house systems, the rising sign also determines which sign rules each of your twelve houses.</p>
+      </div>
+
+      <div class="term-card">
+        <div class="term-meta">Transit · Intermediate</div>
+        <h3>What is a transit in astrology?</h3>
+        <p>A transit is the current movement of a planet through the sky. Every day, planets move to new positions in the zodiac, forming angles (aspects) to each other and to the positions of planets in your birth chart. When astrologers talk about "today's transits," they mean the aspects the moving planets are making right now. Transits are considered active influences on the current moment — some lasting hours (the moon), some lasting days (inner planets), and some lasting months or years (outer planets like Saturn and Pluto).</p>
+      </div>
+
+      <div class="term-card">
+        <div class="term-meta">Moon · Beginner</div>
+        <h3>What is a full moon?</h3>
+        <p>A full moon occurs when the Sun and Moon are exactly opposite each other in the zodiac, and the Moon is fully illuminated from Earth's perspective. It marks the culmination of the lunar cycle — whatever was seeded at the New Moon two weeks prior reaches its peak. Full moons are associated with heightened emotion, completion, revelation, and release. Each full moon occurs in a specific zodiac sign, which colors its themes.</p>
+      </div>
+
+      <div class="term-card">
+        <div class="term-meta">Moon · Beginner</div>
+        <h3>What is a new moon?</h3>
+        <p>A new moon occurs when the Sun and Moon occupy the same degree of the zodiac. The Moon is invisible from Earth — turned fully toward the Sun. This marks the beginning of a new lunar cycle and is traditionally associated with planting seeds, setting intentions, and beginning new chapters. The new moon is a quiet, inward moment — a natural reset before the cycle builds toward the full moon two weeks later.</p>
+      </div>
+
+      <div class="term-card">
+        <div class="term-meta">Moon · Intermediate</div>
+        <h3>What is a void of course moon?</h3>
+        <p>The moon is void of course during the period after it makes its last major aspect in a zodiac sign and before it enters the next sign. This window can last minutes or many hours. Traditionally, actions begun during a void of course moon are thought to come to nothing — not because they're cursed, but because the moon's connective energy is temporarily suspended. It's considered a better time for rest, routine tasks, and completion than for launching new endeavors.</p>
+      </div>
+
+      <div class="term-card">
+        <div class="term-meta">Aspect · Beginner</div>
+        <h3>What is an aspect in astrology?</h3>
+        <p>An aspect is a specific angular relationship between two planets in the zodiac. When planets are a certain number of degrees apart — 0°, 60°, 90°, 120°, or 180° — they are considered to be in aspect with each other, meaning their energies interact in a specific way. Conjunctions blend energies, trines flow easily, squares create friction, sextiles open opportunities, and oppositions create awareness through polarity. Aspects are the grammar of astrology — they describe how planetary energies relate.</p>
+      </div>
+
+      <div class="term-card">
+        <div class="term-meta">Natal Chart · Intermediate</div>
+        <h3>What are the astrological houses?</h3>
+        <p>The twelve houses of a birth chart each govern a different area of life — the 1st house represents the self and physical appearance, the 2nd house governs money and values, the 7th house rules partnerships, the 10th house represents career and public life, and so on. Which sign occupies each house in your chart depends on your rising sign. In whole sign houses — the system used in this app — each house corresponds exactly to one zodiac sign.</p>
+      </div>
+
+      <div class="term-card">
+        <div class="term-meta">Aspect · Beginner</div>
+        <h3>What is a conjunction in astrology?</h3>
+        <p>A conjunction occurs when two planets occupy the same degree of the zodiac. Their energies fully merge and intensify each other. Whether this is helpful or challenging depends entirely on which planets are involved — a Sun-Jupiter conjunction amplifies confidence and expansion, while a Sun-Saturn conjunction brings discipline and limitation into sharp focus. Conjunctions are considered the most powerful type of aspect because the planetary energies are completely blended.</p>
+      </div>
+
+      <div class="term-card">
+        <div class="term-meta">Natal Chart · Beginner</div>
+        <h3>What is a moon sign?</h3>
+        <p>Your moon sign is the zodiac sign the Moon occupied at the moment you were born. The Moon moves through all twelve signs approximately every 28 days, spending about 2.5 days in each. In astrology, the moon sign represents the emotional self — how you process feeling, what you need to feel safe, and the instinctual patterns beneath conscious awareness. It is often considered as important as the sun sign, particularly for understanding emotional life and inner experience.</p>
+      </div>
+
+      <div class="term-card">
+        <div class="term-meta">Natal Chart · Beginner</div>
+        <h3>What is a sun sign?</h3>
+        <p>Your sun sign is the zodiac sign the Sun occupied during the month you were born. The Sun spends approximately 30 days in each sign as Earth orbits it over the course of a year. The sun sign is the most widely known astrological placement and represents the core self — identity, vitality, and conscious will. It is the part of you that seeks to express, create, and be recognized. Sun sign astrology (the kind in newspaper horoscopes) uses only this placement, which is why professional astrologers consider it an incomplete picture.</p>
+      </div>
+
+      <div class="term-card">
+        <div class="term-meta">Natal Chart · Intermediate</div>
+        <h3>What is whole sign houses?</h3>
+        <p>Whole sign houses is one of the oldest and simplest house systems in astrology. In this system, each house corresponds exactly to one entire zodiac sign. Your rising sign occupies the entire first house, the next sign occupies the entire second house, and so on around the wheel. This app uses whole sign houses because it produces clean, clear house assignments that are easy to learn and interpret. Other systems (like Placidus) divide houses by degree, which can result in very unequal house sizes.</p>
+      </div>
+
+      <div class="term-card">
+        <div class="term-meta">Aspect · Intermediate</div>
+        <h3>What is a sextile in astrology?</h3>
+        <p>A sextile is a 60° angle between two planets. It is considered a harmonious, opportunity-oriented aspect — the planets cooperate naturally and support each other's expression. Unlike a trine, which flows effortlessly, a sextile requires some initiative to activate. The opportunity is present, but you need to reach for it. Sextiles often indicate areas where talent and circumstance align — where a small amount of effort produces disproportionate results.</p>
+      </div>
+
+      <div class="term-card">
+        <div class="term-meta">Transit · Intermediate</div>
+        <h3>What is Mercury in retrograde vs direct?</h3>
+        <p>Planets are either direct (moving forward through the zodiac) or retrograde (appearing to move backward). Mercury goes retrograde roughly three times per year for about three weeks each time. When direct, Mercury's energy flows outward — communication is clear, plans move forward, information travels efficiently. When retrograde, Mercury's energy turns inward — it's a time better suited for review, revision, and reflection than for launching new projects or signing important agreements. "Mercury direct" simply means Mercury has resumed its normal forward motion.</p>
+      </div>
+    </section>
+
+    <!-- ── PLANETS ── -->
+    <section class="category" id="planets">
+      <div class="category-header">
+        <span class="cat-symbol">☉</span>
+        <h2>The Planets</h2>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">☉</span>What does the Sun represent in astrology?</h3>
+        <p>The Sun represents identity, vitality, and conscious will. It is the core self — the part of you that seeks to express, create, and be recognized. It governs ego, purpose, and life force. The Sun spends approximately one month in each sign and takes one year to complete a full cycle of the zodiac.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">☽</span>What does the Moon represent in astrology?</h3>
+        <p>The Moon represents emotion, instinct, and the subconscious. It governs how we process feeling, what we need to feel safe, and the patterns beneath conscious awareness. It rules memory, home, and the body's rhythms. The Moon moves faster than any other body in the sky, spending about 2.5 days in each sign.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">☿</span>What does Mercury represent in astrology?</h3>
+        <p>Mercury represents mind, communication, and perception. It governs how we think, speak, write, and make connections. It rules learning, short travel, and the exchange of information. Mercury is one of the fastest-moving planets, spending about 2–3 weeks in each sign when direct.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">♀</span>What does Venus represent in astrology?</h3>
+        <p>Venus represents love, beauty, and value. It governs attraction, pleasure, aesthetics, and how we relate to others. It rules what we find worthwhile — in relationships, in art, and in material life. Venus spends 3–4 weeks in each sign under normal conditions but can linger in one sign for months when retrograde.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">♂</span>What does Mars represent in astrology?</h3>
+        <p>Mars represents drive, action, and desire. It governs how we pursue what we want, how we assert ourselves, and how we handle anger and physical energy. It rules ambition, sexuality, and initiative. Mars spends roughly six weeks in each sign, though it can stay in one sign for months when retrograde.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">♃</span>What does Jupiter represent in astrology?</h3>
+        <p>Jupiter represents expansion, wisdom, and abundance. It governs where we grow, what we believe, and where life opens up with opportunity. It rules philosophy, higher learning, and optimism. Jupiter spends approximately one year in each sign, making its transits significant longer-term influences.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">♄</span>What does Saturn represent in astrology?</h3>
+        <p>Saturn represents structure, responsibility, and mastery. It governs discipline, limitation, and the slow building of lasting things. It rules time, karma, authority, and hard-earned reward. Saturn spends approximately 2.5 years in each sign. A Saturn Return — when Saturn returns to its natal position around age 29 — is considered a major life milestone.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">♅</span>What does Uranus represent in astrology?</h3>
+        <p>Uranus represents revolution, disruption, and awakening. It governs sudden change, innovation, and freedom from outdated structures. It rules technology, rebellion, and collective upheaval. Uranus spends approximately seven years in each sign, making its influence generational.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">♆</span>What does Neptune represent in astrology?</h3>
+        <p>Neptune represents dreams, illusion, and transcendence. It governs spirituality, creativity, and the dissolution of boundaries. It rules what we idealize, what we cannot see clearly, and the longing for the infinite. Neptune spends approximately 14 years in each sign, making its themes a generational backdrop.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">♇</span>What does Pluto represent in astrology?</h3>
+        <p>Pluto represents transformation, power, and depth. It governs irreversible change, the shadow self, and collective evolution. It rules what must die for something new to be born. Pluto spends 12–30 years in each sign due to its elliptical orbit, making its transits among the most profound and long-lasting in astrology.</p>
+      </div>
+    </section>
+
+    <!-- ── SIGNS ── -->
+    <section class="category" id="signs">
+      <div class="category-header">
+        <span class="cat-symbol">♈</span>
+        <h2>The Signs</h2>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">♈</span>What is Aries in astrology?</h3>
+        <p>Aries is the first sign of the zodiac — a Cardinal Fire sign. It is the sign of initiation, identity, and beginnings. Aries energy is direct, bold, and self-starting. It moves quickly toward what it wants without hesitation and burns brightest at the start of things. The Sun enters Aries around March 20, marking the spring equinox.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">♉</span>What is Taurus in astrology?</h3>
+        <p>Taurus is a Fixed Earth sign. It is the sign of stability, pleasure, and endurance. Taurus energy builds slowly, values comfort and beauty, and holds on tightly to what it has earned. It is associated with the physical senses, material security, and deep attachment to what it values. The Sun is in Taurus approximately April 20–May 20.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">♊</span>What is Gemini in astrology?</h3>
+        <p>Gemini is a Mutable Air sign. It is the sign of curiosity, communication, and connection. Gemini energy gathers and exchanges information, adapts quickly, and is most alive when engaged in dialogue and learning. It is associated with the mind, siblings, short travel, and the early years of education. The Sun is in Gemini approximately May 21–June 20.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">♋</span>What is Cancer in astrology?</h3>
+        <p>Cancer is a Cardinal Water sign. It is the sign of nurturing, memory, and emotional protection. Cancer energy moves sideways toward what it loves and holds on tightly to what matters. It is associated with home, family, ancestry, and the body's rhythms. The Moon rules Cancer. The Sun is in Cancer approximately June 21–July 22.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">♌</span>What is Leo in astrology?</h3>
+        <p>Leo is a Fixed Fire sign. It is the sign of creativity, self-expression, and recognition. Leo energy leads from the heart, generates warmth, and needs to be seen and appreciated. It is associated with creative work, romance, children, and anything that allows the self to shine. The Sun rules Leo. The Sun is in Leo approximately July 23–August 22.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">♍</span>What is Virgo in astrology?</h3>
+        <p>Virgo is a Mutable Earth sign. It is the sign of refinement, service, and craft. Virgo energy notices what is imperfect so it can make things better, finds meaning in usefulness, and values precision. It is associated with health, daily routine, service to others, and analytical intelligence. The Sun is in Virgo approximately August 23–September 22.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">♎</span>What is Libra in astrology?</h3>
+        <p>Libra is a Cardinal Air sign. It is the sign of balance, relationship, and aesthetics. Libra energy weighs and considers, seeks fairness and harmony, and is oriented toward the other. It is associated with partnerships, contracts, beauty, and diplomacy. Venus rules Libra. The Sun is in Libra approximately September 23–October 22.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">♏</span>What is Scorpio in astrology?</h3>
+        <p>Scorpio is a Fixed Water sign. It is the sign of depth, transformation, and intensity. Scorpio energy seeks truth beneath the surface and is capable of profound regeneration. It is associated with shared resources, intimacy, death and rebirth, and what is hidden. The Sun is in Scorpio approximately October 23–November 21.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">♐</span>What is Sagittarius in astrology?</h3>
+        <p>Sagittarius is a Mutable Fire sign. It is the sign of expansion, philosophy, and seeking. Sagittarius energy chases meaning, adventure, and the broadest possible understanding of the world. It is associated with higher education, long-distance travel, belief systems, and optimism. Jupiter rules Sagittarius. The Sun is in Sagittarius approximately November 22–December 21.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">♑</span>What is Capricorn in astrology?</h3>
+        <p>Capricorn is a Cardinal Earth sign. It is the sign of ambition, structure, and long-term achievement. Capricorn energy climbs steadily and builds things meant to last. It is associated with career, authority, legacy, and the discipline required to achieve significant goals. Saturn rules Capricorn. The Sun is in Capricorn approximately December 22–January 19.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">♒</span>What is Aquarius in astrology?</h3>
+        <p>Aquarius is a Fixed Air sign. It is the sign of innovation, collective vision, and disruption of the outdated. Aquarius energy is idealistic, unconventional, and oriented toward the future and the group. It is associated with community, technology, rebellion, and the pursuit of a better world. The Sun is in Aquarius approximately January 20–February 18.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">♓</span>What is Pisces in astrology?</h3>
+        <p>Pisces is a Mutable Water sign. It is the sign of dreams, dissolution, and transcendence. Pisces energy is fluid, empathic, and boundless — most alive at the edge of the tangible world. It is associated with spirituality, creativity, compassion, and the blurring of boundaries. Neptune rules Pisces. The Sun is in Pisces approximately February 19–March 19.</p>
+      </div>
+    </section>
+
+    <!-- ── ASPECTS ── -->
+    <section class="category" id="aspects">
+      <div class="category-header">
+        <span class="cat-symbol">☌</span>
+        <h2>The Aspects</h2>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">☌</span>What is a conjunction in astrology?</h3>
+        <p>A conjunction (0°) occurs when two planets occupy the same degree of the zodiac. Their energies fully merge and intensify each other. The nature of the conjunction depends entirely on which planets are involved — the blending is total. Considered the most powerful aspect because there is no separation between the two energies.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">⚹</span>What is a sextile in astrology?</h3>
+        <p>A sextile (60°) is an opportunity aspect — the planets cooperate naturally and support each other's expression. Action is still required; the sextile opens a door but does not walk through it. Sextiles indicate areas where a small amount of effort yields disproportionate results.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">□</span>What is a square in astrology?</h3>
+        <p>A square (90°) creates friction and tension — the planets work at cross-purposes and demand resolution. Squares are uncomfortable but generative; they create the pressure that produces growth. They are action-forcing aspects — something must give. Many significant achievements are driven by natal or transiting squares.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">△</span>What is a trine in astrology?</h3>
+        <p>A trine (120°) is the most harmonious aspect — the planets flow easily together, amplifying each other without resistance. Trines represent natural ease and gifts that may go unnoticed precisely because they cost nothing. The challenge with trines is that their ease can lead to complacency; the talent is there but may not be developed.</p>
+      </div>
+
+      <div class="term-card">
+        <h3><span class="term-symbol">☍</span>What is an opposition in astrology?</h3>
+        <p>An opposition (180°) places two planets directly across the zodiac from each other. Their energies create polarity and awareness through contrast. Oppositions are often experienced through relationships, as we project one side outward onto others. The challenge is integration — finding a way to hold both ends of the axis.</p>
+      </div>
+    </section>
+
+    <!-- ── HOUSES ── -->
+    <section class="category" id="houses">
+      <div class="category-header">
+        <span class="cat-symbol">⌂</span>
+        <h2>The Houses</h2>
+      </div>
+
+      <div class="term-card">
+        <h3>What is the 1st House in astrology?</h3>
+        <p>The 1st House governs the self, appearance, and beginnings. It represents how you present yourself to the world, your physical body, and the lens through which you approach new experiences. The sign on the 1st house cusp is your rising sign or ascendant.</p>
+      </div>
+
+      <div class="term-card">
+        <h3>What is the 2nd House in astrology?</h3>
+        <p>The 2nd House governs resources, values, and self-worth. It rules money, possessions, and what you consider valuable — including how you value yourself. Planets transiting the 2nd house often activate questions around finances and personal worth.</p>
+      </div>
+
+      <div class="term-card">
+        <h3>What is the 3rd House in astrology?</h3>
+        <p>The 3rd House governs communication, learning, and local movement. It rules the mind, siblings, short travel, and everyday exchange of information. It represents how you think and express yourself in daily life.</p>
+      </div>
+
+      <div class="term-card">
+        <h3>What is the 4th House in astrology?</h3>
+        <p>The 4th House governs home, roots, and private life. It represents family, ancestry, the domestic sphere, and the foundation beneath everything else. It is the most private sector of the chart — what happens behind closed doors.</p>
+      </div>
+
+      <div class="term-card">
+        <h3>What is the 5th House in astrology?</h3>
+        <p>The 5th House governs creativity, pleasure, and self-expression. It rules art, play, romance, children, and anything that brings joy and allows the self to shine. It is the house of authentic creative output and the love we give freely.</p>
+      </div>
+
+      <div class="term-card">
+        <h3>What is the 6th House in astrology?</h3>
+        <p>The 6th House governs health, work, and daily routine. It rules the body, service, habits, and the practical structures that sustain everyday life. It represents the work you do, not the career you build — the daily grind rather than the legacy.</p>
+      </div>
+
+      <div class="term-card">
+        <h3>What is the 7th House in astrology?</h3>
+        <p>The 7th House governs partnership and relationship. It rules marriage, significant one-on-one partnerships, contracts, and the mirror that others hold up to us. It represents what we seek in others and what we project outward.</p>
+      </div>
+
+      <div class="term-card">
+        <h3>What is the 8th House in astrology?</h3>
+        <p>The 8th House governs transformation, shared resources, and depth. It rules intimacy, death and rebirth, other people's money, and what is hidden beneath the surface. It is the house of what we merge with — financially, emotionally, and sexually.</p>
+      </div>
+
+      <div class="term-card">
+        <h3>What is the 9th House in astrology?</h3>
+        <p>The 9th House governs expansion, philosophy, and long journeys. It rules higher education, belief systems, foreign travel, and the search for meaning. It represents the worldview you develop and the horizons you pursue.</p>
+      </div>
+
+      <div class="term-card">
+        <h3>What is the 10th House in astrology?</h3>
+        <p>The 10th House governs career, public life, and legacy. It represents how you are seen in the world professionally and what you are building over the long term. The sign on the 10th house cusp (the Midheaven) describes your public reputation and vocational path.</p>
+      </div>
+
+      <div class="term-card">
+        <h3>What is the 11th House in astrology?</h3>
+        <p>The 11th House governs community, friendship, and collective vision. It rules groups, social networks, ideals, and hopes for the future. It represents the communities you belong to and the larger causes you serve.</p>
+      </div>
+
+      <div class="term-card">
+        <h3>What is the 12th House in astrology?</h3>
+        <p>The 12th House governs the hidden, the unconscious, and surrender. It rules what is behind the scenes — solitude, retreat, secret matters, and the dissolution of the ego. It is the house of what we cannot easily see in ourselves and what we release.</p>
+      </div>
+    </section>
+
+    <!-- ── MOON PHASES ── -->
+    <section class="category" id="moon-phases">
+      <div class="category-header">
+        <span class="cat-symbol">🌙</span>
+        <h2>Moon Phases</h2>
+      </div>
+
+      <div class="term-card">
+        <h3>🌑 What is the New Moon?</h3>
+        <p>The New Moon occurs when the Sun and Moon occupy the same degree of the zodiac. The Moon is invisible — turned fully toward the Sun. This is the beginning of the lunar cycle, a moment of pure potential. It is associated with setting intentions, beginning new chapters, and inner orientation rather than outward action.</p>
+      </div>
+
+      <div class="term-card">
+        <h3>🌒 What is the Waxing Crescent?</h3>
+        <p>The Waxing Crescent is the first sliver of light after the New Moon. The cycle is beginning to build — there is early momentum gathering. This phase is associated with taking first steps, making plans concrete, and trusting in what was seeded at the New Moon.</p>
+      </div>
+
+      <div class="term-card">
+        <h3>🌓 What is the First Quarter Moon?</h3>
+        <p>The First Quarter Moon marks the halfway point between New and Full — the cycle is in full momentum and the first real challenges or decision points arrive. It is a crisis of action. This phase calls for decisive movement and engagement with obstacles rather than retreat.</p>
+      </div>
+
+      <div class="term-card">
+        <h3>🌔 What is the Waxing Gibbous Moon?</h3>
+        <p>The Waxing Gibbous Moon is almost full — the light is dominant but not yet complete. This is the phase of refinement and anticipation. The work is largely done; it is now being polished and prepared for culmination. Good for editing, refining, and preparing to share.</p>
+      </div>
+
+      <div class="term-card">
+        <h3>🌕 What is the Full Moon?</h3>
+        <p>The Full Moon occurs when the Sun and Moon are exactly opposite each other. The Moon is fully illuminated. Whatever was seeded at the New Moon has now reached culmination. Full moons are associated with heightened emotion, completion, revelation, and release. Each full moon occurs in a specific sign.</p>
+      </div>
+
+      <div class="term-card">
+        <h3>🌖 What is the Waning Gibbous Moon?</h3>
+        <p>The Waning Gibbous (also called Disseminating) Moon follows the Full Moon as the light begins to decrease. This phase is associated with sharing, teaching, and distributing what was gained at the Full Moon. Good for communicating, publishing, and expressing gratitude.</p>
+      </div>
+
+      <div class="term-card">
+        <h3>🌗 What is the Last Quarter Moon?</h3>
+        <p>The Last Quarter Moon is a moment of reorientation and letting go of what no longer serves the next cycle. It is associated with release, forgiveness, and honest self-assessment. Good for decluttering, ending what has run its course, and clearing space for what comes next.</p>
+      </div>
+
+      <div class="term-card">
+        <h3>🌘 What is the Waning Crescent Moon?</h3>
+        <p>The Waning Crescent (also called Balsamic) Moon is the final phase before the New Moon returns — the most interior and quiet phase of the cycle. It is associated with rest, surrender, healing, and completion. The best phase for solitude, meditation, and letting go completely.</p>
+      </div>
+    </section>
+
+    <!-- ── PLANET IN SIGN ── -->
+    <section class="category" id="planet-in-sign">
+      <div class="category-header">
+        <span class="cat-symbol">✦</span>
+        <h2>Planet in Sign Combinations</h2>
+      </div>
+      <p style="color:rgba(197,184,216,0.6); font-size:0.875rem; margin-bottom:1.5rem; line-height:1.7;">
+        Each planet expresses differently depending on which sign it occupies. These combinations describe how planetary energy is filtered through the qualities of each sign — whether in a birth chart or as a current transit.
+      </p>
+
+      <!-- Sun through signs -->
+      <div class="term-card"><h3>What does Sun in Aries mean?</h3><p>Sun in Aries operates at the beginning of the zodiac — the Sun is exalted here. Identity and vitality express through initiative, directness, and the drive to begin. Energy is abundant at the start and may wane before completion. Associated with confidence, courage, and a strong personal will.</p></div>
+      <div class="term-card"><h3>What does Sun in Taurus mean?</h3><p>Sun in Taurus operates through steadiness and pleasure. Identity expresses through building, accumulating, and savoring. The self is most alive when grounded in the physical world — through beauty, comfort, or tangible results. Associated with reliability, patience, and deep attachment to what is valued.</p></div>
+      <div class="term-card"><h3>What does Sun in Gemini mean?</h3><p>Sun in Gemini operates through curiosity and communication. Identity expresses through the gathering and sharing of ideas. The self is most alive in conversation, learning, and movement between perspectives. Associated with wit, adaptability, and a tendency to identify with the mind.</p></div>
+      <div class="term-card"><h3>What does Sun in Cancer mean?</h3><p>Sun in Cancer operates through feeling and belonging. Identity expresses through nurturing, protecting, and connecting to roots. The self is most alive within intimate bonds and familiar environments. Associated with emotional depth, strong memory, and a sense of self tied to home and family.</p></div>
+      <div class="term-card"><h3>What does Sun in Leo mean?</h3><p>Sun in Leo operates in its home sign. Identity expresses through creativity, generosity, and the desire to be seen. The self is most alive when performing, leading, or loving. Associated with warmth, confidence, and a natural magnetism that draws others in.</p></div>
+      <div class="term-card"><h3>What does Sun in Virgo mean?</h3><p>Sun in Virgo operates through refinement and service. Identity expresses through usefulness, precision, and devotion to craft. The self is most alive when improving something or solving a problem. Associated with analytical intelligence, humility, and a strong orientation toward health and contribution.</p></div>
+      <div class="term-card"><h3>What does Sun in Libra mean?</h3><p>Sun in Libra operates through relationship and aesthetics. Identity expresses through connection, fairness, and the creation of harmony. The self is most alive in partnership and in the presence of beauty. Associated with diplomacy, charm, and a deep need for balance.</p></div>
+      <div class="term-card"><h3>What does Sun in Scorpio mean?</h3><p>Sun in Scorpio operates through depth and transformation. Identity expresses through intensity, investigation, and the willingness to go where others won't. The self is most alive at the edges — in crisis, intimacy, or the pursuit of hidden truth. Associated with psychological acuity and the capacity for profound regeneration.</p></div>
+      <div class="term-card"><h3>What does Sun in Sagittarius mean?</h3><p>Sun in Sagittarius operates through expansion and seeking. Identity expresses through philosophy, adventure, and the pursuit of meaning. The self is most alive when moving toward a horizon. Associated with optimism, directness, and a restlessness that keeps reaching for more.</p></div>
+      <div class="term-card"><h3>What does Sun in Capricorn mean?</h3><p>Sun in Capricorn operates through ambition and structure. Identity expresses through achievement, responsibility, and the slow building of lasting things. The self is most alive when working toward a significant goal. Associated with discipline, strategic thinking, and a maturity that often develops ahead of its time.</p></div>
+      <div class="term-card"><h3>What does Sun in Aquarius mean?</h3><p>Sun in Aquarius operates through innovation and collective vision. Identity expresses through originality, idealism, and a sense of belonging to something larger than the individual. The self is most alive in community, rebellion, or the pursuit of a better future. Associated with independence and intellectual intensity.</p></div>
+      <div class="term-card"><h3>What does Sun in Pisces mean?</h3><p>Sun in Pisces operates through imagination and dissolution. Identity expresses through empathy, creativity, and the permeability of boundaries. The self is most alive in art, spirituality, or deep compassion. Associated with sensitivity, idealism, and a tendency to absorb the emotional atmosphere of the environment.</p></div>
+
+      <!-- Moon through signs -->
+      <div class="term-card"><h3>What does Moon in Aries mean?</h3><p>Moon in Aries operates through immediacy and instinct. Emotional needs express through action, independence, and the freedom to respond without delay. Safety is found in autonomy and forward movement. Associated with emotional directness, a quick temper that passes quickly, and a need to feel capable and unimpeded.</p></div>
+      <div class="term-card"><h3>What does Moon in Taurus mean?</h3><p>Moon in Taurus is exalted. Emotional needs express through comfort, consistency, and sensory pleasure. Safety is found in the familiar — in good food, physical touch, and environments that don't change unexpectedly. Associated with emotional steadiness, strong attachment, and deep resistance to being rushed.</p></div>
+      <div class="term-card"><h3>What does Moon in Gemini mean?</h3><p>Moon in Gemini operates through thought and exchange. Emotional needs express through communication, variety, and mental stimulation. Safety is found in being able to talk about feelings rather than simply sit with them. Associated with emotional curiosity and a tendency to intellectualize inner life.</p></div>
+      <div class="term-card"><h3>What does Moon in Cancer mean?</h3><p>Moon in Cancer is in its home sign. Emotional needs express through nurturing, memory, and the protection of what is loved. Safety is found in closeness, familiarity, and the ability to care for others. Associated with deep emotional sensitivity, strong intuition, and a rich inner life.</p></div>
+      <div class="term-card"><h3>What does Moon in Leo mean?</h3><p>Moon in Leo operates through warmth and recognition. Emotional needs express through creative expression, affection, and the desire to be seen and appreciated. Safety is found in feeling special and loved. Associated with emotional generosity and a deep need for acknowledgment.</p></div>
+      <div class="term-card"><h3>What does Moon in Virgo mean?</h3><p>Moon in Virgo operates through analysis and care. Emotional needs express through usefulness, routine, and attention to detail. Safety is found in having things in order and being of practical service. Associated with emotional discernment, a tendency to worry, and a nurturing style that shows up through acts of care.</p></div>
+      <div class="term-card"><h3>What does Moon in Libra mean?</h3><p>Moon in Libra operates through harmony and connection. Emotional needs express through relationship, fairness, and the avoidance of conflict. Safety is found in peaceful environments and mutual regard. Associated with emotional diplomacy and a deep need for partnership to feel whole.</p></div>
+      <div class="term-card"><h3>What does Moon in Scorpio mean?</h3><p>Moon in Scorpio is in its sign of fall. Emotional needs express through intensity, loyalty, and the need to know what is really going on beneath the surface. Safety is found paradoxically through confronting what is most feared. Associated with powerful emotional memory and an all-or-nothing quality in feeling.</p></div>
+      <div class="term-card"><h3>What does Moon in Sagittarius mean?</h3><p>Moon in Sagittarius operates through freedom and meaning. Emotional needs express through exploration, optimism, and the pursuit of truth. Safety is found in open space — physical, philosophical, or relational. Associated with emotional buoyancy and a need for experiences that expand the sense of what is possible.</p></div>
+      <div class="term-card"><h3>What does Moon in Capricorn mean?</h3><p>Moon in Capricorn is in its sign of detriment. Emotional needs express through achievement, control, and the demonstration of competence. Safety is found in structure and self-sufficiency. Associated with emotional reserve, high internal standards, and a tendency to manage feelings rather than simply feel them.</p></div>
+      <div class="term-card"><h3>What does Moon in Aquarius mean?</h3><p>Moon in Aquarius operates through detachment and principle. Emotional needs express through intellectual freedom, community, and the sense of belonging to a larger cause. Safety is found in ideas rather than intimacy. Associated with emotional objectivity and genuine care for humanity that can coexist with difficulty in one-on-one closeness.</p></div>
+      <div class="term-card"><h3>What does Moon in Pisces mean?</h3><p>Moon in Pisces operates through dissolution and empathy. Emotional life is fluid, permeable, and deeply sensitive to the surrounding atmosphere. Safety is found in solitude, creativity, and spiritual connection. Associated with profound compassion, difficulty with boundaries, and an inner world so rich it can be hard to distinguish from external reality.</p></div>
+
+      <!-- Mercury through signs (abbreviated for space) -->
+      <div class="term-card"><h3>What does Mercury in Aries mean?</h3><p>Mercury in Aries communicates directly, quickly, and with initiative. The mind moves toward conclusions fast — sometimes before all the information is gathered. Associated with bold speech, quick thinking, and a tendency toward impatience in conversation.</p></div>
+      <div class="term-card"><h3>What does Mercury in Taurus mean?</h3><p>Mercury in Taurus communicates deliberately and practically. The mind moves slowly and thoroughly, preferring to fully understand before speaking. Associated with a reliable, methodical intellect and a tendency to hold positions firmly once they are formed.</p></div>
+      <div class="term-card"><h3>What does Mercury in Gemini mean?</h3><p>Mercury in Gemini is in its home sign. The mind is quick, curious, and capable of holding multiple perspectives simultaneously. Communication is lively and information-hungry. Associated with wit, verbal dexterity, and a gift for making connections between ideas.</p></div>
+      <div class="term-card"><h3>What does Mercury in Cancer mean?</h3><p>Mercury in Cancer communicates through feeling and memory. The mind is intuitive and retentive, absorbing information through emotional resonance. Associated with a strong memory, communication shaped by mood, and thinking that is deeply personal and contextual.</p></div>
+      <div class="term-card"><h3>What does Mercury in Leo mean?</h3><p>Mercury in Leo communicates with confidence and flair. The mind thinks in narrative and drama, presenting ideas with conviction and warmth. Associated with a commanding speaking style, creative thinking, and communication that seeks to inspire or entertain.</p></div>
+      <div class="term-card"><h3>What does Mercury in Virgo mean?</h3><p>Mercury in Virgo is exalted. The mind is analytical, precise, and devoted to accuracy. Communication is clear, organized, and oriented toward practical usefulness. Associated with excellent critical thinking, a gift for editing, and a tendency toward self-criticism in communication.</p></div>
+      <div class="term-card"><h3>What does Mercury in Libra mean?</h3><p>Mercury in Libra communicates diplomatically and considers multiple sides before speaking. The mind weighs and balances, seeking fairness in thought and expression. Associated with graceful communication, skill in negotiation, and occasional difficulty reaching conclusions.</p></div>
+      <div class="term-card"><h3>What does Mercury in Scorpio mean?</h3><p>Mercury in Scorpio communicates with depth and precision. The mind probes beneath the surface, interested in what is hidden or unspoken. Associated with psychological insight, penetrating questions, and communication that carries weight and intensity.</p></div>
+      <div class="term-card"><h3>What does Mercury in Sagittarius mean?</h3><p>Mercury in Sagittarius communicates expansively and philosophically. The mind reaches for the big picture and is more interested in meaning than detail. Associated with directness bordering on bluntness, enthusiasm in communication, and a tendency to overpromise.</p></div>
+      <div class="term-card"><h3>What does Mercury in Capricorn mean?</h3><p>Mercury in Capricorn communicates with structure and authority. The mind is disciplined, strategic, and oriented toward practical outcomes. Associated with the ability to plan systematically, speak with authority, and build arguments that hold up over time.</p></div>
+      <div class="term-card"><h3>What does Mercury in Aquarius mean?</h3><p>Mercury in Aquarius communicates innovatively and independently. The mind is original, unconventional, and drawn to ideas that challenge the status quo. Associated with intellectual independence, a gift for systems thinking, and communication that can feel ahead of its time.</p></div>
+      <div class="term-card"><h3>What does Mercury in Pisces mean?</h3><p>Mercury in Pisces communicates intuitively and imaginatively. The mind absorbs impressions more than facts, and expresses through metaphor and image. Associated with poetic thinking, strong empathy in communication, and occasional difficulty with precision or linear logic.</p></div>
+
+      <!-- Venus through signs -->
+      <div class="term-card"><h3>What does Venus in Aries mean?</h3><p>Venus in Aries loves boldly and pursues directly. Attraction expresses through initiative, confidence, and a desire for excitement in relationship. Associated with passionate beginnings, impatience with emotional complexity, and a love style that is warm but needs independence.</p></div>
+      <div class="term-card"><h3>What does Venus in Taurus mean?</h3><p>Venus in Taurus is in its home sign. Love and beauty express through sensory pleasure, loyalty, and the slow building of deep attachment. Associated with a love of physical comfort, aesthetic refinement, and relationships that develop through shared pleasure and endurance.</p></div>
+      <div class="term-card"><h3>What does Venus in Gemini mean?</h3><p>Venus in Gemini loves through conversation and variety. Attraction expresses through wit, curiosity, and mental connection. Associated with a need for intellectual stimulation in relationship, a flirtatious quality, and love that delights in exchange and lightness.</p></div>
+      <div class="term-card"><h3>What does Venus in Cancer mean?</h3><p>Venus in Cancer loves through nurturing and protection. Attraction expresses through emotional attunement, care, and the creation of a safe, intimate space. Associated with deep loyalty, a romantic longing for home and belonging, and love that is tender and deeply feeling.</p></div>
+      <div class="term-card"><h3>What does Venus in Leo mean?</h3><p>Venus in Leo loves grandly and generously. Attraction expresses through warmth, creativity, and the desire to celebrate the beloved. Associated with dramatic romantic gestures, a need to feel special and adored, and a love style that is expressive and loyal.</p></div>
+      <div class="term-card"><h3>What does Venus in Virgo mean?</h3><p>Venus in Virgo loves through service and attention to detail. Attraction expresses through acts of care, thoughtfulness, and the desire to be genuinely useful to those it loves. Associated with a reserved romantic style, high standards, and love expressed through practical devotion.</p></div>
+      <div class="term-card"><h3>What does Venus in Libra mean?</h3><p>Venus in Libra is in its home sign. Love and beauty express through harmony, fairness, and the creation of balanced partnership. Associated with aesthetic refinement, a deep need for relational equity, and a love style that is gracious, diplomatic, and genuinely other-oriented.</p></div>
+      <div class="term-card"><h3>What does Venus in Scorpio mean?</h3><p>Venus in Scorpio loves intensely and completely. Attraction expresses through depth, loyalty, and the desire for total merger. Associated with powerful bonds, jealousy as a shadow, and a love style that is all-or-nothing — capable of profound intimacy and profound hurt.</p></div>
+      <div class="term-card"><h3>What does Venus in Sagittarius mean?</h3><p>Venus in Sagittarius loves adventurously and freely. Attraction expresses through shared philosophy, travel, and the expansion of each other's worlds. Associated with a need for freedom within relationship, enthusiasm in love, and attraction to those who expand the sense of what is possible.</p></div>
+      <div class="term-card"><h3>What does Venus in Capricorn mean?</h3><p>Venus in Capricorn loves through commitment and ambition. Attraction expresses through loyalty, reliability, and the building of something lasting. Associated with a reserved romantic style, high standards for partnership, and relationships that deepen slowly and endure.</p></div>
+      <div class="term-card"><h3>What does Venus in Aquarius mean?</h3><p>Venus in Aquarius loves through friendship and shared ideals. Attraction expresses through intellectual connection, originality, and a sense of mutual freedom. Associated with unconventional relationship structures, a need for independence alongside intimacy, and love that values the person's individuality above all.</p></div>
+      <div class="term-card"><h3>What does Venus in Pisces mean?</h3><p>Venus in Pisces is exalted. Love and beauty express through compassion, imagination, and the dissolution of boundaries between self and other. Associated with deep romantic idealism, spiritual connection in love, and a capacity for unconditional giving that must be balanced with discernment.</p></div>
+
+      <!-- Mars through signs -->
+      <div class="term-card"><h3>What does Mars in Aries mean?</h3><p>Mars in Aries is in its home sign. Drive expresses through direct action, courage, and the impulse to begin. Energy is high and immediate. Associated with boldness, competitiveness, a quick temper that releases and passes, and a natural capacity to initiate.</p></div>
+      <div class="term-card"><h3>What does Mars in Taurus mean?</h3><p>Mars in Taurus drives through persistence and endurance. Action is slow to start but nearly impossible to stop. Associated with steadfast determination, resistance to being pushed, and a capacity to sustain effort over long periods toward tangible goals.</p></div>
+      <div class="term-card"><h3>What does Mars in Gemini mean?</h3><p>Mars in Gemini drives through communication and versatility. Energy expresses in multiple directions simultaneously — through words, ideas, and rapid movement between projects. Associated with mental agility in action, a combative wit, and scattered energy that benefits from focus.</p></div>
+      <div class="term-card"><h3>What does Mars in Cancer mean?</h3><p>Mars in Cancer drives through protection and feeling. Action is motivated by emotional connection and the defense of what is loved. Associated with indirect assertion, strong motivation when family or home is involved, and anger that is more likely to withdraw than confront.</p></div>
+      <div class="term-card"><h3>What does Mars in Leo mean?</h3><p>Mars in Leo drives through creative expression and recognition. Energy expresses through leadership, performance, and the desire to be acknowledged for what is achieved. Associated with dramatic action, generous motivation, and a strong need for the work to be seen.</p></div>
+      <div class="term-card"><h3>What does Mars in Virgo mean?</h3><p>Mars in Virgo drives through precision and service. Energy expresses in careful, methodical action oriented toward improvement and usefulness. Associated with a strong work ethic, critical standards in execution, and frustration when things are not done correctly.</p></div>
+      <div class="term-card"><h3>What does Mars in Libra mean?</h3><p>Mars in Libra is in its sign of detriment. Drive expresses through negotiation, strategy, and the pursuit of fairness. Direct action is often moderated by the need to consider all sides. Associated with charm in assertion, indirect conflict resolution, and motivation that activates through relationship.</p></div>
+      <div class="term-card"><h3>What does Mars in Scorpio mean?</h3><p>Mars in Scorpio is in its traditional home. Drive expresses through intensity, strategy, and the capacity to sustain effort through any obstacle. Associated with powerful will, depth of motivation, and an anger that is slow, strategic, and long-remembered.</p></div>
+      <div class="term-card"><h3>What does Mars in Sagittarius mean?</h3><p>Mars in Sagittarius drives through belief and vision. Energy expresses in pursuit of meaning, adventure, and the expansion of what is possible. Associated with enthusiasm in action, righteous motivation, and a tendency to overcommit before the full scope of a task is understood.</p></div>
+      <div class="term-card"><h3>What does Mars in Capricorn mean?</h3><p>Mars in Capricorn is exalted. Drive expresses through discipline, strategy, and sustained effort toward significant goals. Action is deliberate and efficient. Associated with exceptional endurance, the ability to delay gratification, and an ambition that plays the long game.</p></div>
+      <div class="term-card"><h3>What does Mars in Aquarius mean?</h3><p>Mars in Aquarius drives through innovation and principle. Energy expresses in service to collective ideals, resistance to authority, and the pursuit of original solutions. Associated with determination on behalf of a cause, unconventional methods, and a certain cool detachment in action.</p></div>
+      <div class="term-card"><h3>What does Mars in Pisces mean?</h3><p>Mars in Pisces drives through imagination and compassion. Energy expresses indirectly — through creative work, spiritual practice, and service to others. Associated with fluid motivation, difficulty with direct confrontation, and a capacity for inspired action when connected to something larger than the self.</p></div>
+    </section>
+
+  </main>
+
+  <footer class="glossary-footer">
+    <p>Keys to the Stars · Astrology literacy for everyone</p>
+    <a href="/">← Open the app</a>
+    <br />
+    <a href="#top" class="back-to-top">↑ Back to top</a>
+  </footer>
+
+</body>
+</html>
