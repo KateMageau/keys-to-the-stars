@@ -1963,7 +1963,7 @@ export default function Skyward() {
                     </div>
                   );
                 })()}
-              </div>
+              </div>}
             </div>
           </section>
 
