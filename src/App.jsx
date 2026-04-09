@@ -822,7 +822,8 @@ function TransitRow({ t }) {
           {s2 && <><span className="in-word">in</span><span className={`tw ${words.has("s2")?"on":""}`} onClick={e=>tap(e,"s2")}>{s2.symbol} {s2.name}</span></>}
         </div>
         <div className="t-right">
-          <span className="dur-pill">{t.duration}</span>
+          <span className="dur-pill">{t.duration} aspect</span>
+          {t.signDuration && <span className="dur-pill" style={{background:"var(--bg-light)",color:"var(--text-light)"}}>{t.signDuration} in sign</span>}
           <span className="t-time">{t.time}</span>
         </div>
       </div>
@@ -938,11 +939,6 @@ export default function Skyward() {
       const sym  = dayData.moon.sign_symbol || "";
       events.push({ label: `Moon enters ${cap(sign)}`, symbol: `☽${sym}`, time: "", duration: "~2.5d", type: "moon" });
     }
-    // Key moon phase
-    if (dayData.moon?.is_key_phase && dayData.moon?.phase) {
-      const phase = MOON_PHASES[dayData.moon.phase];
-      if (phase) events.push({ label: phase.name, symbol: phase.emoji, time: "", duration: "Peak", type: "moon" });
-    }
     // Aspects
     if (dayData.aspects) {
       for (const a of dayData.aspects.slice(0, 4)) {
@@ -1028,28 +1024,40 @@ export default function Skyward() {
   const viewTransits = viewDayData?.aspects || [];
 
   // Split into short-term and long-term transits
-  // Long-term = both planets are outer (Jupiter, Saturn, Uranus, Neptune, Pluto)
-  // These aspects last weeks to months because both planets move slowly
+  // Short-term = aspects lasting ~hours to ~1 day (moon aspects, some inner planet)
+  // Long-term = aspects lasting more than 1 day
   const outerPlanets = ["jupiter","saturn","uranus","neptune","pluto"];
   const shortTermTransits = [];
   const longTermTransits  = [];
   viewTransits.forEach((a, i) => {
-    const bothOuter = outerPlanets.includes(a.planet1) && outerPlanets.includes(a.planet2);
     const involvesMoon = a.planet1 === "moon" || a.planet2 === "moon";
-    const duration = bothOuter ? "weeks–months"
+    const bothOuter = outerPlanets.includes(a.planet1) && outerPlanets.includes(a.planet2);
+    const innerToOuter = (outerPlanets.includes(a.planet1) || outerPlanets.includes(a.planet2)) && !bothOuter && !involvesMoon;
+
+    // Aspect duration (how long the exact aspect lasts)
+    const aspectDuration = bothOuter ? "weeks–months"
       : involvesMoon ? "hours"
-      : outerPlanets.includes(a.planet1) || outerPlanets.includes(a.planet2) ? "~1 week"
+      : innerToOuter ? "~1 week"
       : "2–5 days";
+
+    // Planet-in-sign duration (background context)
+    const signDuration = outerPlanets.includes(a.planet1)
+      ? a.planet1 === "jupiter" ? "~1 yr" : a.planet1 === "saturn" ? "~2.5 yrs" : "yrs"
+      : a.planet1 === "sun" ? "~1 mo" : a.planet1 === "moon" ? "~2.5 days" : "weeks";
+
     const t = {
       id: i + 1,
       planet: a.planet1, sign: a.sign1 || "aries",
       aspect: a.aspect,
       planet2: a.planet2, sign2: a.sign2 || "aries",
-      duration,
+      duration: aspectDuration,
+      signDuration,
       time: "",
     };
-    if (bothOuter) longTermTransits.push(t);
-    else shortTermTransits.push(t);
+
+    // Moon aspects and same-day aspects = short-term; anything > 1 day = long-term
+    if (involvesMoon) shortTermTransits.push(t);
+    else longTermTransits.push(t);
   });
 
   const [showLongTerm, setShowLongTerm] = useState(false);
@@ -1087,6 +1095,25 @@ export default function Skyward() {
       return;
     }
 
+    // Look up city coordinates via free geocoding API
+    let latitude = null, longitude = null, timezone = "America/Los_Angeles";
+    try {
+      const geo = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(birthData.place)}&format=json&limit=1`,
+        { headers: { "Accept-Language": "en" } }
+      );
+      const geoData = await geo.json();
+      if (geoData.length > 0) {
+        latitude  = parseFloat(geoData[0].lat);
+        longitude = parseFloat(geoData[0].lon);
+      }
+    } catch (e) {
+      console.warn("Geocoding failed, using default coords", e);
+    }
+
+    // Fall back to Seattle if geocoding fails
+    if (!latitude) { latitude = 47.6062; longitude = -122.3321; }
+
     try {
       const response = await fetch("https://astrologer.p.rapidapi.com/api/v5/chart-data/birth-chart", {
         method: "POST",
@@ -1103,9 +1130,11 @@ export default function Skyward() {
             day: dateParts.day,
             hour: timeParts.hour,
             minute: timeParts.minute,
+            latitude,
+            longitude,
+            timezone,
             city: birthData.place,
             nation: "US",
-            timezone: "America/Los_Angeles",
             houses_system_identifier: "W",
           }
         }),
