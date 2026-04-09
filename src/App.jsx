@@ -1295,63 +1295,90 @@ export default function Skyward() {
               </div>
             )}
 
-            {/* Moon in Sign */}
+            {/* Moon in Sign — same style as section header */}
             {(() => {
               const moonSign = viewDayData?.moon?.sign || (viewDay === 0 ? todayMoon?.sign : null);
               const moonPhase = viewDayData?.moon?.phase || (viewDay === 0 ? todayMoon?.phase : null);
               const moonSymbol = viewDayData?.moon?.sign_symbol || (viewDay === 0 ? todayMoon?.sign_symbol : null);
               if (!moonSign) return null;
               const moonMeaning = COMBINATIONS[`moon-${moonSign}`];
+              const phaseName = MOON_PHASES[moonPhase]?.name || cap(moonPhase?.replace(/_/g," ") || "");
               return (
-                <div style={{ background:"var(--bg-light)", borderRadius:8, padding:"0.6rem 0.85rem", marginBottom:"0.75rem", borderLeft:"3px solid var(--moon)" }}>
-                  <div style={{ fontSize:"0.68rem", color:"var(--text-mid)", fontWeight:600 }}>
-                    ☽ Moon in {cap(moonSign)} {moonSymbol} · {MOON_PHASES[moonPhase]?.name || cap(moonPhase?.replace(/_/g," "))}
+                <div style={{ marginBottom:"1rem" }}>
+                  <div className="sec-hdr" style={{ marginBottom:"0.35rem" }}>
+                    <span className="sec-title" style={{ fontSize:"1rem" }}>☽ Moon in {cap(moonSign)} {moonSymbol}</span>
+                    <span className="sec-meta">{phaseName}{todayMoon?.illumination ? ` · ${Math.round(todayMoon.illumination)}%` : ""}</span>
                   </div>
                   {moonMeaning && (
-                    <div style={{ fontSize:"0.72rem", color:"var(--text-light)", marginTop:"0.3rem", lineHeight:1.55 }}>
-                      {moonMeaning.slice(0, 180)}{moonMeaning.length > 180 ? "…" : ""}
+                    <div style={{ fontSize:"0.78rem", color:"var(--text-light)", lineHeight:1.6 }}>
+                      {moonMeaning.slice(0, 200)}{moonMeaning.length > 200 ? "…" : ""}
                     </div>
                   )}
                 </div>
               );
             })()}
 
-            {/* Short-term transits */}
-            {shortTermTransits.length > 0 && (
-              <>
-                <div style={{ fontSize:"0.58rem", letterSpacing:"0.16em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.5rem", marginTop:"0.25rem" }}>
-                  Short-term transits
-                </div>
-                {shortTermTransits.map(t => <TransitRow key={t.id} t={t} />)}
-              </>
-            )}
+            {/* Aspects */}
+            <div style={{ fontSize:"0.58rem", letterSpacing:"0.16em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.5rem" }}>
+              Aspects
+            </div>
+            {shortTermTransits.length > 0
+              ? shortTermTransits.map(t => <TransitRow key={t.id} t={t} />)
+              : !dataLoading && <div style={{ fontSize:"0.78rem", color:"var(--text-light)", fontStyle:"italic", marginBottom:"0.5rem" }}>No exact aspects today.</div>
+            }
 
             {/* Long-term transits */}
-            <>
-              <div style={{ fontSize:"0.58rem", letterSpacing:"0.16em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.5rem", marginTop:"0.85rem", display:"flex", alignItems:"center", gap:"0.75rem" }}>
-                Long-term transits
-                {longTermTransits.length > 0 && (
-                  <button className="see-more no-print" onClick={() => setShowLongTerm(v => !v)} style={{fontSize:"0.58rem"}}>
-                    {showLongTerm ? "Collapse ↑" : `Show ${longTermTransits.length} ↓`}
-                  </button>
-                )}
-              </div>
-              {longTermTransits.length === 0 && (
-                <div style={{ fontSize:"0.75rem", color:"var(--text-light)", fontStyle:"italic" }}>
-                  No major outer planet aspects today.
-                </div>
+            <div style={{ fontSize:"0.58rem", letterSpacing:"0.16em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.5rem", marginTop:"0.85rem", display:"flex", alignItems:"center", gap:"0.75rem" }}>
+              Long-term aspects
+              {longTermTransits.length > 0 && (
+                <button className="see-more no-print" onClick={() => setShowLongTerm(v => !v)} style={{fontSize:"0.58rem"}}>
+                  {showLongTerm ? "Collapse ↑" : `Show ${longTermTransits.length} ↓`}
+                </button>
               )}
-              {showLongTerm && longTermTransits.map(t => <TransitRow key={t.id} t={t} />)}
-            </>
+            </div>
+            {longTermTransits.length === 0
+              ? <div style={{ fontSize:"0.75rem", color:"var(--text-light)", fontStyle:"italic" }}>No major outer planet aspects active.</div>
+              : showLongTerm && longTermTransits.map(t => <TransitRow key={t.id} t={t} />)
+            }
+
+            {/* Planets in Signs */}
+            {(() => {
+              const pd = transitData?.[viewMonthKey]?.[viewDayNum]?.planets;
+              if (!pd) return null;
+              const planetDurations = {
+                sun:"~1 month", moon:"~2.5 days", mercury:"2–3 weeks",
+                venus:"3–4 weeks", mars:"~6 weeks", jupiter:"~1 year",
+                saturn:"~2.5 years", uranus:"~7 years", neptune:"~14 years", pluto:"~20 years"
+              };
+              return (
+                <div style={{ marginTop:"1rem" }}>
+                  <div style={{ fontSize:"0.58rem", letterSpacing:"0.16em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.5rem" }}>
+                    Planets in Signs
+                  </div>
+                  <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(160px, 1fr))", gap:"0.4rem" }}>
+                    {Object.entries(pd).map(([name, p]) => {
+                      if (!p?.sign) return null;
+                      const planet = PLANETS[name];
+                      const sign = SIGNS[p.sign];
+                      if (!planet || !sign) return null;
+                      return (
+                        <div key={name} style={{ background:"var(--bg-light)", borderRadius:6, padding:"0.4rem 0.6rem", fontSize:"0.72rem", color:"var(--text-mid)" }}>
+                          <span style={{ fontWeight:600 }}>{planet.symbol} {planet.name}</span>
+                          <span style={{ color:"var(--lav-deep)", margin:"0 0.3rem" }}>in</span>
+                          {sign.symbol} {sign.name}
+                          {p.retrograde && <span style={{ color:"var(--lav-deep)", marginLeft:"0.3rem", fontSize:"0.65rem" }}>℞</span>}
+                          <div style={{ fontSize:"0.62rem", color:"var(--text-light)", marginTop:"0.1rem" }}>{planetDurations[name]}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* Fallback to hardcoded if no live data */}
-            {!dataLoading && shortTermTransits.length === 0 && longTermTransits.length === 0 && (
-              <>
-                <div style={{ fontSize:"0.58rem", letterSpacing:"0.16em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.5rem" }}>
-                  Short-term transits
-                </div>
-                {activeTodayTransits.map(t => <TransitRow key={t.id} t={t} />)}
-              </>
+            {!dataLoading && shortTermTransits.length === 0 && longTermTransits.length === 0 && !transitData && (
+              activeTodayTransits.map(t => <TransitRow key={t.id} t={t} />)
             )}
 
             {viewDay === 0 && DAY_SUMMARIES[currentDay] && (
@@ -1366,28 +1393,62 @@ export default function Skyward() {
           <section className="sec">
             <div className="sec-hdr">
               <span className="sec-title">This Week</span>
-              <span className="sec-meta">Apr 2 – 7</span>
+              <span className="sec-meta">Aspects & sign changes · collapse days with no activity</span>
               <button className="see-more no-print" onClick={() => setShowWeek(v => !v)}>
                 {showWeek ? "Collapse ↑" : "See more ↓"}
               </button>
             </div>
             {!showWeek && (
               <div style={{ color:"var(--text-light)", fontSize:"0.83rem", fontStyle:"italic" }}>
-                6 upcoming transits — click "See more" to expand.
+                Click to see this week's aspects and planet sign changes.
               </div>
             )}
-            {showWeek && WEEK_TRANSITS.map(t => (
-              <div key={t.id}>
-                <div className="week-date-lbl">{t.date}</div>
-                <TransitRow t={t} />
-              </div>
-            ))}
-            {showWeek && (
-              <div className="summary-block">
-                <div className="summary-label">Overall energy · Apr 2 – 7</div>
-                <div className="summary-text">{WEEK_SUMMARY}</div>
-              </div>
-            )}
+            {showWeek && (() => {
+              const weekDays = [];
+              for (let i = 1; i <= 7; i++) {
+                const d = new Date(today);
+                d.setDate(today.getDate() + i);
+                const dNum = d.getDate();
+                const mKey = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
+                const dayData = transitData?.[mKey]?.[dNum];
+                if (!dayData) return null;
+                // Only show days with aspects or moon ingress
+                const hasAspects = dayData.aspects?.length > 0;
+                const hasIngress = dayData.moon?.ingress;
+                if (!hasAspects && !hasIngress) return null;
+                weekDays.push({ d, dNum, mKey, dayData });
+              }
+              if (weekDays.length === 0) return (
+                <div style={{ color:"var(--text-light)", fontSize:"0.83rem", fontStyle:"italic" }}>No notable aspects this week.</div>
+              );
+              return weekDays.map(({ d, dNum, dayData }) => {
+                const dName = DAY_NAMES_FULL[d.getDay()];
+                const mName = MONTH_NAMES_FULL[d.getMonth()];
+                return (
+                  <div key={dNum} style={{ marginBottom:"0.75rem" }}>
+                    <div className="week-date-lbl">{dName}, {mName} {dNum}</div>
+                    {dayData.moon?.ingress && (
+                      <div style={{ fontSize:"0.75rem", color:"var(--text-mid)", marginBottom:"0.25rem", fontStyle:"italic" }}>
+                        ☽ Moon enters {cap(dayData.moon.ingress)} {dayData.moon.sign_symbol || ""}
+                      </div>
+                    )}
+                    {dayData.aspects?.filter(a => {
+                      const both = ["jupiter","saturn","uranus","neptune","pluto"];
+                      return !(both.includes(a.planet1) && both.includes(a.planet2));
+                    }).slice(0,3).map((a, i) => (
+                      <TransitRow key={i} t={{
+                        id: i,
+                        planet: a.planet1, sign: a.sign1 || "aries",
+                        aspect: a.aspect,
+                        planet2: a.planet2, sign2: a.sign2 || "aries",
+                        duration: a.planet1 === "moon" || a.planet2 === "moon" ? "hours" : "2–5 days",
+                        time: "",
+                      }} />
+                    ))}
+                  </div>
+                );
+              });
+            })()}
           </section>
 
           {/* CALENDAR */}
@@ -1542,8 +1603,8 @@ export default function Skyward() {
                 <label className="b-lbl">Birth Place</label>
                 <input className="b-input" placeholder="e.g. Austin, Texas"
                   value={birthData.place} onChange={e => updateBirthData({...birthData, place: e.target.value})} />
-                <div style={{ fontSize:"0.65rem", color:"var(--text-light)", fontStyle:"italic", marginTop:"0.5rem", lineHeight:1.55 }}>
-                  🔒 Your birth data is saved only in your browser. It never leaves your device.
+                <div style={{ fontSize:"0.78rem", color:"var(--text-light)", marginTop:"0.6rem", lineHeight:1.6 }}>
+                  Your birth data is saved in this browser so it will be here when you come back. It stays on this device only — it won't appear if you open the site in a different browser, private window, or on another device.
                 </div>
                 <button className="b-btn" onClick={fetchBirthChart} disabled={chartLoading}>
                   {chartLoading ? "Loading your chart..." : "Show my houses →"}
