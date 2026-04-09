@@ -845,6 +845,81 @@ function TransitRow({ t }) {
   );
 }
 
+// ─── ASPECT CARD — sky-card tile with tappable words ─────────────────────────
+function AspectCard({ a, pill, durLabel }) {
+  const [words, setWords] = useState(new Set());
+  const [defsOpen, setDefsOpen] = useState(false);
+
+  const p1  = PLANETS[a.planet1];
+  const p2  = PLANETS[a.planet2];
+  const asp = ASPECTS[a.aspect];
+  const s1  = SIGNS[a.sign1];
+  const s2  = a.sign2 ? SIGNS[a.sign2] : null;
+
+  if (!p1 || !p2 || !asp) return null;
+
+  const tap = (e, w) => {
+    e.stopPropagation();
+    setWords(prev => { const n = new Set(prev); n.has(w) ? n.delete(w) : n.add(w); return n; });
+    setDefsOpen(true);
+  };
+
+  const defs = [];
+  if (words.has("p1")) defs.push({ key:"p1", lbl:"Planet", ttl:`${p1.symbol} ${p1.name}`, body: p1.meaning });
+  if (words.has("s1") && s1) defs.push({ key:"s1", lbl:"Sign", ttl:`${s1.symbol} ${s1.name} · ${s1.element} · ${s1.modality}`, body: s1.meaning });
+  if (words.has("asp")) defs.push({ key:"asp", lbl:"Aspect", ttl:`${asp.symbol} ${asp.name} ${asp.degrees}`, body: asp.meaning });
+  if (words.has("p2")) defs.push({ key:"p2", lbl:"Planet", ttl:`${p2.symbol} ${p2.name}`, body: p2.meaning });
+  if (words.has("s2") && s2) defs.push({ key:"s2", lbl:"Sign", ttl:`${s2.symbol} ${s2.name} · ${s2.element} · ${s2.modality}`, body: s2.meaning });
+
+  const comboKey1 = `${a.planet1}-${a.sign1}`;
+  const comboKey2 = a.planet2 && a.sign2 ? `${a.planet2}-${a.sign2}` : null;
+  const combo = (words.has("p1") && words.has("s1") && COMBINATIONS[comboKey1])
+    ? { label: `${p1.name} in ${s1?.name}`, text: COMBINATIONS[comboKey1] }
+    : (words.has("p2") && words.has("s2") && comboKey2 && COMBINATIONS[comboKey2])
+    ? { label: `${p2.name} in ${s2?.name}`, text: COMBINATIONS[comboKey2] }
+    : null;
+
+  const anyWords = words.size > 0;
+
+  return (
+    <div className="sky-card">
+      <div className="sky-card-top">
+        <div className="t-phrase" style={{ flex:1 }}>
+          <span className={`tw tw-p ${words.has("p1")?"on":""}`} onClick={e=>tap(e,"p1")}>{p1.symbol} {p1.name}</span>
+          {s1 && <><span className="in-word">in</span><span className={`tw ${words.has("s1")?"on":""}`} onClick={e=>tap(e,"s1")}>{s1.symbol} {s1.name}</span></>}
+          <span className={`tw tw-a ${words.has("asp")?"on":""}`} onClick={e=>tap(e,"asp")}>{asp.symbol} {asp.name}</span>
+          <span className={`tw tw-p ${words.has("p2")?"on":""}`} onClick={e=>tap(e,"p2")}>{p2.symbol} {p2.name}</span>
+          {s2 && <><span className="in-word">in</span><span className={`tw ${words.has("s2")?"on":""}`} onClick={e=>tap(e,"s2")}>{s2.symbol} {s2.name}</span></>}
+        </div>
+        {pill && <span className="sky-card-pill">{pill}</span>}
+      </div>
+      {durLabel && <div className="sky-card-sub">{durLabel} · tap any word to learn more</div>}
+      {defsOpen && anyWords && (
+        <div className="defs-panel" style={{ marginTop:"0.5rem" }}>
+          <div className="defs-top">
+            <button className="collapse-btn" onClick={() => { setDefsOpen(false); setWords(new Set()); }}>↑ Collapse</button>
+          </div>
+          <div className="defs-grid">
+            {defs.map(d => (
+              <div className="def" key={d.key}>
+                <div className="def-lbl">{d.lbl}</div>
+                <div className="def-ttl">{d.ttl}</div>
+                <div className="def-body">{d.body}</div>
+              </div>
+            ))}
+            {combo && (
+              <div className="def-combo">
+                <div className="def-lbl">{combo.label}</div>
+                <div className="def-body">{combo.text}</div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── EXPANDABLE HOUSE CARD ───────────────────────────────────────────────────
 function ExpandableHouseCard({ planetData, tp, house, comboMeaning, cap }) {
   const [open, setOpen] = useState(false);
@@ -1026,12 +1101,37 @@ export default function Skyward() {
 
   if (transitData && transitData[monthKey]) {
     const monthData = transitData[monthKey];
-    // Track which phases we've already shown to only mark first occurrence
     const seenPhases = new Set();
+    const prevPlanetSigns = {}; // track previous day's signs to detect ingresses
+
     for (let d = 1; d <= daysInCurrentMonth; d++) {
       const dayData = monthData[d];
       if (dayData && !dayData.error) {
-        liveCalendarEvents[d] = buildCalendarEvents(dayData);
+        const events = buildCalendarEvents(dayData);
+
+        // Detect planet sign changes (non-moon)
+        if (dayData.planets) {
+          for (const [pname, pdata] of Object.entries(dayData.planets)) {
+            if (pname === "moon" || !pdata?.sign) continue;
+            if (prevPlanetSigns[pname] && prevPlanetSigns[pname] !== pdata.sign) {
+              const planet = PLANETS[pname];
+              const sign   = SIGNS[pdata.sign];
+              if (planet && sign) {
+                events.push({
+                  label:    `${planet.name} enters ${sign.name}`,
+                  symbol:   `${planet.symbol}→${sign.symbol}`,
+                  time:     "",
+                  duration: "",
+                  type:     "moon", // use moon style (teal) for sign changes
+                });
+              }
+            }
+            prevPlanetSigns[pname] = pdata.sign;
+          }
+        }
+
+        liveCalendarEvents[d] = events;
+
         if (dayData.moon?.phase) {
           const phase = dayData.moon.phase;
           const keyPhases = ["new","first_quarter","full","last_quarter"];
@@ -1075,7 +1175,6 @@ export default function Skyward() {
   const viewDayData = transitData?.[viewMonthKey]?.[viewDayNum] || null;
   const outerPlanets = ["jupiter","saturn","uranus","neptune","pluto"];
 
-  const [showLongTerm, setShowLongTerm] = useState(false);
   const [chartError, setChartError] = useState(null);
 
   // Parse birth date string into parts
@@ -1340,63 +1439,35 @@ export default function Skyward() {
                           <span className="sky-card-title">{planet.symbol} {planet.name} enters {sign.symbol} {sign.name}</span>
                           {pill && <span className="sky-card-pill">{pill}</span>}
                         </div>
-                        <div className="sky-card-sub">Sign change today</div>
+                        <div className="sky-card-sub">Planet sign change today</div>
                       </div>
                     );
                   })}
 
-                  {/* Aspects — short term first, then long term collapsed */}
-                  {allAspects.filter(a => a.planet1 === "moon" || a.planet2 === "moon").map((a, i) => {
-                    const p1 = PLANETS[a.planet1], p2 = PLANETS[a.planet2];
-                    const asp = ASPECTS[a.aspect];
-                    const s1 = SIGNS[a.sign1], s2 = SIGNS[a.sign2];
-                    if (!p1 || !p2 || !asp) return null;
-                    const key = `${a.planet1}-${a.aspect}-${a.planet2}`;
+                  {/* Moon aspects — show just the date */}
+                  {allAspects.filter(a => a.planet1 === "moon" || a.planet2 === "moon").map((a, i) => (
+                    <AspectCard
+                      key={`moon-asp-${i}`}
+                      a={a}
+                      pill={fmtDate(viewYear, viewMonthNum, viewDayNum)}
+                      durLabel="hours"
+                    />
+                  ))}
+
+                  {/* Non-moon aspects — show date range from lookup */}
+                  {allAspects.filter(a => a.planet1 !== "moon" && a.planet2 !== "moon").map((a, i) => {
+                    const key  = `${a.planet1}-${a.aspect}-${a.planet2}`;
                     const pill = dateRangePill(key, aspectRanges);
+                    const bothOuter = outerPlanets.includes(a.planet1) && outerPlanets.includes(a.planet2);
                     return (
-                      <div key={`short-${i}`} className="sky-card">
-                        <div className="sky-card-top">
-                          <span className="sky-card-title">{p1.symbol} {p1.name}{s1 ? ` in ${s1.symbol} ${s1.name}` : ""} {asp.symbol} {asp.name} {p2.symbol} {p2.name}{s2 ? ` in ${s2.symbol} ${s2.name}` : ""}</span>
-                          {pill && <span className="sky-card-pill">{pill}</span>}
-                        </div>
-                        <div className="sky-card-sub">~hours · tap words above to learn more</div>
-                      </div>
+                      <AspectCard
+                        key={`asp-${i}`}
+                        a={a}
+                        pill={pill}
+                        durLabel={bothOuter ? "weeks–months" : "days"}
+                      />
                     );
                   })}
-
-                  {(() => {
-                    const nonMoon = allAspects.filter(a => a.planet1 !== "moon" && a.planet2 !== "moon");
-                    if (nonMoon.length === 0) return null;
-                    return (
-                      <>
-                        <div style={{ fontSize:"0.58rem", letterSpacing:"0.14em", textTransform:"uppercase", color:"var(--lav-deep)", marginTop:"0.6rem", marginBottom:"0.4rem", display:"flex", alignItems:"center", gap:"0.6rem" }}>
-                          Longer aspects
-                          <button className="see-more no-print" onClick={() => setShowLongTerm(v => !v)} style={{fontSize:"0.58rem"}}>
-                            {showLongTerm ? "Collapse ↑" : `Show ${nonMoon.length} ↓`}
-                          </button>
-                        </div>
-                        {showLongTerm && nonMoon.map((a, i) => {
-                          const p1 = PLANETS[a.planet1], p2 = PLANETS[a.planet2];
-                          const asp = ASPECTS[a.aspect];
-                          const s1 = SIGNS[a.sign1], s2 = SIGNS[a.sign2];
-                          if (!p1 || !p2 || !asp) return null;
-                          const key = `${a.planet1}-${a.aspect}-${a.planet2}`;
-                          const pill = dateRangePill(key, aspectRanges);
-                          const bothOuter = outerPlanets.includes(a.planet1) && outerPlanets.includes(a.planet2);
-                          const dur = bothOuter ? "weeks–months" : "days";
-                          return (
-                            <div key={`long-${i}`} className="sky-card">
-                              <div className="sky-card-top">
-                                <span className="sky-card-title">{p1.symbol} {p1.name}{s1 ? ` in ${s1.symbol} ${s1.name}` : ""} {asp.symbol} {asp.name} {p2.symbol} {p2.name}{s2 ? ` in ${s2.symbol} ${s2.name}` : ""}</span>
-                                {pill && <span className="sky-card-pill">{pill}</span>}
-                              </div>
-                              <div className="sky-card-sub">{dur} · tap words above to learn more</div>
-                            </div>
-                          );
-                        })}
-                      </>
-                    );
-                  })()}
                 </>
               );
             })()}
@@ -1406,28 +1477,30 @@ export default function Skyward() {
               const pd = viewDayData?.planets;
               if (!pd) return null;
               const planetOrder = ["sun","moon","mercury","venus","mars","jupiter","saturn","uranus","neptune","pluto"];
+              const cards = planetOrder.map(name => {
+                const p = pd[name];
+                if (!p?.sign) return null;
+                const planet = PLANETS[name];
+                const sign   = SIGNS[p.sign];
+                if (!planet || !sign) return null;
+                const rangeKey = `${name}-${p.sign}`;
+                const pill = dateRangePill(rangeKey, planetSignRanges);
+                return (
+                  <div key={name} className="sky-card">
+                    <div className="sky-card-top">
+                      <span className="sky-card-title">{planet.symbol} {planet.name} in {sign.symbol} {sign.name}{p.retrograde ? " ℞" : ""}</span>
+                      {pill && <span className="sky-card-pill">{pill}</span>}
+                    </div>
+                  </div>
+                );
+              }).filter(Boolean);
+              if (cards.length === 0) return null;
               return (
                 <>
                   <div className="sky-section-label" style={{ marginTop:"0.85rem" }}>Planets in Signs</div>
-                  {planetOrder.map(name => {
-                    const p = pd[name];
-                    if (!p?.sign) return null;
-                    const planet = PLANETS[name];
-                    const sign   = SIGNS[p.sign];
-                    if (!planet || !sign) return null;
-                    const rangeKey = `${name}-${p.sign}`;
-                    const pill = dateRangePill(rangeKey, planetSignRanges);
-                    const combo = COMBINATIONS[`${name}-${p.sign}`];
-                    return (
-                      <div key={name} className="sky-card">
-                        <div className="sky-card-top">
-                          <span className="sky-card-title">{planet.symbol} {planet.name} in {sign.symbol} {sign.name}{p.retrograde ? " ℞" : ""}</span>
-                          {pill && <span className="sky-card-pill">{pill}</span>}
-                        </div>
-                        {combo && <div className="sky-card-body">{combo.slice(0,160)}{combo.length > 160 ? "…" : ""}</div>}
-                      </div>
-                    );
-                  })}
+                  <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.4rem" }}>
+                    {cards}
+                  </div>
                 </>
               );
             })()}
@@ -1478,10 +1551,7 @@ export default function Skyward() {
 
                 // Moon ingress
                 const moonIngress = dayData.moon?.ingress;
-                const nonMoonAspects = (dayData.aspects || []).filter(a => a.planet1 !== "moon" && a.planet2 !== "moon").slice(0,2);
-                const moonAspects    = (dayData.aspects || []).filter(a => a.planet1 === "moon" || a.planet2 === "moon").slice(0,2);
-
-                const hasAnything = moonIngress || dayIngresses.length > 0 || nonMoonAspects.length > 0 || moonAspects.length > 0;
+                const hasAnything = moonIngress || dayIngresses.length > 0;
                 if (!hasAnything) continue;
 
                 const dName = DAY_NAMES_FULL[d.getDay()];
@@ -1522,30 +1592,11 @@ export default function Skyward() {
                         </div>
                       );
                     })}
-
-                    {[...moonAspects, ...nonMoonAspects].map((a, ai) => {
-                      const p1  = PLANETS[a.planet1], p2 = PLANETS[a.planet2];
-                      const asp = ASPECTS[a.aspect];
-                      const s1  = SIGNS[a.sign1], s2 = SIGNS[a.sign2];
-                      if (!p1 || !p2 || !asp) return null;
-                      const key  = `${a.planet1}-${a.aspect}-${a.planet2}`;
-                      const pill = dateRangePill(key, aspectRanges);
-                      const dur  = a.planet1 === "moon" || a.planet2 === "moon" ? "hours" : "days";
-                      return (
-                        <div key={`asp-${ai}`} className="sky-card">
-                          <div className="sky-card-top">
-                            <span className="sky-card-title">{p1.symbol} {p1.name}{s1 ? ` in ${s1.symbol} ${s1.name}` : ""} {asp.symbol} {asp.name} {p2.symbol} {p2.name}{s2 ? ` in ${s2.symbol} ${s2.name}` : ""}</span>
-                            {pill && <span className="sky-card-pill">{pill}</span>}
-                          </div>
-                          <div className="sky-card-sub">{dur}</div>
-                        </div>
-                      );
-                    })}
                   </div>
                 );
               }
               return weekItems.length > 0 ? weekItems : (
-                <div style={{ color:"var(--text-light)", fontSize:"0.83rem", fontStyle:"italic" }}>No notable aspects this week.</div>
+                <div style={{ color:"var(--text-light)", fontSize:"0.83rem", fontStyle:"italic" }}>No planet sign changes this week.</div>
               );
             })()}
           </section>
