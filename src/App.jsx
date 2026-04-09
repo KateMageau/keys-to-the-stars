@@ -856,6 +856,36 @@ function TransitRow({ t }) {
   );
 }
 
+// ─── EXPANDABLE HOUSE CARD ───────────────────────────────────────────────────
+function ExpandableHouseCard({ planetData, tp, house, comboMeaning, cap }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="house-card" onClick={() => setOpen(v => !v)} style={{ cursor:"pointer" }}>
+      <div className="hc-top" style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+        <span>{planetData?.symbol} {tp.name} in {cap(tp.sign)} — {house.name}</span>
+        <span style={{ fontSize:"0.65rem", color:"var(--lav-deep)" }}>{open ? "▲" : "▼"}</span>
+      </div>
+      <div className="hc-body">{house.meaning}</div>
+      {open && (
+        <div style={{ marginTop:"0.65rem", borderTop:"1px solid var(--bg-mid)", paddingTop:"0.65rem" }}>
+          {comboMeaning ? (
+            <>
+              <div style={{ fontSize:"0.6rem", letterSpacing:"0.14em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.3rem" }}>
+                {tp.name} in {cap(tp.sign)}
+              </div>
+              <div style={{ fontSize:"0.78rem", lineHeight:1.7, color:"var(--text-mid)" }}>{comboMeaning}</div>
+            </>
+          ) : (
+            <div style={{ fontSize:"0.78rem", color:"var(--text-light)", fontStyle:"italic" }}>
+              Tap the planet or sign name in Today's Sky to learn more about {tp.name} in {cap(tp.sign)}.
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── PHASE CARD COMPONENT ────────────────────────────────────────────────────
 function PhaseCard({ phaseKey }) {
   const [open, setOpen] = useState(false);
@@ -1106,6 +1136,14 @@ export default function Skyward() {
       if (geoData.length > 0) {
         latitude  = parseFloat(geoData[0].lat);
         longitude = parseFloat(geoData[0].lon);
+        // Look up timezone from coordinates
+        try {
+          const tzRes = await fetch(`https://timeapi.io/api/timezone/coordinate?latitude=${latitude}&longitude=${longitude}`);
+          const tzData = await tzRes.json();
+          if (tzData.timeZone) timezone = tzData.timeZone;
+        } catch (tzErr) {
+          console.warn("Timezone lookup failed, using default", tzErr);
+        }
       }
     } catch (e) {
       console.warn("Geocoding failed, using default coords", e);
@@ -1199,7 +1237,7 @@ export default function Skyward() {
               <div className="logo-sub">Astrology literacy · Whole sign houses · PST</div>
             </div>
             <div className="hdr-right">
-              <div>Wednesday, April 1, 2026</div>
+              <div>{today.toLocaleDateString("en-US", { weekday:"long", year:"numeric", month:"long", day:"numeric" })}</div>
               <button className="print-btn no-print" onClick={() => window.print()}>⎙ Print Calendar</button>
             </div>
           </header>
@@ -1256,6 +1294,27 @@ export default function Skyward() {
                 Loading sky data...
               </div>
             )}
+
+            {/* Moon in Sign */}
+            {(() => {
+              const moonSign = viewDayData?.moon?.sign || (viewDay === 0 ? todayMoon?.sign : null);
+              const moonPhase = viewDayData?.moon?.phase || (viewDay === 0 ? todayMoon?.phase : null);
+              const moonSymbol = viewDayData?.moon?.sign_symbol || (viewDay === 0 ? todayMoon?.sign_symbol : null);
+              if (!moonSign) return null;
+              const moonMeaning = COMBINATIONS[`moon-${moonSign}`];
+              return (
+                <div style={{ background:"var(--bg-light)", borderRadius:8, padding:"0.6rem 0.85rem", marginBottom:"0.75rem", borderLeft:"3px solid var(--moon)" }}>
+                  <div style={{ fontSize:"0.68rem", color:"var(--text-mid)", fontWeight:600 }}>
+                    ☽ Moon in {cap(moonSign)} {moonSymbol} · {MOON_PHASES[moonPhase]?.name || cap(moonPhase?.replace(/_/g," "))}
+                  </div>
+                  {moonMeaning && (
+                    <div style={{ fontSize:"0.72rem", color:"var(--text-light)", marginTop:"0.3rem", lineHeight:1.55 }}>
+                      {moonMeaning.slice(0, 180)}{moonMeaning.length > 180 ? "…" : ""}
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
 
             {/* Short-term transits */}
             {shortTermTransits.length > 0 && (
@@ -1397,7 +1456,7 @@ export default function Skyward() {
                         new:           { emoji: "🌑", label: "New Moon" },
                         first_quarter: { emoji: "🌓", label: "1st Quarter" },
                         full:          { emoji: "🌕", label: "Full Moon" },
-                        last_quarter:  { emoji: "🌗", label: "3rd Quarter" },
+                        last_quarter:  { emoji: "🌗", label: "Last Quarter" },
                       };
                       const p = phaseDisplay[activeDayPhase[d]];
                       if (!p) return null;
@@ -1540,20 +1599,24 @@ export default function Skyward() {
                   return (
                     <div className="house-results">
                       <div className="house-intro">
-                        Your rising sign is <strong style={{color:"var(--text-mid)",fontStyle:"normal"}}>{risingDisplay}</strong>. Using whole sign houses, today's transiting planets fall in these areas of your life.
+                        Your rising sign is <strong style={{color:"var(--text-mid)",fontStyle:"normal"}}>{risingDisplay}</strong>. Using whole sign houses, today's transiting planets fall in these areas of your life. Tap any card to learn more.
                       </div>
                       {transitPlanets.map((tp, i) => {
                         const houseNum = getHouseFromSign(tp.sign, ascSign);
                         const house = houseNum ? HOUSES[houseNum] : null;
                         if (!house) return null;
                         const planetData = PLANETS[tp.name.toLowerCase()];
+                        const comboKey = `${tp.name.toLowerCase()}-${tp.sign}`;
+                        const comboMeaning = COMBINATIONS[comboKey];
                         return (
-                          <div key={i} className="house-card">
-                            <div className="hc-top">
-                              {planetData?.symbol} {tp.name} in {cap(tp.sign)} — transiting your {house.name}
-                            </div>
-                            <div className="hc-body">{house.meaning}</div>
-                          </div>
+                          <ExpandableHouseCard
+                            key={i}
+                            planetData={planetData}
+                            tp={tp}
+                            house={house}
+                            comboMeaning={comboMeaning}
+                            cap={cap}
+                          />
                         );
                       })}
                       <div style={{marginTop:"0.75rem",fontSize:"0.7rem",color:"var(--text-light)",fontStyle:"italic"}}>
