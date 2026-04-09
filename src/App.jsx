@@ -1136,8 +1136,16 @@ function ExpandableMoonMeaning({ text }) {
 }
 
 // ─── VOID OF COURSE NOTE ─────────────────────────────────────────────────────
-function VoidOfCourseNote() {
+function VoidOfCourseNote({ voidInfo, ingressTime, ingressSign, cap: capFn }) {
   const [open, setOpen] = useState(false);
+
+  let rest = " before it enters a new sign — a quiet in-between period.";
+  if (voidInfo && voidInfo.start && voidInfo.end && voidInfo.start !== "Earlier") {
+    rest = ` from ~${voidInfo.start} until ~${voidInfo.end} PST — a quiet in-between period.`;
+  } else if (ingressTime && ingressSign) {
+    rest = ` until ~${ingressTime} PST when it enters ${capFn ? capFn(ingressSign) : ingressSign} — a quiet in-between period.`;
+  }
+
   return (
     <div className="sky-card" style={{ borderLeft:"3px solid var(--moon)", marginTop:"0.2rem" }}>
       <div className="sky-card-top">
@@ -1147,13 +1155,13 @@ function VoidOfCourseNote() {
             onClick={() => setOpen(v => !v)}
             style={{ textDecoration:"underline", cursor:"pointer", color:"#1a4050", fontWeight:500 }}
           >void of course</span>
-          {" "}before it enters a new sign — a quiet in-between period.
+          {rest}
         </span>
         <span onClick={() => setOpen(v => !v)} style={{ cursor:"pointer", fontSize:"0.875rem", color:"#555", flexShrink:0 }}>{open ? "▲" : "▼"}</span>
       </div>
       {open && (
         <div style={{ marginTop:"0.5rem", borderTop:"1px solid var(--bg-mid)", paddingTop:"0.5rem" }}>
-          <div style={{ fontSize:"0.875rem", letterSpacing:"0.14em", fontWeight:600, color:"#444", marginBottom:"0.3rem" }}>Void of Course</div>
+          <div style={{ fontSize:"0.875rem", fontWeight:600, color:"#444", marginBottom:"0.3rem" }}>Void of Course</div>
           <div style={{ fontSize:"0.875rem", lineHeight:1.65, color:"#222" }}>
             After the moon makes its last major aspect in a sign and before it enters the next sign, it is considered void of course. Traditionally this is a time when actions started are less likely to come to fruition — better for rest, reflection, and completion than for launching new things. The void period can last minutes or many hours.
           </div>
@@ -1273,6 +1281,7 @@ export default function Skyward() {
 
   const [transitData, setTransitData] = useState(null);
   const [dataLoading, setDataLoading] = useState(true);
+  const [detailedData, setDetailedData] = useState(null); // current month 3-hour data
   const [aspectRanges, setAspectRanges] = useState({}); // aspect key → {start, end}
   const [planetSignRanges, setPlanetSignRanges] = useState({}); // "planet-sign" → {start, end}
 
@@ -1280,6 +1289,7 @@ export default function Skyward() {
 
   const fmtDate = (year, month, day) => `${MONTH_ABBR[month-1]} ${day}`;
 
+  // Fetch annual transit data
   useEffect(() => {
     fetch(`/transits-${currentYear}.json`)
       .then(r => {
@@ -1324,6 +1334,21 @@ export default function Skyward() {
       })
       .catch(err => { console.error("Transit data fetch failed:", err.message); setDataLoading(false); });
   }, [currentYear]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Fetch detailed monthly data (3-hour intervals) — silent fail if not yet generated
+  useEffect(() => {
+    const monthStr = String(currentMonth).padStart(2, "0");
+    fetch(`/transits-${currentYear}-${monthStr}-detailed.json`)
+      .then(r => { if (!r.ok) throw new Error("not found"); return r.json(); })
+      .then(json => { setDetailedData(json); console.log("✓ Detailed monthly data loaded"); })
+      .catch(() => { /* file not generated yet — silent fail, app uses annual data */ });
+  }, [currentYear, currentMonth]);
+
+  // Helper: get the best available day data (detailed takes priority for current month)
+  const getDetailedDay = (dayNum) => {
+    if (!detailedData) return null;
+    return detailedData.days?.[dayNum] || null;
+  };
 
   // Convert JSON day data → calendar event rows
   const buildCalendarEvents = (dayData) => {
@@ -1441,6 +1466,16 @@ export default function Skyward() {
   const viewDayName = DAY_NAMES_FULL[viewDate.getDay()];
 
   const viewDayData = transitData?.[viewMonthKey]?.[viewDayNum] || null;
+
+  // For the current month, overlay detailed data when available
+  const isCurrentMonth = viewMonthNum === currentMonth && viewYear === currentYear;
+  const detailedDayData = isCurrentMonth ? getDetailedDay(viewDayNum) : null;
+
+  // Merge: detailed data provides accurate moon ingress times and void of course
+  // Annual data provides the base aspects and planet signs
+  const voidOfCourseInfo = detailedDayData?.void_of_course || null;
+  const moonIngressTime  = detailedDayData?.moon?.ingress_time || null;
+  const planetSignChangeTimes = detailedDayData?.planet_sign_changes || null;
 
   const [showLongTerm, setShowLongTerm] = useState(false);
   const [chartError, setChartError] = useState(null);
@@ -1712,7 +1747,7 @@ export default function Skyward() {
                     {moonMeaning && <ExpandableMoonMeaning text={moonMeaning} />}
                   </div>
                   {isMoonIngress && (
-                    <VoidOfCourseNote />
+                    <VoidOfCourseNote voidInfo={voidOfCourseInfo} ingressTime={moonIngressTime} ingressSign={viewDayData?.moon?.ingress} cap={cap} />
                   )}
                 </>
               );
