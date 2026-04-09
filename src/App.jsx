@@ -448,7 +448,7 @@ const STARS = Array.from({ length: 90 }, (_, i) => ({
 
 // ─── CSS ─────────────────────────────────────────────────────────────────────
 const css = `
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Lato:wght@300;400&family=Montserrat:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Poppins:wght@300;400;500;600&display=swap');
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --lav: #c5b8d8; --lav-mid: #b0a0cc; --lav-deep: #9d8fc0;
@@ -458,7 +458,7 @@ const css = `
   --gold: #c9a84c; --gold-lt: #e8cc7a; --white: #ffffff;
   --moon: #7ab8c4; --void: #c4957a;
 }
-body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk-mid); color: var(--text); min-height: 100vh; }
+body { font-family: 'Poppins', sans-serif; font-weight: 400; background: var(--dusk-mid); color: #111; min-height: 100vh; }
 .shell { position: relative; min-height: 100vh; padding: 16px; }
 .nebula { position: fixed; inset: 0; pointer-events: none; z-index: 0;
   background:
@@ -480,16 +480,16 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
   display: flex; justify-content: space-between; align-items: flex-end; }
 .logo { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 400; color: var(--lav); letter-spacing: 0.05em; }
 .logo em { color: var(--gold-lt); font-style: italic; }
-.logo-sub { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(197,184,216,0.45); margin-top: 0.25rem; }
-.hdr-right { text-align: right; color: rgba(197,184,216,0.55); font-size: 0.78rem; letter-spacing: 0.04em; line-height: 1.9; }
+.logo-sub { font-size: 0.875rem; letter-spacing: 0.2em; font-weight: 600; color: rgba(197,184,216,0.45); margin-top: 0.25rem; }
+.hdr-right { text-align: right; color: rgba(197,184,216,0.55); font-size: 0.875rem; letter-spacing: 0.04em; line-height: 1.9; }
 .print-btn { background: none; border: 1px solid rgba(197,184,216,0.3); border-radius: 5px;
-  padding: 0.3rem 0.8rem; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.3rem 0.8rem; font-size: 0.875rem; letter-spacing: 0.1em; font-weight: 600;
   color: rgba(197,184,216,0.55); cursor: pointer; transition: all 0.15s; margin-top: 0.3rem; }
 .print-btn:hover { background: rgba(197,184,216,0.12); color: var(--lav); }
 
 /* Moon bar */
 .moon-bar { background: var(--dusk); padding: 0.65rem 2.5rem; display: flex; gap: 2rem; flex-wrap: wrap;
-  font-size: 0.68rem; letter-spacing: 0.07em; color: rgba(197,184,216,0.45); border-bottom: 1px solid rgba(197,184,216,0.1); }
+  font-size: 0.875rem; letter-spacing: 0.07em; color: rgba(197,184,216,0.45); border-bottom: 1px solid rgba(197,184,216,0.1); }
 .moon-bar span { color: var(--lav); margin-left: 0.35rem; }
 
 /* Sections */
@@ -497,10 +497,10 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 .sec:last-child { border-bottom: none; }
 .sec-hdr { display: flex; align-items: baseline; gap: 0.85rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
 .sec-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 500; color: #222; }
-.sec-meta { font-size: 0.67rem; letter-spacing: 0.12em; text-transform: uppercase; color: #333; }
+.sec-meta { font-size: 0.875rem; letter-spacing: 0.12em; font-weight: 600; color: #333; }
 .see-more { background: none; border: 1px solid var(--lav-mid); border-radius: 5px;
-  padding: 0.3rem 0.9rem; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--lav-deep); cursor: pointer; transition: all 0.15s; margin-left: auto; }
+  padding: 0.3rem 0.9rem; font-size: 0.875rem; letter-spacing: 0.1em; font-weight: 600;
+  color: #333; cursor: pointer; transition: all 0.15s; margin-left: auto; }
 .see-more:hover { background: var(--lav-deep); color: white; }
 
 /* Transit rows */
@@ -509,28 +509,28 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 .t-main { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 1rem;
   padding: 0.9rem 1.2rem; cursor: pointer; background: white; }
 .t-phrase { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem;
-  font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--text); }
+  font-family: 'Playfair Display', serif; font-size: 1rem; color: #111; }
 .tw { cursor: pointer; border-bottom: 1px dotted var(--lav-deep); padding-bottom: 1px; transition: color 0.15s, border-color 0.15s; }
 .tw:hover, .tw.on { color: var(--ink); border-bottom-color: var(--ink); font-weight: 500; }
 .tw-p { color: #222; }
-.tw-a { color: #333; font-size: 0.88rem; font-family: 'Lato', sans-serif; }
+.tw-a { color: #333; font-size: 0.88rem; font-family: 'Poppins', sans-serif; }
 .t-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.2rem; }
-.dur-pill { background: var(--bg-mid); color: #333; font-size: 0.62rem; letter-spacing: 0.07em; padding: 0.18rem 0.6rem; border-radius: 20px; white-space: nowrap; }
-.t-time { font-size: 0.62rem; color: #333; letter-spacing: 0.04em; }
-.in-word { color: var(--lav-deep); font-size: 0.82rem; font-family: 'Lato', sans-serif; }
+.dur-pill { background: var(--bg-mid); color: #333; font-size: 0.875rem; letter-spacing: 0.07em; padding: 0.18rem 0.6rem; border-radius: 20px; white-space: nowrap; }
+.t-time { font-size: 0.875rem; color: #333; letter-spacing: 0.04em; }
+.in-word { color: #333; font-size: 0.875rem; font-family: 'Poppins', sans-serif; }
 
 /* Inline defs */
 .defs-panel { background: var(--bg-mid); border-top: 1px solid rgba(157,143,192,0.2);
   padding: 1.1rem 1.4rem; }
 .defs-top { display: flex; justify-content: flex-end; margin-bottom: 0.75rem; }
 .collapse-btn { background: none; border: 1px solid rgba(157,143,192,0.4); border-radius: 5px;
-  padding: 0.2rem 0.7rem; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.2rem 0.7rem; font-size: 0.6rem; letter-spacing: 0.1em; font-weight: 600;
   color: #333; cursor: pointer; transition: all 0.15s; }
-.collapse-btn:hover { background: var(--lav-deep); color: white; border-color: var(--lav-deep); }
+.collapse-btn:hover { background: var(--lav-deep); color: white; border-color: #333; }
 .defs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0.85rem; }
 .def { }
-.def-lbl { font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--lav-deep); margin-bottom: 0.28rem; }
-.def-ttl { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--text); margin-bottom: 0.3rem; }
+.def-lbl { font-size: 0.875rem; letter-spacing: 0.18em; font-weight: 600; color: #333; margin-bottom: 0.28rem; }
+.def-ttl { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: #111; margin-bottom: 0.3rem; }
 .def-body { font-size: 0.8rem; line-height: 1.7; color: #222; }
 .def-combo { background: white; border-left: 3px solid var(--lav-deep); border-radius: 0 6px 6px 0;
   padding: 0.7rem 0.95rem; grid-column: 1 / -1; margin-top: 0.25rem; }
@@ -539,14 +539,14 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 /* Calendar */
 .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 1px; background: var(--bg-mid);
   border: 1px solid var(--bg-mid); border-radius: 10px; overflow: hidden; }
-.cal-dh { background: var(--dusk); color: rgba(197,184,216,0.65); font-size: 0.62rem;
-  letter-spacing: 0.12em; text-transform: uppercase; text-align: center; padding: 0.45rem; }
+.cal-dh { background: var(--dusk); color: rgba(197,184,216,0.65); font-size: 0.875rem;
+  letter-spacing: 0.12em; font-weight: 600; text-align: center; padding: 0.45rem; }
 .cal-cell { background: white; min-height: 100px; padding: 0.35rem; cursor: pointer; transition: background 0.15s; }
 .cal-cell.empty { background: #f8f5fc; cursor: default; min-height: 60px; }
 .cal-cell:not(.empty):hover { background: #f3eefb; }
 .cal-cell.sel { background: #ece6f5; }
 .cal-cell.today { border-top: 2px solid var(--lav-deep); }
-.cal-num { font-size: 0.72rem; color: #333; margin-bottom: 0.2rem; }
+.cal-num { font-size: 0.875rem; color: #333; margin-bottom: 0.2rem; }
 .today .cal-num { color: var(--dusk); font-weight: 700; }
 .ev { font-size: 0.56rem; line-height: 1.25; border-radius: 3px; padding: 0.12rem 0.28rem; margin-bottom: 0.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ev.transit { background: #ede8f7; color: #222; }
@@ -555,27 +555,27 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 .cal-detail { background: white; border: 1px solid var(--bg-mid); border-radius: 9px; padding: 1.1rem 1.4rem; margin-top: 0.85rem; }
 .cal-d-date { font-family: 'Playfair Display', serif; font-size: 1rem; color: #222; margin-bottom: 0.85rem; }
 .ev-row { display: flex; align-items: baseline; justify-content: space-between; padding: 0.45rem 0;
-  border-bottom: 1px solid var(--bg-mid); font-size: 0.82rem; color: var(--text); gap: 0.75rem; }
+  border-bottom: 1px solid var(--bg-mid); font-size: 0.875rem; color: #111; gap: 0.75rem; }
 .ev-row:last-child { border-bottom: none; }
 .ev-row-name { font-family: 'Playfair Display', serif; }
-.ev-row-badge { font-size: 0.75rem; padding: 0.1rem 0.45rem; border-radius: 10px; margin-left: 0.4rem; }
+.ev-row-badge { font-size: 0.875rem; padding: 0.1rem 0.45rem; border-radius: 10px; margin-left: 0.4rem; }
 .badge-transit { background: #ede8f7; color: #4a3080; }
 .badge-moon    { background: #dff0f4; color: #1a4050; }
 .badge-void    { background: #faeee6; color: #7a3010; }
 .badge-aspect  { background: #e8eaf6; color: #2c3070; }
-.ev-meta { display: flex; gap: 0.85rem; font-size: 0.67rem; color: #333; white-space: nowrap; }
+.ev-meta { display: flex; gap: 0.85rem; font-size: 0.875rem; color: #333; white-space: nowrap; }
 
 /* Birth section */
 .birth-grid { display: grid; grid-template-columns: 300px 1fr; gap: 2rem; align-items: start; }
-.b-lbl { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: #333; display: block; margin-bottom: 0.3rem; }
+.b-lbl { font-size: 0.875rem; letter-spacing: 0.14em; font-weight: 600; color: #333; display: block; margin-bottom: 0.3rem; }
 .b-input { width: 100%; border: 1px solid var(--bg-mid); border-radius: 6px; padding: 0.55rem 0.8rem;
-  font-family: 'Lato', sans-serif; font-size: 0.82rem; color: var(--text); background: white;
+  font-family: 'Poppins', sans-serif; font-size: 0.875rem; color: #111; background: white;
   outline: none; margin-bottom: 0.75rem; transition: border-color 0.2s; }
-.b-input:focus { border-color: var(--lav-deep); }
+.b-input:focus { border-color: #333; }
 .b-input::placeholder { color: rgba(107,92,128,0.4); }
 .b-btn { background: var(--dusk); color: var(--lav); border: none; border-radius: 6px;
-  padding: 0.65rem 1.25rem; font-family: 'Lato', sans-serif; font-size: 0.7rem;
-  letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; width: 100%; transition: background 0.2s; }
+  padding: 0.65rem 1.25rem; font-family: 'Poppins', sans-serif; font-size: 0.875rem;
+  letter-spacing: 0.12em; font-weight: 600; cursor: pointer; width: 100%; transition: background 0.2s; }
 .b-btn:hover { background: var(--ink); }
 
 /* Resource & support cards */
@@ -587,49 +587,49 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 }
 .resource-card:hover { border-color: var(--lav-mid); box-shadow: 0 2px 10px rgba(120,60,180,0.09); }
 .rc-emoji { font-size: 1.4rem; line-height: 1; flex-shrink: 0; margin-top: 0.1rem; }
-.rc-title { font-family: 'Playfair Display', serif; font-size: 0.88rem; color: var(--text); margin-bottom: 0.15rem; }
-.rc-sub { font-size: 0.7rem; color: #333; line-height: 1.45; }
+.rc-title { font-family: 'Playfair Display', serif; font-size: 0.88rem; color: #111; margin-bottom: 0.15rem; }
+.rc-sub { font-size: 0.875rem; color: #333; line-height: 1.45; }
 .support-card {
   display: flex; align-items: flex-start; gap: 0.65rem;
   background: var(--bg-light); border: 1px solid var(--lav-mid); border-radius: 8px;
   padding: 0.85rem 1rem; text-decoration: none; color: inherit;
   flex: 1 1 200px; min-width: 200px; transition: all 0.2s;
 }
-.support-card:hover { border-color: var(--lav-deep); }
-.example-note { font-size: 0.7rem; color: #333; margin-top: 0.6rem; font-style: italic; text-align: center; }
+.support-card:hover { border-color: #333; }
+.example-note { font-size: 0.875rem; color: #333; margin-top: 0.6rem; font-style: italic; text-align: center; }
 .house-results { }
-.house-intro { font-size: 0.82rem; color: #333; margin-bottom: 1rem; font-style: italic; line-height: 1.6; }
+.house-intro { font-size: 0.875rem; color: #333; margin-bottom: 1rem; font-style: italic; line-height: 1.6; }
 .house-card { background: white; border: 1px solid var(--bg-mid); border-radius: 8px; padding: 0.85rem 1.05rem; margin-bottom: 0.6rem; }
-.hc-top { font-size: 0.6rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--lav-deep); margin-bottom: 0.25rem; }
-.hc-name { font-family: 'Playfair Display', serif; font-size: 0.98rem; color: var(--text); margin-bottom: 0.3rem; }
+.hc-top { font-size: 0.6rem; letter-spacing: 0.13em; font-weight: 600; color: #333; margin-bottom: 0.25rem; }
+.hc-name { font-family: 'Playfair Display', serif; font-size: 0.98rem; color: #111; margin-bottom: 0.3rem; }
 .hc-body { font-size: 0.8rem; line-height: 1.68; color: #222; }
 
 /* Unified sky tile card — compact, accessible */
 .sky-card { background: white; border: 1px solid var(--bg-mid); border-radius: 8px; padding: 0.45rem 0.7rem; margin-bottom: 0.35rem; display: flex; flex-direction: column; gap: 0.1rem; }
 .sky-card-top { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
 .sky-card-title { font-family: 'Playfair Display', serif; font-size: 0.92rem; color: #111; flex: 1; }
-.sky-card-pill { font-size: 0.75rem; background: var(--bg-light); color: #333; border-radius: 20px; padding: 0.12rem 0.55rem; white-space: nowrap; border: 1px solid rgba(80,60,120,0.18); flex-shrink: 0; }
+.sky-card-pill { font-size: 0.875rem; background: var(--bg-light); color: #333; border-radius: 20px; padding: 0.12rem 0.55rem; white-space: nowrap; border: 1px solid rgba(80,60,120,0.18); flex-shrink: 0; }
 .sky-card-body { font-size: 0.875rem; line-height: 1.65; color: #222; }
-.sky-card-sub { font-size: 0.75rem; color: #555; }
-.sky-section-label { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: #222; margin-bottom: 0.4rem; margin-top: 0.85rem; font-weight: 600; }
-.placeholder-note { font-style: italic; font-size: 0.82rem; color: #333;
+.sky-card-sub { font-size: 0.875rem; color: #555; }
+.sky-section-label { font-size: 0.875rem; letter-spacing: 0.1em; font-weight: 600; color: #222; margin-bottom: 0.4rem; margin-top: 0.85rem; font-weight: 600; }
+.placeholder-note { font-style: italic; font-size: 0.875rem; color: #333;
   line-height: 1.7; border-left: 3px solid var(--lav); padding-left: 0.85rem; }
 
 /* Calendar day detail grid */
 .cal-detail-grid { display: grid; grid-template-columns: 1fr auto auto; gap: 0 1.25rem; align-items: baseline; }
 .cal-detail-grid .ev-row { display: contents; }
-.cal-detail-grid .ev-row > * { padding: 0.42rem 0; border-bottom: 1px solid var(--bg-mid); font-size: 0.82rem; }
+.cal-detail-grid .ev-row > * { padding: 0.42rem 0; border-bottom: 1px solid var(--bg-mid); font-size: 0.875rem; }
 .cal-detail-grid .ev-row:last-child > * { border-bottom: none; }
-.cal-detail-grid .ev-name { color: var(--text); font-family: 'Playfair Display', serif; }
-.cal-detail-grid .ev-time { color: #333; font-size: 0.68rem; white-space: nowrap; text-align: right; }
-.cal-detail-grid .ev-dur  { color: #333; font-size: 0.68rem; white-space: nowrap; text-align: right; }
+.cal-detail-grid .ev-name { color: #111; font-family: 'Playfair Display', serif; }
+.cal-detail-grid .ev-time { color: #333; font-size: 0.875rem; white-space: nowrap; text-align: right; }
+.cal-detail-grid .ev-dur  { color: #333; font-size: 0.875rem; white-space: nowrap; text-align: right; }
 
 /* Summary blocks */
 .summary-block { background: var(--bg-light); border-left: 3px solid var(--lav-mid);
   border-radius: 0 8px 8px 0; padding: 0.85rem 1.1rem; margin-top: 1rem; }
-.summary-label { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--lav-deep); margin-bottom: 0.4rem; }
-.summary-text { font-size: 0.82rem; line-height: 1.75; color: #222; font-style: italic; }
+.summary-label { font-size: 0.6rem; letter-spacing: 0.18em; font-weight: 600;
+  color: #333; margin-bottom: 0.4rem; }
+.summary-text { font-size: 0.875rem; line-height: 1.75; color: #222; font-style: italic; }
 
 /* Moon bar clickable */
 .moon-bar-item {
@@ -659,7 +659,7 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 }
 
 .phase-card:hover { box-shadow: 0 2px 10px rgba(120,60,180,0.08); border-color: var(--lav-mid); }
-.phase-card.open  { border-color: var(--lav-deep); background: var(--bg-light); }
+.phase-card.open  { border-color: #333; background: var(--bg-light); }
 
 .phase-card-top {
   display: flex;
@@ -671,13 +671,13 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 
 .phase-name {
   font-family: 'Playfair Display', serif;
-  font-size: 0.75rem;
-  color: var(--text);
+  font-size: 0.875rem;
+  color: #111;
 }
 
 .phase-chevron {
   margin-left: auto;
-  color: var(--lav-deep);
+  color: #333;
   font-size: 0.6rem;
   transition: transform 0.2s;
 }
@@ -691,17 +691,16 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 }
 
 .phase-meaning {
-  font-size: 0.82rem;
+  font-size: 0.875rem;
   line-height: 1.75;
   color: #222;
   margin-bottom: 0.75rem;
 }
 
 .phase-sub-label {
-  font-size: 0.58rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--lav-deep);
+  font-size: 0.875rem;
+  letter-spacing: 0.16em; font-weight: 600;
+  color: #333;
   margin-bottom: 0.3rem;
   margin-top: 0.65rem;
 }
@@ -713,7 +712,7 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 }
 
 /* Phase emoji on calendar */
-.cal-phase { font-size: 0.7rem; opacity: 0.6; margin-bottom: 0.1rem; }
+.cal-phase { font-size: 0.875rem; opacity: 0.6; margin-bottom: 0.1rem; }
 
 /* Moon phase panel in day detail */
 .phase-detail-block {
@@ -731,18 +730,18 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
   gap: 0.5rem;
   font-family: 'Playfair Display', serif;
   font-size: 0.9rem;
-  color: var(--text);
+  color: #111;
 }
 
 .phase-detail-body {
   margin-top: 0.6rem;
-  font-size: 0.78rem;
+  font-size: 0.875rem;
   line-height: 1.7;
   color: #222;
 }
 
 /* Date label above week transits */
-.week-date-lbl { font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+.week-date-lbl { font-size: 0.875rem; letter-spacing: 0.1em; font-weight: 600;
   color: #333; padding-left: 0.1rem; margin-bottom: 0.25rem; margin-top: 0.6rem; }
 
 
@@ -753,11 +752,11 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
   .birth-grid { grid-template-columns: 1fr !important; }
   .sky-card { padding: 0.35rem 0.55rem; }
   .sky-card-top { flex-wrap: wrap; }
-  .sky-card-pill { font-size: 0.7rem; margin-top: 0.2rem; }
+  .sky-card-pill { font-size: 0.875rem; margin-top: 0.2rem; }
   .planets-grid-2col { grid-template-columns: 1fr 1fr !important; }
   .sky-card-title { font-size: 0.85rem; }
   .t-phrase { font-size: 0.88rem; }
-  .def-body { font-size: 0.82rem; }
+  .def-body { font-size: 0.875rem; }
   .cal-detail-grid { grid-template-columns: 1fr auto; }
   .cal-detail-grid .ev-dur { display: none; }
 }
@@ -937,6 +936,26 @@ function AspectCard({ a, pill, durLabel }) {
   );
 }
 
+// ─── EXPANDABLE MOON MEANING ─────────────────────────────────────────────────
+function ExpandableMoonMeaning({ text }) {
+  const [expanded, setExpanded] = useState(false);
+  const preview = text.slice(0, 160);
+  const hasMore = text.length > 160;
+  return (
+    <div className="sky-card-body">
+      {expanded ? text : preview}{!expanded && hasMore ? "… " : " "}
+      {hasMore && (
+        <span
+          onClick={() => setExpanded(v => !v)}
+          style={{ color:"var(--lav-deep)", cursor:"pointer", fontWeight:500, textDecoration:"underline", fontSize:"0.875rem" }}
+        >
+          {expanded ? "Read less" : "Read more"}
+        </span>
+      )}
+    </div>
+  );
+}
+
 // ─── VOID OF COURSE NOTE ─────────────────────────────────────────────────────
 function VoidOfCourseNote() {
   const [open, setOpen] = useState(false);
@@ -951,11 +970,11 @@ function VoidOfCourseNote() {
           >void of course</span>
           {" "}before it enters a new sign — a quiet in-between period.
         </span>
-        <span onClick={() => setOpen(v => !v)} style={{ cursor:"pointer", fontSize:"0.75rem", color:"#555", flexShrink:0 }}>{open ? "▲" : "▼"}</span>
+        <span onClick={() => setOpen(v => !v)} style={{ cursor:"pointer", fontSize:"0.875rem", color:"#555", flexShrink:0 }}>{open ? "▲" : "▼"}</span>
       </div>
       {open && (
         <div style={{ marginTop:"0.5rem", borderTop:"1px solid var(--bg-mid)", paddingTop:"0.5rem" }}>
-          <div style={{ fontSize:"0.6rem", letterSpacing:"0.14em", textTransform:"uppercase", color:"#444", marginBottom:"0.3rem" }}>Void of Course</div>
+          <div style={{ fontSize:"0.875rem", letterSpacing:"0.14em", fontWeight:600, color:"#444", marginBottom:"0.3rem" }}>Void of Course</div>
           <div style={{ fontSize:"0.875rem", lineHeight:1.65, color:"#222" }}>
             After the moon makes its last major aspect in a sign and before it enters the next sign, it is considered void of course. Traditionally this is a time when actions started are less likely to come to fruition — better for rest, reflection, and completion than for launching new things. The void period can last minutes or many hours.
           </div>
@@ -972,20 +991,20 @@ function ExpandableHouseCard({ planetData, tp, house, comboMeaning, cap }) {
     <div className="house-card" onClick={() => setOpen(v => !v)} style={{ cursor:"pointer" }}>
       <div className="hc-top" style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
         <span>{planetData?.symbol} {tp.name} in {cap(tp.sign)} — {house.name}</span>
-        <span style={{ fontSize:"0.65rem", color:"var(--lav-deep)" }}>{open ? "▲" : "▼"}</span>
+        <span style={{ fontSize:"0.875rem", color:"var(--lav-deep)" }}>{open ? "▲" : "▼"}</span>
       </div>
       <div className="hc-body">{house.meaning}</div>
       {open && (
         <div style={{ marginTop:"0.65rem", borderTop:"1px solid var(--bg-mid)", paddingTop:"0.65rem" }}>
           {comboMeaning ? (
             <>
-              <div style={{ fontSize:"0.6rem", letterSpacing:"0.14em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.3rem" }}>
+              <div style={{ fontSize:"0.875rem", letterSpacing:"0.14em", fontWeight:600, color:"var(--lav-deep)", marginBottom:"0.3rem" }}>
                 {tp.name} in {cap(tp.sign)}
               </div>
-              <div style={{ fontSize:"0.78rem", lineHeight:1.7, color:"#222" }}>{comboMeaning}</div>
+              <div style={{ fontSize:"0.875rem", lineHeight:1.7, color:"#222" }}>{comboMeaning}</div>
             </>
           ) : (
-            <div style={{ fontSize:"0.78rem", color:"#333", fontStyle:"italic" }}>
+            <div style={{ fontSize:"0.875rem", color:"#333", fontStyle:"italic" }}>
               Tap the planet or sign name in Today's Sky to learn more about {tp.name} in {cap(tp.sign)}.
             </div>
           )}
@@ -1392,14 +1411,14 @@ export default function Skyward() {
           {/* Moon phase inline panel */}
           {moonBarPhase && (
             <div style={{ background: "var(--dusk)", padding: "1rem 2.5rem", borderBottom: "1px solid rgba(197,184,216,0.1)" }}>
-              <div style={{ fontSize:"0.6rem", letterSpacing:"0.16em", textTransform:"uppercase", color:"rgba(197,184,216,0.5)", marginBottom:"0.75rem" }}>
+              <div style={{ fontSize:"0.875rem", letterSpacing:"0.16em", fontWeight:600, color:"rgba(197,184,216,0.5)", marginBottom:"0.75rem" }}>
                 Today's Moon Phase
               </div>
               <div style={{ maxWidth: 500 }}>
                 <PhaseCard phaseKey={todayMoon?.phase || "waxing_gibbous"} />
               </div>
               <button onClick={() => setMoonBarPhase(false)}
-                style={{ background:"none", border:"none", color:"rgba(197,184,216,0.4)", fontSize:"0.65rem", letterSpacing:"0.1em", textTransform:"uppercase", cursor:"pointer", marginTop:"0.75rem" }}>
+                style={{ background:"none", border:"none", color:"rgba(197,184,216,0.4)", fontSize:"0.875rem", letterSpacing:"0.1em", fontWeight:600, cursor:"pointer", marginTop:"0.75rem" }}>
                 ↑ Close
               </button>
             </div>
@@ -1414,9 +1433,9 @@ export default function Skyward() {
               { label:"Birth Chart", href:"#birth-chart" },
             ].map(({ label, href }) => (
               <a key={href} href={href}
-                style={{ fontSize:"0.85rem", color:"#222", textDecoration:"none", padding:"0.35rem 1.1rem",
+                style={{ fontSize:"0.875rem", color:"#222", textDecoration:"none", padding:"0.35rem 1.1rem",
                   background:"white", borderRadius:20, border:"1px solid rgba(80,60,120,0.25)",
-                  fontFamily:"'Montserrat', sans-serif", fontWeight:500, letterSpacing:"0.04em",
+                  fontFamily:"'Poppins', sans-serif", fontWeight:500, letterSpacing:"0.04em",
                   transition:"all 0.15s", boxShadow:"0 1px 3px rgba(0,0,0,0.06)" }}
                 onMouseEnter={e => { e.target.style.background="#ede8f7"; e.target.style.borderColor="rgba(80,60,120,0.5)"; }}
                 onMouseLeave={e => { e.target.style.background="white"; e.target.style.borderColor="rgba(80,60,120,0.25)"; }}
@@ -1439,7 +1458,7 @@ export default function Skyward() {
             </div>
 
             {dataLoading && (
-              <div style={{ color:"#333", fontStyle:"italic", fontSize:"0.83rem", padding:"0.5rem 0" }}>
+              <div style={{ color:"#333", fontStyle:"italic", fontSize:"0.875rem", padding:"0.5rem 0" }}>
                 Loading sky data...
               </div>
             )}
@@ -1487,7 +1506,7 @@ export default function Skyward() {
                       <span className="sky-card-pill">{pill}</span>
                     </div>
                     <div className="sky-card-sub">{phaseName}{viewDayData?.moon?.illumination ? ` · ${Math.round(viewDayData.moon.illumination)}%` : ""}</div>
-                    {moonMeaning && <div className="sky-card-body">{moonMeaning.slice(0,180)}{moonMeaning.length > 180 ? "…" : ""}</div>}
+                    {moonMeaning && <ExpandableMoonMeaning text={moonMeaning} />}
                   </div>
                   {isMoonIngress && (
                     <VoidOfCourseNote />
@@ -1543,7 +1562,7 @@ export default function Skyward() {
                   {/* Moon aspects — short, always visible */}
                   {moonAspects.length > 0 && (
                     <>
-                      <div style={{ fontSize:"0.7rem", color:"#666", letterSpacing:"0.08em", textTransform:"uppercase", margin:"0.5rem 0 0.3rem" }}>Today's aspects</div>
+                      <div style={{ fontSize:"0.875rem", color:"#666", letterSpacing:"0.08em", fontWeight:600, margin:"0.5rem 0 0.3rem" }}>Today's aspects</div>
                       {moonAspects.map((a, i) => (
                         <AspectCard
                           key={`moon-asp-${i}`}
@@ -1557,9 +1576,9 @@ export default function Skyward() {
                   {/* Non-moon aspects — longer, collapsed */}
                   {nonMoonAspects.length > 0 && (
                     <>
-                      <div style={{ fontSize:"0.7rem", color:"#666", letterSpacing:"0.08em", textTransform:"uppercase", margin:"0.65rem 0 0.3rem", display:"flex", alignItems:"center", gap:"0.6rem" }}>
+                      <div style={{ fontSize:"0.875rem", color:"#666", letterSpacing:"0.08em", fontWeight:600, margin:"0.65rem 0 0.3rem", display:"flex", alignItems:"center", gap:"0.6rem" }}>
                         Longer aspects
-                        <button className="see-more no-print" onClick={() => setShowLongTerm(v => !v)} style={{ fontSize:"0.7rem", marginLeft:0 }}>
+                        <button className="see-more no-print" onClick={() => setShowLongTerm(v => !v)} style={{ fontSize:"0.875rem", marginLeft:0 }}>
                           {showLongTerm ? "Collapse ↑" : `Show ${nonMoonAspects.length} ↓`}
                         </button>
                       </div>
@@ -1631,7 +1650,7 @@ export default function Skyward() {
               </button>
             </div>
             {!showWeek && (
-              <div style={{ color:"#333", fontSize:"0.83rem", fontStyle:"italic" }}>
+              <div style={{ color:"#333", fontSize:"0.875rem", fontStyle:"italic" }}>
                 Click to see this week's aspects and planet sign changes.
               </div>
             )}
@@ -1704,7 +1723,7 @@ export default function Skyward() {
                 );
               }
               return weekItems.length > 0 ? weekItems : (
-                <div style={{ color:"#333", fontSize:"0.83rem", fontStyle:"italic" }}>No planet sign changes this week.</div>
+                <div style={{ color:"#333", fontSize:"0.875rem", fontStyle:"italic" }}>No planet sign changes this week.</div>
               );
             })()}
           </section>
@@ -1713,43 +1732,43 @@ export default function Skyward() {
           <section className="sec" id="month">
             <div className="sec-hdr">
               <span className="sec-title">{currentMonthName} {currentYear}</span>
-              <span className="sec-meta">All transits, moon ingresses & void of course · Click any day</span>
+              <span className="sec-meta">Aspects &amp; transits · Click any day for details</span>
             </div>
-            <div style={{ fontSize:"0.68rem", fontStyle:"italic", color:"#333", marginBottom:"0.5rem", lineHeight:1.55 }}>
-              All times are Pacific (PST/PDT). Add 1 hour for Mountain · 2 for Central · 3 for Eastern.
+            <div style={{ fontSize:"0.875rem", fontStyle:"italic", color:"#333", marginBottom:"0.5rem", lineHeight:1.55 }}>
+              Days and times are calculated in Pacific Time (PST/PDT) — Seattle / Los Angeles. Add 1 hour for Mountain · 2 for Central · 3 for Eastern.
             </div>
-            <div style={{ fontSize:"0.68rem", color:"#333", marginBottom:"0.85rem", display:"flex", gap:"1.2rem", flexWrap:"wrap" }}>
-              <span><span style={{display:"inline-block",width:10,height:10,borderRadius:2,background:"#ede8f7",marginRight:5,verticalAlign:"middle"}}/>Transit</span>
-              <span><span style={{display:"inline-block",width:10,height:10,borderRadius:2,background:"#dff0f4",marginRight:5,verticalAlign:"middle"}}/>Moon ingress</span>
-              <span><span style={{display:"inline-block",width:10,height:10,borderRadius:2,background:"#faeee6",marginRight:5,verticalAlign:"middle"}}/>Void of course</span>
+            <div style={{ fontSize:"0.875rem", color:"#333", marginBottom:"0.85rem", display:"flex", gap:"1.2rem", flexWrap:"wrap" }}>
+              <span><span style={{display:"inline-block",width:10,height:10,borderRadius:2,background:"#e8eaf6",marginRight:5,verticalAlign:"middle"}}/>Aspect</span>
+              <span><span style={{display:"inline-block",width:10,height:10,borderRadius:2,background:"#dff0f4",marginRight:5,verticalAlign:"middle"}}/>Moon sign change</span>
+              <span><span style={{display:"inline-block",width:10,height:10,borderRadius:2,background:"#ede8f7",marginRight:5,verticalAlign:"middle"}}/>Planet sign change</span>
             </div>
 
             {/* Symbol reference */}
             <details style={{ marginBottom:"1rem" }}>
-              <summary style={{ fontSize:"0.65rem", letterSpacing:"0.1em", textTransform:"uppercase", color:"var(--lav-deep)", cursor:"pointer", userSelect:"none", marginBottom:"0.5rem" }}>
+              <summary style={{ fontSize:"0.875rem", letterSpacing:"0.1em", fontWeight:600, color:"var(--lav-deep)", cursor:"pointer", userSelect:"none", marginBottom:"0.5rem" }}>
                 Symbol guide ▸
               </summary>
-              <div style={{ display:"flex", flexWrap:"wrap", gap:"1.5rem", fontSize:"0.68rem", color:"#222", lineHeight:1.8, background:"var(--bg-light)", borderRadius:8, padding:"0.75rem 1rem", marginTop:"0.4rem" }}>
+              <div style={{ display:"flex", flexWrap:"wrap", gap:"1.5rem", fontSize:"0.875rem", color:"#222", lineHeight:1.8, background:"var(--bg-light)", borderRadius:8, padding:"0.75rem 1rem", marginTop:"0.4rem" }}>
                 <div>
-                  <div style={{ fontSize:"0.58rem", letterSpacing:"0.14em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.3rem" }}>Planets</div>
+                  <div style={{ fontSize:"0.875rem", letterSpacing:"0.14em", fontWeight:600, color:"var(--lav-deep)", marginBottom:"0.3rem" }}>Planets</div>
                   {Object.entries(PLANETS).map(([k,p]) => (
                     <div key={k}><span style={{fontWeight:600,marginRight:"0.3rem"}}>{p.symbol}</span>{p.name}</div>
                   ))}
                 </div>
                 <div>
-                  <div style={{ fontSize:"0.58rem", letterSpacing:"0.14em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.3rem" }}>Aspects</div>
+                  <div style={{ fontSize:"0.875rem", letterSpacing:"0.14em", fontWeight:600, color:"var(--lav-deep)", marginBottom:"0.3rem" }}>Aspects</div>
                   {Object.entries(ASPECTS).map(([k,a]) => (
                     <div key={k}><span style={{fontWeight:600,marginRight:"0.3rem"}}>{a.symbol}</span>{a.name} {a.degrees}</div>
                   ))}
                 </div>
                 <div>
-                  <div style={{ fontSize:"0.58rem", letterSpacing:"0.14em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.3rem" }}>Signs</div>
+                  <div style={{ fontSize:"0.875rem", letterSpacing:"0.14em", fontWeight:600, color:"var(--lav-deep)", marginBottom:"0.3rem" }}>Signs</div>
                   {Object.entries(SIGNS).map(([k,s]) => (
                     <div key={k}><span style={{fontWeight:600,marginRight:"0.3rem"}}>{s.symbol}</span>{s.name}</div>
                   ))}
                 </div>
                 <div>
-                  <div style={{ fontSize:"0.58rem", letterSpacing:"0.14em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.3rem" }}>Moon Phases</div>
+                  <div style={{ fontSize:"0.875rem", letterSpacing:"0.14em", fontWeight:600, color:"var(--lav-deep)", marginBottom:"0.3rem" }}>Moon Phases</div>
                   {Object.entries(MOON_PHASES).map(([k,p]) => (
                     <div key={k}><span style={{marginRight:"0.3rem"}}>{p.emoji}</span>{p.name}</div>
                   ))}
@@ -1781,7 +1800,7 @@ export default function Skyward() {
                       if (!p) return null;
                       return (
                         <div className="cal-phase" title={p.label}>
-                          {p.emoji} <span style={{fontSize:"0.48rem"}}>{p.label}</span>
+                          {p.emoji} <span style={{fontSize:"0.75rem"}}>{p.label}</span>
                         </div>
                       );
                     })()}
@@ -1799,7 +1818,7 @@ export default function Skyward() {
               <div className="cal-detail">
                 <div className="cal-d-date">{currentMonthName} {selectedDay}, {currentYear}</div>
                 {selEvents.length === 0
-                  ? <div style={{color:"#333",fontStyle:"italic",fontSize:"0.82rem"}}>No major transits on this day.</div>
+                  ? <div style={{color:"#333",fontStyle:"italic",fontSize:"0.875rem"}}>No major transits on this day.</div>
                   : <div className="cal-detail-grid">
                       {selEvents.map((ev, i) => {
                         // Try to get date range for this event
@@ -1846,7 +1865,7 @@ export default function Skyward() {
                 )}
                 {activeDayPhase[selectedDay] && (
                   <div style={{ marginTop:"0.85rem" }}>
-                    <div style={{ fontSize:"0.6rem", letterSpacing:"0.16em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.5rem" }}>
+                    <div style={{ fontSize:"0.875rem", letterSpacing:"0.16em", fontWeight:600, color:"var(--lav-deep)", marginBottom:"0.5rem" }}>
                       Moon Phase
                     </div>
                     <PhaseCard phaseKey={activeDayPhase[selectedDay]} />
@@ -1886,14 +1905,14 @@ export default function Skyward() {
                 <label className="b-lbl">Birth Place</label>
                 <input className="b-input" placeholder="e.g. Austin, Texas"
                   value={birthData.place} onChange={e => updateBirthData({...birthData, place: e.target.value})} />
-                <div style={{ fontSize:"0.78rem", color:"#333", marginTop:"0.6rem", lineHeight:1.6 }}>
+                <div style={{ fontSize:"0.875rem", color:"#333", marginTop:"0.6rem", lineHeight:1.6 }}>
                   Your birth data is saved in this browser so it will be here when you come back. It stays on this device only — it won't appear if you open the site in a different browser, private window, or on another device.
                 </div>
                 <button className="b-btn" onClick={fetchBirthChart} disabled={chartLoading}>
                   {chartLoading ? "Loading your chart..." : "Show my houses →"}
                 </button>
                 {chartError && (
-                  <div style={{marginTop:"0.75rem", fontSize:"0.78rem", color:"#c0392b", lineHeight:1.6}}>
+                  <div style={{marginTop:"0.75rem", fontSize:"0.875rem", color:"#c0392b", lineHeight:1.6}}>
                     {chartError}
                   </div>
                 )}
@@ -1958,7 +1977,7 @@ export default function Skyward() {
                           />
                         );
                       })}
-                      <div style={{marginTop:"0.75rem",fontSize:"0.7rem",color:"#333",fontStyle:"italic"}}>
+                      <div style={{marginTop:"0.75rem",fontSize:"0.875rem",color:"#333",fontStyle:"italic"}}>
                         Whole sign houses · {risingDisplay} rising · Calculated via Astrologer API
                       </div>
                     </div>
@@ -1977,7 +1996,7 @@ export default function Skyward() {
 
             {/* Astrology books */}
             <div style={{ marginBottom:"1.5rem" }}>
-              <div style={{ fontSize:"0.6rem", letterSpacing:"0.15em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.65rem" }}>Astrology Reading List</div>
+              <div style={{ fontSize:"0.875rem", letterSpacing:"0.15em", fontWeight:600, color:"var(--lav-deep)", marginBottom:"0.65rem" }}>Astrology Reading List</div>
               <div style={{ display:"flex", flexWrap:"wrap", gap:"0.75rem" }}>
                 <a href="/glossary" className="resource-card" style={{flexBasis:"100%"}}>
                   <div className="rc-emoji">📖</div>
@@ -1998,7 +2017,7 @@ export default function Skyward() {
 
             {/* Kate's books */}
             <div style={{ marginBottom:"1.5rem" }}>
-              <div style={{ fontSize:"0.6rem", letterSpacing:"0.15em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.65rem" }}>From the Creator</div>
+              <div style={{ fontSize:"0.875rem", letterSpacing:"0.15em", fontWeight:600, color:"var(--lav-deep)", marginBottom:"0.65rem" }}>From the Creator</div>
               <div style={{ display:"flex", flexWrap:"wrap", gap:"0.75rem" }}>
                 <a href="https://bookshop.org/p/books/rose-colored-glasses-kate-mageau/97e4de4362fdb5bd?ean=9798998719691&next=t&aid=98002&listref=books-on-domestic-violence-intimate-partner-violence" target="_blank" rel="noopener noreferrer" className="resource-card">
                   <div className="rc-emoji">📖</div>
@@ -2036,7 +2055,7 @@ export default function Skyward() {
             </div>
 
             {/* About the creator */}
-            <div style={{ fontSize:"0.6rem", letterSpacing:"0.15em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.65rem" }}>About the Creator</div>
+            <div style={{ fontSize:"0.875rem", letterSpacing:"0.15em", fontWeight:600, color:"var(--lav-deep)", marginBottom:"0.65rem" }}>About the Creator</div>
             <div style={{ display:"flex", flexWrap:"wrap", gap:"0.75rem" }}>
               <a href="https://www.katemageau.com/" target="_blank" rel="noopener noreferrer" className="resource-card">
                 <div className="rc-emoji">🌙</div>
@@ -2098,7 +2117,7 @@ export default function Skyward() {
                   </details>
                 ))}
                 <div style={{ marginTop:"1rem", fontSize:"0.8rem", color:"#555" }}>
-                  <a href="/glossary" style={{ color:"var(--lav-deep)", textDecoration:"underline", fontFamily:"'Montserrat', sans-serif", fontWeight:500 }}>
+                  <a href="/glossary" style={{ color:"var(--lav-deep)", textDecoration:"underline", fontFamily:"'Poppins', sans-serif", fontWeight:500 }}>
                     View the full glossary — 110+ terms →
                   </a>
                 </div>
