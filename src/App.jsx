@@ -291,80 +291,80 @@ const COMBINATIONS = {
 // Each event: { label, symbol, time, duration, type: "transit"|"moon"|"void" }
 const CALENDAR_EVENTS = {
   1: [
-    { label: "Moon ☌ Neptune", symbol: "☽☌♆", time: "2:33a", duration: "~24h", type: "transit" },
+    { label: "Moon ☌ Neptune", symbol: "☽☌♆", time: "2:33a", duration: "~24h", type: "aspect" },
     { label: "Moon in Pisces", symbol: "☽♓", time: "12:00a", duration: "~2d", type: "moon" },
-    { label: "Mercury ⚹ Jupiter", symbol: "☿⚹♃", time: "11:08a", duration: "4d", type: "transit" },
+    { label: "Mercury ⚹ Jupiter", symbol: "☿⚹♃", time: "11:08a", duration: "4d", type: "aspect" },
   ],
   2: [
-    { label: "Venus △ Moon", symbol: "♀△☽", time: "8:45a", duration: "2d", type: "transit" },
+    { label: "Venus △ Moon", symbol: "♀△☽", time: "8:45a", duration: "2d", type: "aspect" },
     { label: "Void of Course Moon", symbol: "☽ v/c", time: "6:10p", duration: "~4h", type: "void" },
     { label: "Moon enters Aries", symbol: "☽♈", time: "10:22p", duration: "~2.5d", type: "moon" },
   ],
   3: [
-    { label: "Mercury ☌ Sun", symbol: "☿☌☉", time: "4:20p", duration: "3d", type: "transit" },
+    { label: "Mercury ☌ Sun", symbol: "☿☌☉", time: "4:20p", duration: "3d", type: "aspect" },
   ],
   4: [
-    { label: "Sun □ Mars", symbol: "☉□♂", time: "9:00a", duration: "5d", type: "transit" },
+    { label: "Sun □ Mars", symbol: "☉□♂", time: "9:00a", duration: "5d", type: "aspect" },
     { label: "Void of Course Moon", symbol: "☽ v/c", time: "3:47p", duration: "~7h", type: "void" },
     { label: "Moon enters Taurus", symbol: "☽♉", time: "10:51p", duration: "~2.5d", type: "moon" },
   ],
   5: [
-    { label: "Moon ⚹ Saturn", symbol: "☽⚹♄", time: "3:15p", duration: "~18h", type: "transit" },
-    { label: "Moon ⚹ Venus", symbol: "☽⚹♀", time: "7:40p", duration: "~12h", type: "transit" },
+    { label: "Moon ⚹ Saturn", symbol: "☽⚹♄", time: "3:15p", duration: "~18h", type: "aspect" },
+    { label: "Moon ⚹ Venus", symbol: "☽⚹♀", time: "7:40p", duration: "~12h", type: "aspect" },
   ],
   6: [
-    { label: "Jupiter △ Uranus", symbol: "♃△♅", time: "7:30a", duration: "10d", type: "transit" },
+    { label: "Jupiter △ Uranus", symbol: "♃△♅", time: "7:30a", duration: "10d", type: "aspect" },
     { label: "Void of Course Moon", symbol: "☽ v/c", time: "9:15p", duration: "~6h", type: "void" },
   ],
   7: [
-    { label: "Mars ⚹ Neptune", symbol: "♂⚹♆", time: "1:00p", duration: "6d", type: "transit" },
+    { label: "Mars ⚹ Neptune", symbol: "♂⚹♆", time: "1:00p", duration: "6d", type: "aspect" },
     { label: "Moon enters Gemini", symbol: "☽♊", time: "3:18a", duration: "~2.5d", type: "moon" },
   ],
   8: [
-    { label: "Venus □ Pluto ends", symbol: "♀□♇", time: "All day", duration: "Ends", type: "transit" },
-    { label: "Moon □ Saturn", symbol: "☽□♄", time: "11:22a", duration: "~14h", type: "transit" },
+    { label: "Venus □ Pluto ends", symbol: "♀□♇", time: "All day", duration: "Ends", type: "aspect" },
+    { label: "Moon □ Saturn", symbol: "☽□♄", time: "11:22a", duration: "~14h", type: "aspect" },
   ],
   9: [
-    { label: "Moon □ Venus", symbol: "☽□♀", time: "6:00a", duration: "~20h", type: "transit" },
+    { label: "Moon □ Venus", symbol: "☽□♀", time: "6:00a", duration: "~20h", type: "aspect" },
     { label: "Void of Course Moon", symbol: "☽ v/c", time: "8:44p", duration: "~5h", type: "void" },
     { label: "Moon enters Cancer", symbol: "☽♋", time: "11:55p", duration: "~2.5d", type: "moon" },
   ],
   10: [
-    { label: "Moon △ Neptune", symbol: "☽△♆", time: "2:30p", duration: "~18h", type: "transit" },
+    { label: "Moon △ Neptune", symbol: "☽△♆", time: "2:30p", duration: "~18h", type: "aspect" },
   ],
   11: [
-    { label: "Sun ⚹ Jupiter", symbol: "☉⚹♃", time: "10:15a", duration: "4d", type: "transit" },
-    { label: "Moon ☍ Pluto", symbol: "☽☍♇", time: "4:05p", duration: "~16h", type: "transit" },
+    { label: "Sun ⚹ Jupiter", symbol: "☉⚹♃", time: "10:15a", duration: "4d", type: "aspect" },
+    { label: "Moon ☍ Pluto", symbol: "☽☍♇", time: "4:05p", duration: "~16h", type: "aspect" },
   ],
   12: [
     { label: "Full Moon in Libra", symbol: "○ ♎", time: "8:22p", duration: "Peak", type: "moon" },
-    { label: "Moon ☍ Sun (Full)", symbol: "☽☍☉", time: "8:22p", duration: "Peak", type: "transit" },
+    { label: "Moon ☍ Sun (Full)", symbol: "☽☍☉", time: "8:22p", duration: "Peak", type: "aspect" },
     { label: "Void of Course Moon", symbol: "☽ v/c", time: "8:22p", duration: "~3h", type: "void" },
     { label: "Moon enters Scorpio", symbol: "☽♏", time: "11:30p", duration: "~2.5d", type: "moon" },
   ],
   13: [
-    { label: "Moon △ Mars", symbol: "☽△♂", time: "9:10a", duration: "~14h", type: "transit" },
-    { label: "Moon ☌ Saturn", symbol: "☽☌♄", time: "6:44p", duration: "~10h", type: "transit" },
+    { label: "Moon △ Mars", symbol: "☽△♂", time: "9:10a", duration: "~14h", type: "aspect" },
+    { label: "Moon ☌ Saturn", symbol: "☽☌♄", time: "6:44p", duration: "~10h", type: "aspect" },
   ],
   14: [
-    { label: "Venus ⚹ Saturn", symbol: "♀⚹♄", time: "2:00p", duration: "5d", type: "transit" },
+    { label: "Venus ⚹ Saturn", symbol: "♀⚹♄", time: "2:00p", duration: "5d", type: "aspect" },
     { label: "Void of Course Moon", symbol: "☽ v/c", time: "7:30p", duration: "~8h", type: "void" },
   ],
   15: [
     { label: "Moon enters Sagittarius", symbol: "☽♐", time: "3:15a", duration: "~2.5d", type: "moon" },
-    { label: "Moon △ Jupiter", symbol: "☽△♃", time: "1:20p", duration: "~16h", type: "transit" },
+    { label: "Moon △ Jupiter", symbol: "☽△♃", time: "1:20p", duration: "~16h", type: "aspect" },
   ],
   16: [
-    { label: "Moon □ Neptune", symbol: "☽□♆", time: "4:55p", duration: "~14h", type: "transit" },
+    { label: "Moon □ Neptune", symbol: "☽□♆", time: "4:55p", duration: "~14h", type: "aspect" },
   ],
   17: [
-    { label: "Mercury □ Pluto", symbol: "☿□♇", time: "11:30a", duration: "4d", type: "transit" },
+    { label: "Mercury □ Pluto", symbol: "☿□♇", time: "11:30a", duration: "4d", type: "aspect" },
     { label: "Void of Course Moon", symbol: "☽ v/c", time: "6:20p", duration: "~9h", type: "void" },
     { label: "Moon enters Capricorn", symbol: "☽♑", time: "11:48p", duration: "~2.5d", type: "moon" },
   ],
   18: [
-    { label: "Moon △ Uranus", symbol: "☽△♅", time: "8:30a", duration: "~12h", type: "transit" },
-    { label: "Moon ☌ Pluto", symbol: "☽☌♇", time: "3:15p", duration: "~10h", type: "transit" },
+    { label: "Moon △ Uranus", symbol: "☽△♅", time: "8:30a", duration: "~12h", type: "aspect" },
+    { label: "Moon ☌ Pluto", symbol: "☽☌♇", time: "3:15p", duration: "~10h", type: "aspect" },
   ],
   19: [
     { label: "Sun enters Taurus", symbol: "☉♉", time: "4:48a", duration: "~30d", type: "moon" },
@@ -372,49 +372,49 @@ const CALENDAR_EVENTS = {
     { label: "Moon enters Aquarius", symbol: "☽♒", time: "11:22p", duration: "~2.5d", type: "moon" },
   ],
   20: [
-    { label: "Moon ☌ Saturn", symbol: "☽☌♄", time: "2:44a", duration: "~10h", type: "transit" },
-    { label: "Venus □ Mars", symbol: "♀□♂", time: "9:15a", duration: "6d", type: "transit" },
+    { label: "Moon ☌ Saturn", symbol: "☽☌♄", time: "2:44a", duration: "~10h", type: "aspect" },
+    { label: "Venus □ Mars", symbol: "♀□♂", time: "9:15a", duration: "6d", type: "aspect" },
   ],
   21: [
-    { label: "Moon ⚹ Jupiter", symbol: "☽⚹♃", time: "10:30a", duration: "~14h", type: "transit" },
+    { label: "Moon ⚹ Jupiter", symbol: "☽⚹♃", time: "10:30a", duration: "~14h", type: "aspect" },
     { label: "Void of Course Moon", symbol: "☽ v/c", time: "7:50p", duration: "~7h", type: "void" },
   ],
   22: [
     { label: "New Moon in Taurus", symbol: "● ♉", time: "6:18a", duration: "Peak", type: "moon" },
-    { label: "Moon ☌ Sun (New)", symbol: "☽☌☉", time: "6:18a", duration: "Peak", type: "transit" },
+    { label: "Moon ☌ Sun (New)", symbol: "☽☌☉", time: "6:18a", duration: "Peak", type: "aspect" },
     { label: "Moon enters Pisces", symbol: "☽♓", time: "3:05a", duration: "~2.5d", type: "moon" },
-    { label: "Moon ☌ Venus", symbol: "☽☌♀", time: "9:40a", duration: "~8h", type: "transit" },
+    { label: "Moon ☌ Venus", symbol: "☽☌♀", time: "9:40a", duration: "~8h", type: "aspect" },
   ],
   23: [
-    { label: "Moon △ Mars", symbol: "☽△♂", time: "11:15a", duration: "~14h", type: "transit" },
+    { label: "Moon △ Mars", symbol: "☽△♂", time: "11:15a", duration: "~14h", type: "aspect" },
   ],
   24: [
     { label: "Void of Course Moon", symbol: "☽ v/c", time: "4:30p", duration: "~10h", type: "void" },
     { label: "Moon enters Aries", symbol: "☽♈", time: "11:05p", duration: "~2.5d", type: "moon" },
   ],
   25: [
-    { label: "Mars △ Jupiter", symbol: "♂△♃", time: "9:45a", duration: "8d", type: "transit" },
-    { label: "Moon ☌ Saturn", symbol: "☽☌♄", time: "4:20p", duration: "~10h", type: "transit" },
+    { label: "Mars △ Jupiter", symbol: "♂△♃", time: "9:45a", duration: "8d", type: "aspect" },
+    { label: "Moon ☌ Saturn", symbol: "☽☌♄", time: "4:20p", duration: "~10h", type: "aspect" },
   ],
   26: [
-    { label: "Moon ⚹ Mercury", symbol: "☽⚹☿", time: "7:55a", duration: "~12h", type: "transit" },
+    { label: "Moon ⚹ Mercury", symbol: "☽⚹☿", time: "7:55a", duration: "~12h", type: "aspect" },
     { label: "Void of Course Moon", symbol: "☽ v/c", time: "8:10p", duration: "~5h", type: "void" },
     { label: "Moon enters Taurus", symbol: "☽♉", time: "11:55p", duration: "~2.5d", type: "moon" },
   ],
   27: [
-    { label: "Moon △ Neptune", symbol: "☽△♆", time: "3:30p", duration: "~14h", type: "transit" },
+    { label: "Moon △ Neptune", symbol: "☽△♆", time: "3:30p", duration: "~14h", type: "aspect" },
   ],
   28: [
-    { label: "Venus ☌ Mercury", symbol: "♀☌☿", time: "3:30p", duration: "3d", type: "transit" },
+    { label: "Venus ☌ Mercury", symbol: "♀☌☿", time: "3:30p", duration: "3d", type: "aspect" },
     { label: "Void of Course Moon", symbol: "☽ v/c", time: "6:40p", duration: "~8h", type: "void" },
   ],
   29: [
     { label: "Moon enters Gemini", symbol: "☽♊", time: "2:18a", duration: "~2.5d", type: "moon" },
-    { label: "Moon △ Pluto", symbol: "☽△♇", time: "11:05a", duration: "~14h", type: "transit" },
+    { label: "Moon △ Pluto", symbol: "☽△♇", time: "11:05a", duration: "~14h", type: "aspect" },
   ],
   30: [
-    { label: "Moon □ Neptune", symbol: "☽□♆", time: "9:20a", duration: "~14h", type: "transit" },
-    { label: "Moon □ Saturn", symbol: "☽□♄", time: "5:55p", duration: "~12h", type: "transit" },
+    { label: "Moon □ Neptune", symbol: "☽□♆", time: "9:20a", duration: "~14h", type: "aspect" },
+    { label: "Moon □ Saturn", symbol: "☽□♄", time: "5:55p", duration: "~12h", type: "aspect" },
   ],
 };
 
@@ -948,6 +948,36 @@ function CalendarEventRow({ ev, dateRange, badgeClass, badgeLabel }) {
     if (sign) defs.push({ title: sign.name, body: sign.meaning });
     if (combo) defs.push({ title: `Moon in ${sign?.name || signName}`, body: combo });
   }
+  if (ev.type === "aspect") {
+    // Use stored raw fields if available, else parse from label
+    const p1key  = ev.planet1  || Object.keys(PLANETS).find(k => ev.label.toLowerCase().startsWith(PLANETS[k].name.toLowerCase()));
+    const p2key  = ev.planet2  || Object.keys(PLANETS).find(k => k !== p1key && ev.label.toLowerCase().includes(PLANETS[k].name.toLowerCase()));
+    const aspkey = ev.aspect   || Object.keys(ASPECTS).find(k => ev.label.includes(ASPECTS[k].symbol) || ev.label.toLowerCase().includes(ASPECTS[k].name.toLowerCase()));
+    const s1key  = ev.sign1    || null;
+    const s2key  = ev.sign2    || null;
+    const p1 = p1key ? PLANETS[p1key] : null;
+    const p2 = p2key ? PLANETS[p2key] : null;
+    const asp = aspkey ? ASPECTS[aspkey] : null;
+    const s1 = s1key ? SIGNS[s1key] : null;
+    const s2 = s2key ? SIGNS[s2key] : null;
+    if (p1) defs.push({ title: p1.name, body: p1.meaning });
+    if (asp) defs.push({ title: `${asp.name} ${asp.degrees}`, body: asp.meaning });
+    if (p2) defs.push({ title: p2.name, body: p2.meaning });
+    if (s1) defs.push({ title: s1.name, body: s1.meaning });
+    if (s2 && s2key !== s1key) defs.push({ title: s2.name, body: s2.meaning });
+    if (p1key && s1key) { const c = COMBINATIONS[`${p1key}-${s1key}`]; if (c && p1 && s1) defs.push({ title: `${p1.name} in ${s1.name}`, body: c }); }
+    if (p2key && s2key) { const c = COMBINATIONS[`${p2key}-${s2key}`]; if (c && p2 && s2) defs.push({ title: `${p2.name} in ${s2.name}`, body: c }); }
+  }
+  // Void of course
+  if (ev.type === "void") {
+    defs.push({ title: "Void of Course Moon", body: "After the moon makes its last major aspect in a sign and before it enters the next sign, it is void of course. This can last minutes or many hours. Traditionally a quiet in-between period — better for rest and completion than for starting new things." });
+  }
+  // Retrograde
+  if (ev.type === "transit" && ev.label.includes("Retrograde")) {
+    const pName = Object.keys(PLANETS).find(k => ev.label.startsWith(PLANETS[k].name));
+    if (pName) defs.push({ title: `${PLANETS[pName].name} Retrograde`, body: `${PLANETS[pName].meaning} When retrograde, ${PLANETS[pName].name.toLowerCase()}'s energy turns inward — themes associated with ${PLANETS[pName].name.toLowerCase()} may feel slower, more reflective, or in need of review.` });
+  }
+  // Transit - planet enters sign
   if (ev.type === "transit" && ev.label.includes("enters")) {
     const pName = Object.keys(PLANETS).find(k => ev.label.startsWith(PLANETS[k].name));
     const sName = Object.keys(SIGNS).find(k => ev.label.includes(SIGNS[k].name));
@@ -1304,6 +1334,8 @@ export default function Skyward() {
       const sign = dayData.moon.ingress;
       const sym  = dayData.moon.sign_symbol || "";
       events.push({ label: `Moon enters ${cap(sign)}`, symbol: `☽${sym}`, time: "", duration: "~2.5d", type: "moon" });
+      // Void of course happens before moon enters new sign
+      events.push({ label: "Moon void of course", symbol: "☽v/c", time: "", duration: "", type: "void" });
     }
     // Aspects
     if (dayData.aspects) {
@@ -1314,6 +1346,11 @@ export default function Skyward() {
           time:     "",
           duration: "",
           type:     "aspect",
+          planet1:  a.planet1,
+          planet2:  a.planet2,
+          aspect:   a.aspect,
+          sign1:    a.sign1,
+          sign2:    a.sign2,
         });
       }
     }
