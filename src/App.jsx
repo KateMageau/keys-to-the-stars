@@ -460,33 +460,6 @@ const DAY_SUMMARIES = {
 
 const WEEK_SUMMARY = "This week holds a push-pull between mental sharpness and emotional softness. Mercury conjunct Sun on Wednesday amplifies everything said and thought — words carry weight. Venus trine Moon supports connection early in the week, while Sun square Mars on Thursday stirs ambition and friction. Jupiter trine Uranus building in the background gives the whole week an undercurrent of potential — something is opening, even if it's not yet visible. The void of course periods on Tuesday, Thursday, and Saturday evening suggest those are good times to rest between moves rather than push forward.";
 
-// ─── FICTIONAL BIRTH EXAMPLE ──────────────────────────────────────────────────
-// Rising: Leo → house 1 = Leo
-// Whole sign: H1=Leo, H2=Virgo, H3=Libra, H4=Scorpio, H5=Sag, H6=Cap, H7=Aquarius, H8=Pisces, H9=Aries, H10=Taurus, H11=Gemini, H12=Cancer
-const EXAMPLE_PERSON = {
-  name: "Jordan Rivera",
-  dob: "June 3, 1990",
-  time: "7:45 PM",
-  place: "Austin, Texas",
-  rising: "Leo",
-  rising_num: 5, // Leo is the 5th sign, so Aries = H9, Taurus = H10, Virgo = H2, Pisces = H8, Gemini = H11
-};
-
-// For Leo rising (whole sign): Aries = H9, Taurus = H10, Gemini = H11, Cancer = H12, Leo = H1,
-// Virgo = H2, Libra = H3, Scorpio = H4, Sag = H5, Cap = H6, Aquarius = H7, Pisces = H8
-const SIGN_TO_HOUSE_LEO = {
-  aries: 9, taurus: 10, gemini: 11, cancer: 12, leo: 1, virgo: 2,
-  libra: 3, scorpio: 4, sagittarius: 5, capricorn: 6, aquarius: 7, pisces: 8,
-};
-
-const EXAMPLE_HOUSE_READINGS = [
-  { transit: "Sun in Aries", sign: "aries",  house: 9,  why: "The Sun is transiting Aries. With Leo rising, Aries occupies your 9th house in whole sign." },
-  { transit: "Moon in Pisces", sign: "pisces", house: 8,  why: "The Moon is transiting Pisces. With Leo rising, Pisces occupies your 8th house." },
-  { transit: "Venus in Taurus", sign: "taurus", house: 10, why: "Venus is transiting Taurus. With Leo rising, Taurus occupies your 10th house." },
-  { transit: "Mercury in Aries", sign: "aries", house: 9, why: "Mercury is transiting Aries, also activating your 9th house." },
-  { transit: "Saturn in Aries", sign: "aries", house: 9, why: "Saturn is transiting Aries, also in your 9th house — a longer activation." },
-];
-
 // ─── STARS ────────────────────────────────────────────────────────────────────
 const STARS = Array.from({ length: 90 }, (_, i) => ({
   id: i, x: Math.random() * 100, y: Math.random() * 100,
@@ -944,7 +917,6 @@ export default function Skyward() {
 
   const [transitData, setTransitData]     = useState(null);
   const [dataLoading, setDataLoading]     = useState(true);
-  const [dataError,   setDataError]       = useState(null);
 
   useEffect(() => {
     fetch(`/transits-${currentYear}.json`)
@@ -953,7 +925,7 @@ export default function Skyward() {
         return r.json();
       })
       .then(json => { setTransitData(json); setDataLoading(false); })
-      .catch(err => { setDataError(err.message); setDataLoading(false); });
+      .catch(err => { console.error("Transit data fetch failed:", err.message); setDataLoading(false); });
   }, [currentYear]);
 
   // Convert JSON day data → calendar event rows
