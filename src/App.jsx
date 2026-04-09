@@ -936,6 +936,7 @@ export default function Skyward() {
   const currentMonth = today.getMonth() + 1; // 1-based
   const currentDay   = today.getDate();
   const monthKey     = `${currentYear}-${String(currentMonth).padStart(2,"0")}`;
+  const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
   const MONTH_NAMES_FULL = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   const currentMonthName = MONTH_NAMES_FULL[currentMonth - 1];
   const daysInCurrentMonth = new Date(currentYear, currentMonth, 0).getDate();
