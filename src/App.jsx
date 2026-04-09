@@ -296,15 +296,6 @@ const TODAY_TRANSITS = [
 ];
 
 // ─── THIS WEEK TRANSITS ───────────────────────────────────────────────────────
-const WEEK_TRANSITS = [
-  { id: 6,  date: "Apr 2", planet: "venus",   sign: "taurus",    aspect: "trine",       planet2: "moon",    sign2: "virgo",      duration: "2 days",    time: "8:45 AM PST" },
-  { id: 7,  date: "Apr 3", planet: "mercury", sign: "aries",     aspect: "conjunction", planet2: "sun",     sign2: "aries",      duration: "3 days",    time: "4:20 PM PST" },
-  { id: 8,  date: "Apr 4", planet: "sun",     sign: "aries",     aspect: "square",      planet2: "mars",    sign2: "capricorn",  duration: "5 days",    time: "9:00 AM PST" },
-  { id: 9,  date: "Apr 5", planet: "moon",    sign: "virgo",     aspect: "sextile",     planet2: "saturn",  sign2: "aries",      duration: "~18 hours", time: "3:15 PM PST" },
-  { id: 10, date: "Apr 6", planet: "jupiter", sign: "gemini",    aspect: "trine",       planet2: "uranus",  sign2: "aquarius",   duration: "10 days",   time: "7:30 AM PST" },
-  { id: 11, date: "Apr 7", planet: "mars",    sign: "capricorn", aspect: "sextile",     planet2: "neptune", sign2: "pisces",     duration: "6 days",    time: "1:00 PM PST" },
-];
-
 // ─── CALENDAR EVENTS (April 2026) ─────────────────────────────────────────────
 // Each event: { label, symbol, time, duration, type: "transit"|"moon"|"void" }
 const CALENDAR_EVENTS = {
@@ -457,8 +448,6 @@ const DAY_SUMMARIES = {
   25: "Mars and Jupiter in a flowing trine — one of the more buoyant aspects of the month. Energy, confidence, and opportunity align. A good day for action that requires both boldness and wisdom.",
   28: "Venus and Mercury meet, bringing a graceful quality to communication and relating. Words feel beautiful, connection comes easily, and creative expression flows. A good day for writing, reaching out, or having the conversation you've been waiting to have.",
 };
-
-const WEEK_SUMMARY = "This week holds a push-pull between mental sharpness and emotional softness. Mercury conjunct Sun on Wednesday amplifies everything said and thought — words carry weight. Venus trine Moon supports connection early in the week, while Sun square Mars on Thursday stirs ambition and friction. Jupiter trine Uranus building in the background gives the whole week an undercurrent of potential — something is opening, even if it's not yet visible. The void of course periods on Tuesday, Thursday, and Saturday evening suggest those are good times to rest between moves rather than push forward.";
 
 // ─── STARS ────────────────────────────────────────────────────────────────────
 const STARS = Array.from({ length: 90 }, (_, i) => ({
