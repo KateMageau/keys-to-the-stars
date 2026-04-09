@@ -763,6 +763,7 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 `;
 
 // ─── TRANSIT ROW COMPONENT ────────────────────────────────────────────────────
+// eslint-disable-next-line no-unused-vars
 function TransitRow({ t }) {
   const [words, setWords] = useState(new Set());
   const [defsOpen, setDefsOpen] = useState(false);
