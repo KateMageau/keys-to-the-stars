@@ -519,7 +519,7 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 .card { position: relative; z-index: 1; background: var(--bg); border-radius: 16px;
   border: 1px solid rgba(197,184,216,0.3);
   box-shadow: 0 0 0 1px rgba(197,184,216,0.12), 0 8px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.8);
-  overflow: hidden; max-width: 1100px; margin: 0 auto; }
+  overflow: visible; max-width: 1100px; margin: 0 auto; padding-bottom: 2rem; }
 
 /* Header */
 .hdr { background: linear-gradient(135deg, var(--dusk) 0%, #1a1040 100%);
@@ -913,6 +913,7 @@ function PhaseCard({ phaseKey }) {
 export default function Skyward() {
   const [showWeek, setShowWeek] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null);
+  const [viewDay, setViewDay] = useState(0); // 0 = today, 1-6 = days ahead
   const [birthData, setBirthData] = useState(() => {
     try {
       const saved = localStorage.getItem("kts_birth_data");
@@ -996,11 +997,23 @@ export default function Skyward() {
 
   if (transitData && transitData[monthKey]) {
     const monthData = transitData[monthKey];
+    // Track which phases we've already shown to only mark first occurrence
+    const seenPhases = new Set();
     for (let d = 1; d <= daysInCurrentMonth; d++) {
       const dayData = monthData[d];
       if (dayData && !dayData.error) {
         liveCalendarEvents[d] = buildCalendarEvents(dayData);
-        if (dayData.moon?.phase) liveDayPhase[d] = dayData.moon.phase;
+        if (dayData.moon?.phase) {
+          const phase = dayData.moon.phase;
+          const isKey = ["new","first_quarter","full","last_quarter"].includes(phase);
+          // Only mark the first day a key phase appears
+          if (isKey && !seenPhases.has(phase)) {
+            liveDayPhase[d] = phase;
+            seenPhases.add(phase);
+          } else if (!isKey) {
+            // Non-key phases don't show emoji anyway, but track for reference
+          }
+        }
       }
     }
   }
@@ -1026,6 +1039,40 @@ export default function Skyward() {
 
   // Moon bar data from live data
   const todayMoon = transitData?.[monthKey]?.[currentDay]?.moon || null;
+
+  // Day navigation — view up to 6 days ahead
+  const viewDate = new Date(today);
+  viewDate.setDate(today.getDate() + viewDay);
+  const viewDayNum   = viewDate.getDate();
+  const viewMonthNum = viewDate.getMonth() + 1;
+  const viewYear     = viewDate.getFullYear();
+  const viewMonthKey = `${viewYear}-${String(viewMonthNum).padStart(2,"0")}`;
+  const viewMonthName = MONTH_NAMES_FULL[viewMonthNum - 1];
+  const DAY_NAMES_FULL = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  const viewDayName = DAY_NAMES_FULL[viewDate.getDay()];
+
+  const viewDayData = transitData?.[viewMonthKey]?.[viewDayNum] || null;
+  const viewTransits = viewDayData?.aspects || [];
+
+  // Split into short-term (moon aspects) and long-term (outer planet aspects)
+  const shortTermTransits = [];
+  const longTermTransits  = [];
+  viewTransits.forEach((a, i) => {
+    const isLong = ["jupiter","saturn","uranus","neptune","pluto"].includes(a.planet1) ||
+                   ["jupiter","saturn","uranus","neptune","pluto"].includes(a.planet2);
+    const t = {
+      id: i + 1,
+      planet: a.planet1, sign: a.sign1 || "aries",
+      aspect: a.aspect,
+      planet2: a.planet2, sign2: a.sign2 || "aries",
+      duration: isLong ? "weeks–months" : a.planet1 === "moon" || a.planet2 === "moon" ? "~hours" : "days",
+      time: "",
+    };
+    if (isLong) longTermTransits.push(t);
+    else shortTermTransits.push(t);
+  });
+
+  const [showLongTerm, setShowLongTerm] = useState(false);
   const [chartError, setChartError] = useState(null);
 
   // Parse birth date string into parts
@@ -1065,8 +1112,8 @@ export default function Skyward() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-RapidAPI-Key": process.env.REACT_APP_RAPIDAPI_KEY,
-          "X-RapidAPI-Host": "astrologer.p.rapidapi.com",
+          "x-rapidapi-key": process.env.REACT_APP_RAPIDAPI_KEY,
+          "x-rapidapi-host": "astrologer.p.rapidapi.com",
         },
         body: JSON.stringify({
           subject: {
@@ -1079,7 +1126,7 @@ export default function Skyward() {
             city: birthData.place,
             nation: "US",
             timezone: "America/Los_Angeles",
-            house_system: "W", // Whole sign
+            houses_system_identifier: "W",
           }
         }),
       });
@@ -1180,16 +1227,62 @@ export default function Skyward() {
           {/* TODAY */}
           <section className="sec">
             <div className="sec-hdr">
-              <span className="sec-title">Today's Sky</span>
-              <span className="sec-meta">5 active transits · tap any word to learn it</span>
+              <span className="sec-title">{viewDay === 0 ? "Today's Sky" : `${viewDayName}, ${viewMonthName} ${viewDayNum}`}</span>
+              <div style={{ display:"flex", gap:"0.4rem", alignItems:"center" }}>
+                {viewDay > 0 && (
+                  <button className="see-more no-print" onClick={() => setViewDay(v => v - 1)}>← Back</button>
+                )}
+                {viewDay < 6 && (
+                  <button className="see-more no-print" onClick={() => setViewDay(v => v + 1)}>Next day →</button>
+                )}
+              </div>
             </div>
+            {viewDay === 0 && <span style={{fontSize:"0.68rem",color:"var(--text-light)",fontStyle:"italic",display:"block",marginBottom:"0.5rem"}}>Browse up to 6 days ahead using the arrows above.</span>}
             {dataLoading && (
               <div style={{ color:"var(--text-light)", fontStyle:"italic", fontSize:"0.83rem", padding:"0.5rem 0" }}>
-                Loading today's sky data...
+                Loading sky data...
               </div>
             )}
-            {activeTodayTransits.map(t => <TransitRow key={t.id} t={t} />)}
-            {DAY_SUMMARIES[currentDay] && (
+
+            {/* Short-term transits */}
+            {shortTermTransits.length > 0 && (
+              <>
+                <div style={{ fontSize:"0.58rem", letterSpacing:"0.16em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.5rem", marginTop:"0.25rem" }}>
+                  Short-term transits
+                </div>
+                {shortTermTransits.map(t => <TransitRow key={t.id} t={t} />)}
+              </>
+            )}
+
+            {/* Long-term transits */}
+            <>
+              <div style={{ fontSize:"0.58rem", letterSpacing:"0.16em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.5rem", marginTop:"0.85rem", display:"flex", alignItems:"center", gap:"0.75rem" }}>
+                Long-term transits
+                {longTermTransits.length > 0 && (
+                  <button className="see-more no-print" onClick={() => setShowLongTerm(v => !v)} style={{fontSize:"0.58rem"}}>
+                    {showLongTerm ? "Collapse ↑" : `Show ${longTermTransits.length} ↓`}
+                  </button>
+                )}
+              </div>
+              {longTermTransits.length === 0 && (
+                <div style={{ fontSize:"0.75rem", color:"var(--text-light)", fontStyle:"italic" }}>
+                  No major outer planet aspects today.
+                </div>
+              )}
+              {showLongTerm && longTermTransits.map(t => <TransitRow key={t.id} t={t} />)}
+            </>
+
+            {/* Fallback to hardcoded if no live data */}
+            {!dataLoading && shortTermTransits.length === 0 && longTermTransits.length === 0 && (
+              <>
+                <div style={{ fontSize:"0.58rem", letterSpacing:"0.16em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.5rem" }}>
+                  Short-term transits
+                </div>
+                {activeTodayTransits.map(t => <TransitRow key={t.id} t={t} />)}
+              </>
+            )}
+
+            {viewDay === 0 && DAY_SUMMARIES[currentDay] && (
               <div className="summary-block">
                 <div className="summary-label">Overall energy · {currentMonthName} {currentDay}</div>
                 <div className="summary-text">{DAY_SUMMARIES[currentDay]}</div>
@@ -1233,11 +1326,6 @@ export default function Skyward() {
             </div>
             <div style={{ fontSize:"0.68rem", fontStyle:"italic", color:"var(--text-light)", marginBottom:"0.5rem", lineHeight:1.55 }}>
               All times are Pacific (PST/PDT). Add 1 hour for Mountain · 2 for Central · 3 for Eastern.
-            </div>
-            <div style={{ fontSize:"0.68rem", color:"var(--text-light)", marginBottom:"0.85rem", display:"flex", gap:"1.2rem", flexWrap:"wrap" }}>
-              <span><span style={{display:"inline-block",width:10,height:10,borderRadius:2,background:"#ede8f7",marginRight:5,verticalAlign:"middle"}}/>Transit</span>
-              <span><span style={{display:"inline-block",width:10,height:10,borderRadius:2,background:"#dff0f4",marginRight:5,verticalAlign:"middle"}}/>Moon ingress</span>
-              <span><span style={{display:"inline-block",width:10,height:10,borderRadius:2,background:"#faeee6",marginRight:5,verticalAlign:"middle"}}/>Void of course</span>
             </div>
             <div style={{ fontSize:"0.68rem", color:"var(--text-light)", marginBottom:"0.85rem", display:"flex", gap:"1.2rem", flexWrap:"wrap" }}>
               <span><span style={{display:"inline-block",width:10,height:10,borderRadius:2,background:"#ede8f7",marginRight:5,verticalAlign:"middle"}}/>Transit</span>
@@ -1291,10 +1379,23 @@ export default function Skyward() {
                   {d && <>
                     <div className="cal-num">{d}</div>
                     {(() => {
-                      const showPhaseEmoji = new Set([1,12,13,19,21,22,23,28,29]);
-                      return showPhaseEmoji.has(d) && activeDayPhase[d]
-                        ? <div className="cal-phase">{MOON_PHASES[activeDayPhase[d]]?.emoji}</div>
-                        : null;
+                      if (!activeDayPhase[d]) return null;
+                      const phase = activeDayPhase[d];
+                      const isKey = ["new","first_quarter","full","last_quarter"].includes(phase);
+                      if (!isKey) return null;
+                      const phaseDisplay = {
+                        new:           { emoji: "🌑", label: "New Moon" },
+                        first_quarter: { emoji: "🌓", label: "1st Quarter" },
+                        full:          { emoji: "🌕", label: "Full Moon" },
+                        last_quarter:  { emoji: "🌗", label: "3rd Quarter" },
+                      };
+                      const p = phaseDisplay[phase];
+                      if (!p) return null;
+                      return (
+                        <div className="cal-phase" title={p.label}>
+                          {p.emoji} <span style={{fontSize:"0.48rem"}}>{p.label}</span>
+                        </div>
+                      );
                     })()}
                     {(activeCalendarEvents[d]||[]).map((ev,ei) => (
                       <div key={ei} className={`ev ${ev.type}`} title={`${ev.label} · ${ev.time} · ${ev.duration}`}>
@@ -1388,7 +1489,7 @@ export default function Skyward() {
               <div>
                 {!showHouses && !chartLoading && (
                   <p className="placeholder-note">
-                    Enter your birth data and Keys to the Stars will calculate your rising sign and show you which houses today's transits are activating — and what each house governs. No predictions. Just the map of your sky.
+                    Your birth chart is divided into 12 houses, each governing a different area of life — relationships, career, home, creativity, and more. When planets move through the sky, they activate different houses depending on your rising sign. Enter your birth data and Keys to the Stars will show you which areas of your life today's transits are touching. No predictions. Just the map of your sky.
                   </p>
                 )}
                 {chartLoading && (
@@ -1397,38 +1498,50 @@ export default function Skyward() {
                   </div>
                 )}
                 {showHouses && chartData && (() => {
-                  const planets = chartData.chart_data?.planets || chartData.planets || [];
-                  const houses = chartData.chart_data?.houses || chartData.houses || [];
+                  // API returns planets as keys on chart_data.subject
+                  const subj = chartData.chart_data?.subject || chartData.subject || {};
 
-                  const asc = planets.find(p => p.name === "Asc" || p.name === "ASC") ||
-                              houses.find(h => h.number === 1);
-                  const risingSign = asc?.sign?.toLowerCase() || asc?.sign_name?.toLowerCase();
-                  const risingDisplay = risingSign ? risingSign.charAt(0).toUpperCase() + risingSign.slice(1) : "Unknown";
+                  const signMap = {
+                    "Ari":"aries","Tau":"taurus","Gem":"gemini","Can":"cancer",
+                    "Leo":"leo","Vir":"virgo","Lib":"libra","Sco":"scorpio",
+                    "Sag":"sagittarius","Cap":"capricorn","Aqu":"aquarius","Pis":"pisces"
+                  };
 
-                  const transitPlanets = [
-                    { name: "Sun", sign: "aries" },
-                    { name: "Moon", sign: "pisces" },
-                    { name: "Venus", sign: "taurus" },
-                    { name: "Mercury", sign: "aries" },
-                    { name: "Saturn", sign: "aries" },
-                  ];
+                  const normalize = (s) => s ? (signMap[s] || s.toLowerCase()) : null;
+
+                  // Get rising sign from first house
+                  const ascSign = normalize(subj.first_house?.sign || subj.ascendant?.sign);
+                  const risingDisplay = ascSign ? ascSign.charAt(0).toUpperCase() + ascSign.slice(1) : "Unknown";
+
+                  // Build transit planets from live data
+                  const transitPlanets = [];
+                  if (transitData?.[monthKey]?.[currentDay]?.planets) {
+                    const pd = transitData[monthKey][currentDay].planets;
+                    ["sun","moon","mercury","venus","mars","saturn","jupiter"].forEach(name => {
+                      if (pd[name]?.sign) transitPlanets.push({ name: cap(name), sign: pd[name].sign });
+                    });
+                  } else {
+                    // Fallback
+                    [["Sun","aries"],["Moon","capricorn"],["Mercury","aries"],["Venus","pisces"],["Saturn","aries"]].forEach(([name,sign]) => {
+                      transitPlanets.push({ name, sign });
+                    });
+                  }
 
                   return (
                     <div className="house-results">
                       <div className="house-intro">
-                        Your rising sign is <strong style={{color:"var(--text-mid)",fontStyle:"normal"}}>{risingDisplay}</strong>. Using whole sign houses, here is where today's transiting planets fall in your chart.
+                        Your rising sign is <strong style={{color:"var(--text-mid)",fontStyle:"normal"}}>{risingDisplay}</strong>. Using whole sign houses, today's transiting planets fall in these areas of your life.
                       </div>
                       {transitPlanets.map((tp, i) => {
-                        const houseNum = getHouseFromSign(tp.sign, risingSign);
+                        const houseNum = getHouseFromSign(tp.sign, ascSign);
                         const house = houseNum ? HOUSES[houseNum] : null;
                         if (!house) return null;
                         const planetData = PLANETS[tp.name.toLowerCase()];
                         return (
                           <div key={i} className="house-card">
                             <div className="hc-top">
-                              {planetData?.symbol} {tp.name} transiting {tp.sign.charAt(0).toUpperCase() + tp.sign.slice(1)}
+                              {planetData?.symbol} {tp.name} in {cap(tp.sign)} — transiting your {house.name}
                             </div>
-                            <div className="hc-name">{house.name} — ruled by {house.ruling_sign}</div>
                             <div className="hc-body">{house.meaning}</div>
                           </div>
                         );
@@ -1517,7 +1630,7 @@ export default function Skyward() {
                 <div className="rc-emoji">💙</div>
                 <div>
                   <div className="rc-title">Empowering Therapy</div>
-                  <div className="rc-sub">Kate's private practice — ADHD, DV & toxic relationships</div>
+                  <div className="rc-sub">Therapy · ADHD/Autism Assessments · Gender-Affirming Letters · Emotional Support Animal Letters · Therapist Trainings</div>
                 </div>
               </a>
             </div>
