@@ -978,13 +978,13 @@ export default function Skyward() {
         liveCalendarEvents[d] = buildCalendarEvents(dayData);
         if (dayData.moon?.phase) {
           const phase = dayData.moon.phase;
-          const isKey = ["new","first_quarter","full","last_quarter"].includes(phase);
-          // Only mark the first day a key phase appears
-          if (isKey && !seenPhases.has(phase)) {
-            liveDayPhase[d] = phase;
-            seenPhases.add(phase);
-          } else if (!isKey) {
-            // Non-key phases don't show emoji anyway, but track for reference
+          const keyPhases = ["new","first_quarter","full","last_quarter"];
+          const keyMatch = keyPhases.find(k =>
+            phase === k || phase === k + "_moon" || phase.startsWith(k)
+          );
+          if (keyMatch && !seenPhases.has(keyMatch)) {
+            liveDayPhase[d] = keyMatch;
+            seenPhases.add(keyMatch);
           }
         }
       }
@@ -1027,21 +1027,28 @@ export default function Skyward() {
   const viewDayData = transitData?.[viewMonthKey]?.[viewDayNum] || null;
   const viewTransits = viewDayData?.aspects || [];
 
-  // Split into short-term (moon aspects) and long-term (outer planet aspects)
+  // Split into short-term and long-term transits
+  // Long-term = both planets are outer (Jupiter, Saturn, Uranus, Neptune, Pluto)
+  // These aspects last weeks to months because both planets move slowly
+  const outerPlanets = ["jupiter","saturn","uranus","neptune","pluto"];
   const shortTermTransits = [];
   const longTermTransits  = [];
   viewTransits.forEach((a, i) => {
-    const isLong = ["jupiter","saturn","uranus","neptune","pluto"].includes(a.planet1) ||
-                   ["jupiter","saturn","uranus","neptune","pluto"].includes(a.planet2);
+    const bothOuter = outerPlanets.includes(a.planet1) && outerPlanets.includes(a.planet2);
+    const involvesMoon = a.planet1 === "moon" || a.planet2 === "moon";
+    const duration = bothOuter ? "weeks–months"
+      : involvesMoon ? "hours"
+      : outerPlanets.includes(a.planet1) || outerPlanets.includes(a.planet2) ? "~1 week"
+      : "2–5 days";
     const t = {
       id: i + 1,
       planet: a.planet1, sign: a.sign1 || "aries",
       aspect: a.aspect,
       planet2: a.planet2, sign2: a.sign2 || "aries",
-      duration: isLong ? "weeks–months" : a.planet1 === "moon" || a.planet2 === "moon" ? "~hours" : "days",
+      duration,
       time: "",
     };
-    if (isLong) longTermTransits.push(t);
+    if (bothOuter) longTermTransits.push(t);
     else shortTermTransits.push(t);
   });
 
@@ -1104,12 +1111,16 @@ export default function Skyward() {
         }),
       });
 
-      if (!response.ok) throw new Error(`API error: ${response.status}`);
+      if (!response.ok) {
+        const errBody = await response.json().catch(() => ({}));
+        throw new Error(`API ${response.status}: ${JSON.stringify(errBody)}`);
+      }
       const data = await response.json();
+      if (data.status === "ERROR") throw new Error(JSON.stringify(data));
       setChartData(data);
       setShowHouses(true);
     } catch (err) {
-      setChartError("Couldn't load your chart right now. Please check your birth data and try again.");
+      setChartError(`Couldn't load your chart: ${err.message}`);
       console.error(err);
     } finally {
       setChartLoading(false);
@@ -1353,16 +1364,13 @@ export default function Skyward() {
                     <div className="cal-num">{d}</div>
                     {(() => {
                       if (!activeDayPhase[d]) return null;
-                      const phase = activeDayPhase[d];
-                      const isKey = ["new","first_quarter","full","last_quarter"].includes(phase);
-                      if (!isKey) return null;
                       const phaseDisplay = {
                         new:           { emoji: "🌑", label: "New Moon" },
                         first_quarter: { emoji: "🌓", label: "1st Quarter" },
                         full:          { emoji: "🌕", label: "Full Moon" },
                         last_quarter:  { emoji: "🌗", label: "3rd Quarter" },
                       };
-                      const p = phaseDisplay[phase];
+                      const p = phaseDisplay[activeDayPhase[d]];
                       if (!p) return null;
                       return (
                         <div className="cal-phase" title={p.label}>
