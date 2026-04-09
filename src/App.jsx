@@ -448,7 +448,7 @@ const STARS = Array.from({ length: 90 }, (_, i) => ({
 
 // ─── CSS ─────────────────────────────────────────────────────────────────────
 const css = `
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Lato:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Lato:wght@300;400&family=Montserrat:wght@400;500;600&display=swap');
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --lav: #c5b8d8; --lav-mid: #b0a0cc; --lav-deep: #9d8fc0;
@@ -496,8 +496,8 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 .sec { padding: 1.75rem 2.5rem; border-bottom: 1px solid var(--bg-mid); }
 .sec:last-child { border-bottom: none; }
 .sec-hdr { display: flex; align-items: baseline; gap: 0.85rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
-.sec-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 500; color: var(--text-mid); }
-.sec-meta { font-size: 0.67rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-light); }
+.sec-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 500; color: #222; }
+.sec-meta { font-size: 0.67rem; letter-spacing: 0.12em; text-transform: uppercase; color: #333; }
 .see-more { background: none; border: 1px solid var(--lav-mid); border-radius: 5px;
   padding: 0.3rem 0.9rem; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
   color: var(--lav-deep); cursor: pointer; transition: all 0.15s; margin-left: auto; }
@@ -512,11 +512,11 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
   font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--text); }
 .tw { cursor: pointer; border-bottom: 1px dotted var(--lav-deep); padding-bottom: 1px; transition: color 0.15s, border-color 0.15s; }
 .tw:hover, .tw.on { color: var(--ink); border-bottom-color: var(--ink); font-weight: 500; }
-.tw-p { color: var(--text-mid); }
-.tw-a { color: var(--text-light); font-size: 0.88rem; font-family: 'Lato', sans-serif; }
+.tw-p { color: #222; }
+.tw-a { color: #333; font-size: 0.88rem; font-family: 'Lato', sans-serif; }
 .t-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.2rem; }
-.dur-pill { background: var(--bg-mid); color: var(--text-light); font-size: 0.62rem; letter-spacing: 0.07em; padding: 0.18rem 0.6rem; border-radius: 20px; white-space: nowrap; }
-.t-time { font-size: 0.62rem; color: var(--text-light); letter-spacing: 0.04em; }
+.dur-pill { background: var(--bg-mid); color: #333; font-size: 0.62rem; letter-spacing: 0.07em; padding: 0.18rem 0.6rem; border-radius: 20px; white-space: nowrap; }
+.t-time { font-size: 0.62rem; color: #333; letter-spacing: 0.04em; }
 .in-word { color: var(--lav-deep); font-size: 0.82rem; font-family: 'Lato', sans-serif; }
 
 /* Inline defs */
@@ -525,13 +525,13 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 .defs-top { display: flex; justify-content: flex-end; margin-bottom: 0.75rem; }
 .collapse-btn { background: none; border: 1px solid rgba(157,143,192,0.4); border-radius: 5px;
   padding: 0.2rem 0.7rem; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--text-light); cursor: pointer; transition: all 0.15s; }
+  color: #333; cursor: pointer; transition: all 0.15s; }
 .collapse-btn:hover { background: var(--lav-deep); color: white; border-color: var(--lav-deep); }
 .defs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0.85rem; }
 .def { }
 .def-lbl { font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--lav-deep); margin-bottom: 0.28rem; }
 .def-ttl { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--text); margin-bottom: 0.3rem; }
-.def-body { font-size: 0.8rem; line-height: 1.7; color: var(--text-mid); }
+.def-body { font-size: 0.8rem; line-height: 1.7; color: #222; }
 .def-combo { background: white; border-left: 3px solid var(--lav-deep); border-radius: 0 6px 6px 0;
   padding: 0.7rem 0.95rem; grid-column: 1 / -1; margin-top: 0.25rem; }
 .def-combo .def-lbl { color: var(--gold); }
@@ -546,14 +546,14 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 .cal-cell:not(.empty):hover { background: #f3eefb; }
 .cal-cell.sel { background: #ece6f5; }
 .cal-cell.today { border-top: 2px solid var(--lav-deep); }
-.cal-num { font-size: 0.72rem; color: var(--text-light); margin-bottom: 0.2rem; }
+.cal-num { font-size: 0.72rem; color: #333; margin-bottom: 0.2rem; }
 .today .cal-num { color: var(--dusk); font-weight: 700; }
 .ev { font-size: 0.56rem; line-height: 1.25; border-radius: 3px; padding: 0.12rem 0.28rem; margin-bottom: 0.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ev.transit { background: #ede8f7; color: var(--text-mid); }
+.ev.transit { background: #ede8f7; color: #222; }
 .ev.moon    { background: #dff0f4; color: #3a6070; }
 .ev.void    { background: #faeee6; color: #8c4e28; font-style: italic; }
 .cal-detail { background: white; border: 1px solid var(--bg-mid); border-radius: 9px; padding: 1.1rem 1.4rem; margin-top: 0.85rem; }
-.cal-d-date { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--text-mid); margin-bottom: 0.85rem; }
+.cal-d-date { font-family: 'Playfair Display', serif; font-size: 1rem; color: #222; margin-bottom: 0.85rem; }
 .ev-row { display: flex; align-items: baseline; justify-content: space-between; padding: 0.45rem 0;
   border-bottom: 1px solid var(--bg-mid); font-size: 0.82rem; color: var(--text); gap: 0.75rem; }
 .ev-row:last-child { border-bottom: none; }
@@ -563,11 +563,11 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 .badge-moon    { background: #dff0f4; color: #1a4050; }
 .badge-void    { background: #faeee6; color: #7a3010; }
 .badge-aspect  { background: #e8eaf6; color: #2c3070; }
-.ev-meta { display: flex; gap: 0.85rem; font-size: 0.67rem; color: var(--text-light); white-space: nowrap; }
+.ev-meta { display: flex; gap: 0.85rem; font-size: 0.67rem; color: #333; white-space: nowrap; }
 
 /* Birth section */
 .birth-grid { display: grid; grid-template-columns: 300px 1fr; gap: 2rem; align-items: start; }
-.b-lbl { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-light); display: block; margin-bottom: 0.3rem; }
+.b-lbl { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: #333; display: block; margin-bottom: 0.3rem; }
 .b-input { width: 100%; border: 1px solid var(--bg-mid); border-radius: 6px; padding: 0.55rem 0.8rem;
   font-family: 'Lato', sans-serif; font-size: 0.82rem; color: var(--text); background: white;
   outline: none; margin-bottom: 0.75rem; transition: border-color 0.2s; }
@@ -588,7 +588,7 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 .resource-card:hover { border-color: var(--lav-mid); box-shadow: 0 2px 10px rgba(120,60,180,0.09); }
 .rc-emoji { font-size: 1.4rem; line-height: 1; flex-shrink: 0; margin-top: 0.1rem; }
 .rc-title { font-family: 'Playfair Display', serif; font-size: 0.88rem; color: var(--text); margin-bottom: 0.15rem; }
-.rc-sub { font-size: 0.7rem; color: var(--text-light); line-height: 1.45; }
+.rc-sub { font-size: 0.7rem; color: #333; line-height: 1.45; }
 .support-card {
   display: flex; align-items: flex-start; gap: 0.65rem;
   background: var(--bg-light); border: 1px solid var(--lav-mid); border-radius: 8px;
@@ -596,13 +596,13 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
   flex: 1 1 200px; min-width: 200px; transition: all 0.2s;
 }
 .support-card:hover { border-color: var(--lav-deep); }
-.example-note { font-size: 0.7rem; color: var(--text-light); margin-top: 0.6rem; font-style: italic; text-align: center; }
+.example-note { font-size: 0.7rem; color: #333; margin-top: 0.6rem; font-style: italic; text-align: center; }
 .house-results { }
-.house-intro { font-size: 0.82rem; color: var(--text-light); margin-bottom: 1rem; font-style: italic; line-height: 1.6; }
+.house-intro { font-size: 0.82rem; color: #333; margin-bottom: 1rem; font-style: italic; line-height: 1.6; }
 .house-card { background: white; border: 1px solid var(--bg-mid); border-radius: 8px; padding: 0.85rem 1.05rem; margin-bottom: 0.6rem; }
 .hc-top { font-size: 0.6rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--lav-deep); margin-bottom: 0.25rem; }
 .hc-name { font-family: 'Playfair Display', serif; font-size: 0.98rem; color: var(--text); margin-bottom: 0.3rem; }
-.hc-body { font-size: 0.8rem; line-height: 1.68; color: var(--text-mid); }
+.hc-body { font-size: 0.8rem; line-height: 1.68; color: #222; }
 
 /* Unified sky tile card — compact, accessible */
 .sky-card { background: white; border: 1px solid var(--bg-mid); border-radius: 8px; padding: 0.45rem 0.7rem; margin-bottom: 0.35rem; display: flex; flex-direction: column; gap: 0.1rem; }
@@ -612,7 +612,7 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 .sky-card-body { font-size: 0.875rem; line-height: 1.65; color: #222; }
 .sky-card-sub { font-size: 0.75rem; color: #555; }
 .sky-section-label { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: #222; margin-bottom: 0.4rem; margin-top: 0.85rem; font-weight: 600; }
-.placeholder-note { font-style: italic; font-size: 0.82rem; color: var(--text-light);
+.placeholder-note { font-style: italic; font-size: 0.82rem; color: #333;
   line-height: 1.7; border-left: 3px solid var(--lav); padding-left: 0.85rem; }
 
 /* Calendar day detail grid */
@@ -621,15 +621,15 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 .cal-detail-grid .ev-row > * { padding: 0.42rem 0; border-bottom: 1px solid var(--bg-mid); font-size: 0.82rem; }
 .cal-detail-grid .ev-row:last-child > * { border-bottom: none; }
 .cal-detail-grid .ev-name { color: var(--text); font-family: 'Playfair Display', serif; }
-.cal-detail-grid .ev-time { color: var(--text-light); font-size: 0.68rem; white-space: nowrap; text-align: right; }
-.cal-detail-grid .ev-dur  { color: var(--text-light); font-size: 0.68rem; white-space: nowrap; text-align: right; }
+.cal-detail-grid .ev-time { color: #333; font-size: 0.68rem; white-space: nowrap; text-align: right; }
+.cal-detail-grid .ev-dur  { color: #333; font-size: 0.68rem; white-space: nowrap; text-align: right; }
 
 /* Summary blocks */
 .summary-block { background: var(--bg-light); border-left: 3px solid var(--lav-mid);
   border-radius: 0 8px 8px 0; padding: 0.85rem 1.1rem; margin-top: 1rem; }
 .summary-label { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--lav-deep); margin-bottom: 0.4rem; }
-.summary-text { font-size: 0.82rem; line-height: 1.75; color: var(--text-mid); font-style: italic; }
+.summary-text { font-size: 0.82rem; line-height: 1.75; color: #222; font-style: italic; }
 
 /* Moon bar clickable */
 .moon-bar-item {
@@ -693,7 +693,7 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 .phase-meaning {
   font-size: 0.82rem;
   line-height: 1.75;
-  color: var(--text-mid);
+  color: #222;
   margin-bottom: 0.75rem;
 }
 
@@ -709,7 +709,7 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 .phase-sub-text {
   font-size: 0.8rem;
   line-height: 1.68;
-  color: var(--text-mid);
+  color: #222;
 }
 
 /* Phase emoji on calendar */
@@ -738,12 +738,29 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
   margin-top: 0.6rem;
   font-size: 0.78rem;
   line-height: 1.7;
-  color: var(--text-mid);
+  color: #222;
 }
 
 /* Date label above week transits */
 .week-date-lbl { font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--text-light); padding-left: 0.1rem; margin-bottom: 0.25rem; margin-top: 0.6rem; }
+  color: #333; padding-left: 0.1rem; margin-bottom: 0.25rem; margin-top: 0.6rem; }
+
+
+@media (max-width: 600px) {
+  .sec { padding: 1.25rem 1rem; }
+  .hdr { padding: 1.25rem 1rem 1rem; }
+  .moon-bar { padding: 0.5rem 1rem; gap: 1rem; }
+  .birth-grid { grid-template-columns: 1fr !important; }
+  .sky-card { padding: 0.35rem 0.55rem; }
+  .sky-card-top { flex-wrap: wrap; }
+  .sky-card-pill { font-size: 0.7rem; margin-top: 0.2rem; }
+  .planets-grid-2col { grid-template-columns: 1fr 1fr !important; }
+  .sky-card-title { font-size: 0.85rem; }
+  .t-phrase { font-size: 0.88rem; }
+  .def-body { font-size: 0.82rem; }
+  .cal-detail-grid { grid-template-columns: 1fr auto; }
+  .cal-detail-grid .ev-dur { display: none; }
+}
 
 @media print {
   .nebula, .stars, .no-print { display: none !important; }
@@ -920,6 +937,34 @@ function AspectCard({ a, pill, durLabel }) {
   );
 }
 
+// ─── VOID OF COURSE NOTE ─────────────────────────────────────────────────────
+function VoidOfCourseNote() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="sky-card" style={{ borderLeft:"3px solid var(--moon)", marginTop:"0.2rem" }}>
+      <div className="sky-card-top">
+        <span style={{ fontSize:"0.875rem", color:"#222", flex:1 }}>
+          The moon is{" "}
+          <span
+            onClick={() => setOpen(v => !v)}
+            style={{ textDecoration:"underline", cursor:"pointer", color:"#1a4050", fontWeight:500 }}
+          >void of course</span>
+          {" "}before it enters a new sign — a quiet in-between period.
+        </span>
+        <span onClick={() => setOpen(v => !v)} style={{ cursor:"pointer", fontSize:"0.75rem", color:"#555", flexShrink:0 }}>{open ? "▲" : "▼"}</span>
+      </div>
+      {open && (
+        <div style={{ marginTop:"0.5rem", borderTop:"1px solid var(--bg-mid)", paddingTop:"0.5rem" }}>
+          <div style={{ fontSize:"0.6rem", letterSpacing:"0.14em", textTransform:"uppercase", color:"#444", marginBottom:"0.3rem" }}>Void of Course</div>
+          <div style={{ fontSize:"0.875rem", lineHeight:1.65, color:"#222" }}>
+            After the moon makes its last major aspect in a sign and before it enters the next sign, it is considered void of course. Traditionally this is a time when actions started are less likely to come to fruition — better for rest, reflection, and completion than for launching new things. The void period can last minutes or many hours.
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── EXPANDABLE HOUSE CARD ───────────────────────────────────────────────────
 function ExpandableHouseCard({ planetData, tp, house, comboMeaning, cap }) {
   const [open, setOpen] = useState(false);
@@ -937,10 +982,10 @@ function ExpandableHouseCard({ planetData, tp, house, comboMeaning, cap }) {
               <div style={{ fontSize:"0.6rem", letterSpacing:"0.14em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.3rem" }}>
                 {tp.name} in {cap(tp.sign)}
               </div>
-              <div style={{ fontSize:"0.78rem", lineHeight:1.7, color:"var(--text-mid)" }}>{comboMeaning}</div>
+              <div style={{ fontSize:"0.78rem", lineHeight:1.7, color:"#222" }}>{comboMeaning}</div>
             </>
           ) : (
-            <div style={{ fontSize:"0.78rem", color:"var(--text-light)", fontStyle:"italic" }}>
+            <div style={{ fontSize:"0.78rem", color:"#333", fontStyle:"italic" }}>
               Tap the planet or sign name in Today's Sky to learn more about {tp.name} in {cap(tp.sign)}.
             </div>
           )}
@@ -1360,7 +1405,7 @@ export default function Skyward() {
           )}
 
           {/* Jump-to navigation */}
-          <div style={{ background:"var(--bg-light)", padding:"0.5rem 2.5rem", borderBottom:"1px solid var(--bg-mid)", display:"flex", gap:"0.5rem", flexWrap:"wrap" }}>
+          <div style={{ background:"var(--bg-light)", padding:"0.6rem 1rem", borderBottom:"1px solid var(--bg-mid)", display:"flex", gap:"0.5rem", flexWrap:"wrap", justifyContent:"center" }}>
             {[
               { label:"Today", href:"#today" },
               { label:"This Week", href:"#week" },
@@ -1368,11 +1413,12 @@ export default function Skyward() {
               { label:"Birth Chart", href:"#birth-chart" },
             ].map(({ label, href }) => (
               <a key={href} href={href}
-                style={{ fontSize:"0.8rem", color:"#333", textDecoration:"none", padding:"0.25rem 0.75rem",
-                  background:"white", borderRadius:20, border:"1px solid rgba(80,60,120,0.2)",
-                  fontWeight:500, transition:"all 0.15s" }}
-                onMouseEnter={e => e.target.style.background="#ede8f7"}
-                onMouseLeave={e => e.target.style.background="white"}
+                style={{ fontSize:"0.85rem", color:"#222", textDecoration:"none", padding:"0.35rem 1.1rem",
+                  background:"white", borderRadius:20, border:"1px solid rgba(80,60,120,0.25)",
+                  fontFamily:"'Montserrat', sans-serif", fontWeight:500, letterSpacing:"0.04em",
+                  transition:"all 0.15s", boxShadow:"0 1px 3px rgba(0,0,0,0.06)" }}
+                onMouseEnter={e => { e.target.style.background="#ede8f7"; e.target.style.borderColor="rgba(80,60,120,0.5)"; }}
+                onMouseLeave={e => { e.target.style.background="white"; e.target.style.borderColor="rgba(80,60,120,0.25)"; }}
               >{label}</a>
             ))}
           </div>
@@ -1392,7 +1438,7 @@ export default function Skyward() {
             </div>
 
             {dataLoading && (
-              <div style={{ color:"var(--text-light)", fontStyle:"italic", fontSize:"0.83rem", padding:"0.5rem 0" }}>
+              <div style={{ color:"#333", fontStyle:"italic", fontSize:"0.83rem", padding:"0.5rem 0" }}>
                 Loading sky data...
               </div>
             )}
@@ -1403,22 +1449,48 @@ export default function Skyward() {
               const moonPhase  = viewDayData?.moon?.phase || null;
               const moonSymbol = viewDayData?.moon?.sign_symbol || "";
               if (!moonSign) return null;
-              const moonKey    = `moon-${moonSign}`;
-              const rangeKey   = `moon-${moonSign}`;
-              const pill       = dateRangePill(rangeKey, planetSignRanges);
+
+              // Find start/end of THIS specific moon-in-sign run around the view date
+              let runStart = fmtDate(viewYear, viewMonthNum, viewDayNum);
+              let runEnd   = fmtDate(viewYear, viewMonthNum, viewDayNum);
+              // Scan backwards to find when this moon sign started
+              for (let offset = 1; offset <= 4; offset++) {
+                const d = new Date(viewDate); d.setDate(viewDate.getDate() - offset);
+                const mk = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
+                const dd = transitData?.[mk]?.[d.getDate()];
+                if (dd?.moon?.sign === moonSign) runStart = fmtDate(d.getFullYear(), d.getMonth()+1, d.getDate());
+                else break;
+              }
+              // Scan forward to find when this moon sign ends
+              for (let offset = 1; offset <= 4; offset++) {
+                const d = new Date(viewDate); d.setDate(viewDate.getDate() + offset);
+                const mk = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
+                const dd = transitData?.[mk]?.[d.getDate()];
+                if (dd?.moon?.sign === moonSign) runEnd = fmtDate(d.getFullYear(), d.getMonth()+1, d.getDate());
+                else break;
+              }
+              const pill = runStart === runEnd ? runStart : `${runStart}–${runEnd}`;
+
               const phaseName  = MOON_PHASES[moonPhase]?.name || cap(moonPhase?.replace(/_/g," ") || "");
-              const moonMeaning = COMBINATIONS[moonKey];
+              const moonMeaning = COMBINATIONS[`moon-${moonSign}`];
+
+              // Check if moon changes signs today (ingress day = void of course before it)
+              const isMoonIngress = viewDayData?.moon?.ingress != null;
+
               return (
                 <>
                   <div className="sky-section-label">Moon</div>
                   <div className="sky-card">
                     <div className="sky-card-top">
                       <span className="sky-card-title">☽ Moon in {cap(moonSign)} {moonSymbol}</span>
-                      {pill && <span className="sky-card-pill">{pill}</span>}
+                      <span className="sky-card-pill">{pill}</span>
                     </div>
                     <div className="sky-card-sub">{phaseName}{viewDayData?.moon?.illumination ? ` · ${Math.round(viewDayData.moon.illumination)}%` : ""}</div>
                     {moonMeaning && <div className="sky-card-body">{moonMeaning.slice(0,180)}{moonMeaning.length > 180 ? "…" : ""}</div>}
                   </div>
+                  {isMoonIngress && (
+                    <VoidOfCourseNote />
+                  )}
                 </>
               );
             })()}
@@ -1511,7 +1583,7 @@ export default function Skyward() {
             {(() => {
               const pd = viewDayData?.planets;
               if (!pd) return null;
-              const planetOrder = ["sun","moon","mercury","venus","mars","jupiter","saturn","uranus","neptune","pluto"];
+              const planetOrder = ["sun","mercury","venus","mars","jupiter","saturn","uranus","neptune","pluto"];
               const cards = planetOrder.map(name => {
                 const p = pd[name];
                 if (!p?.sign) return null;
@@ -1558,7 +1630,7 @@ export default function Skyward() {
               </button>
             </div>
             {!showWeek && (
-              <div style={{ color:"var(--text-light)", fontSize:"0.83rem", fontStyle:"italic" }}>
+              <div style={{ color:"#333", fontSize:"0.83rem", fontStyle:"italic" }}>
                 Click to see this week's aspects and planet sign changes.
               </div>
             )}
@@ -1631,7 +1703,7 @@ export default function Skyward() {
                 );
               }
               return weekItems.length > 0 ? weekItems : (
-                <div style={{ color:"var(--text-light)", fontSize:"0.83rem", fontStyle:"italic" }}>No planet sign changes this week.</div>
+                <div style={{ color:"#333", fontSize:"0.83rem", fontStyle:"italic" }}>No planet sign changes this week.</div>
               );
             })()}
           </section>
@@ -1642,10 +1714,10 @@ export default function Skyward() {
               <span className="sec-title">{currentMonthName} {currentYear}</span>
               <span className="sec-meta">All transits, moon ingresses & void of course · Click any day</span>
             </div>
-            <div style={{ fontSize:"0.68rem", fontStyle:"italic", color:"var(--text-light)", marginBottom:"0.5rem", lineHeight:1.55 }}>
+            <div style={{ fontSize:"0.68rem", fontStyle:"italic", color:"#333", marginBottom:"0.5rem", lineHeight:1.55 }}>
               All times are Pacific (PST/PDT). Add 1 hour for Mountain · 2 for Central · 3 for Eastern.
             </div>
-            <div style={{ fontSize:"0.68rem", color:"var(--text-light)", marginBottom:"0.85rem", display:"flex", gap:"1.2rem", flexWrap:"wrap" }}>
+            <div style={{ fontSize:"0.68rem", color:"#333", marginBottom:"0.85rem", display:"flex", gap:"1.2rem", flexWrap:"wrap" }}>
               <span><span style={{display:"inline-block",width:10,height:10,borderRadius:2,background:"#ede8f7",marginRight:5,verticalAlign:"middle"}}/>Transit</span>
               <span><span style={{display:"inline-block",width:10,height:10,borderRadius:2,background:"#dff0f4",marginRight:5,verticalAlign:"middle"}}/>Moon ingress</span>
               <span><span style={{display:"inline-block",width:10,height:10,borderRadius:2,background:"#faeee6",marginRight:5,verticalAlign:"middle"}}/>Void of course</span>
@@ -1656,7 +1728,7 @@ export default function Skyward() {
               <summary style={{ fontSize:"0.65rem", letterSpacing:"0.1em", textTransform:"uppercase", color:"var(--lav-deep)", cursor:"pointer", userSelect:"none", marginBottom:"0.5rem" }}>
                 Symbol guide ▸
               </summary>
-              <div style={{ display:"flex", flexWrap:"wrap", gap:"1.5rem", fontSize:"0.68rem", color:"var(--text-mid)", lineHeight:1.8, background:"var(--bg-light)", borderRadius:8, padding:"0.75rem 1rem", marginTop:"0.4rem" }}>
+              <div style={{ display:"flex", flexWrap:"wrap", gap:"1.5rem", fontSize:"0.68rem", color:"#222", lineHeight:1.8, background:"var(--bg-light)", borderRadius:8, padding:"0.75rem 1rem", marginTop:"0.4rem" }}>
                 <div>
                   <div style={{ fontSize:"0.58rem", letterSpacing:"0.14em", textTransform:"uppercase", color:"var(--lav-deep)", marginBottom:"0.3rem" }}>Planets</div>
                   {Object.entries(PLANETS).map(([k,p]) => (
@@ -1726,7 +1798,7 @@ export default function Skyward() {
               <div className="cal-detail">
                 <div className="cal-d-date">{currentMonthName} {selectedDay}, {currentYear}</div>
                 {selEvents.length === 0
-                  ? <div style={{color:"var(--text-light)",fontStyle:"italic",fontSize:"0.82rem"}}>No major transits on this day.</div>
+                  ? <div style={{color:"#333",fontStyle:"italic",fontSize:"0.82rem"}}>No major transits on this day.</div>
                   : <div className="cal-detail-grid">
                       {selEvents.map((ev, i) => {
                         // Try to get date range for this event
@@ -1802,7 +1874,7 @@ export default function Skyward() {
               <span className="sec-title">Your Chart</span>
               <span className="sec-meta">See which houses today's transits activate for you</span>
             </div>
-            <div className="birth-grid">
+            <div className={showHouses || chartLoading ? "birth-grid" : ""}>
               <div>
                 <label className="b-lbl">Birth Date</label>
                 <input className="b-input" placeholder="e.g. June 3, 1990"
@@ -1813,7 +1885,7 @@ export default function Skyward() {
                 <label className="b-lbl">Birth Place</label>
                 <input className="b-input" placeholder="e.g. Austin, Texas"
                   value={birthData.place} onChange={e => updateBirthData({...birthData, place: e.target.value})} />
-                <div style={{ fontSize:"0.78rem", color:"var(--text-light)", marginTop:"0.6rem", lineHeight:1.6 }}>
+                <div style={{ fontSize:"0.78rem", color:"#333", marginTop:"0.6rem", lineHeight:1.6 }}>
                   Your birth data is saved in this browser so it will be here when you come back. It stays on this device only — it won't appear if you open the site in a different browser, private window, or on another device.
                 </div>
                 <button className="b-btn" onClick={fetchBirthChart} disabled={chartLoading}>
@@ -1826,14 +1898,9 @@ export default function Skyward() {
                 )}
               </div>
 
-              <div>
-                {!showHouses && !chartLoading && (
-                  <p className="placeholder-note">
-                    Your birth chart is divided into 12 houses, each governing a different area of life — relationships, career, home, creativity, and more. When planets move through the sky, they activate different houses depending on your rising sign. Enter your birth data and Keys to the Stars will show you which areas of your life today's transits are touching. No predictions. Just the map of your sky.
-                  </p>
-                )}
+              {(showHouses || chartLoading) && <div>
                 {chartLoading && (
-                  <div style={{color:"var(--text-light)", fontStyle:"italic", fontSize:"0.85rem", lineHeight:1.7}}>
+                  <div style={{color:"#444", fontStyle:"italic", fontSize:"0.875rem", lineHeight:1.7}}>
                     Calculating your chart from the stars... ✨
                   </div>
                 )}
@@ -1870,7 +1937,7 @@ export default function Skyward() {
                   return (
                     <div className="house-results">
                       <div className="house-intro">
-                        Your rising sign is <strong style={{color:"var(--text-mid)",fontStyle:"normal"}}>{risingDisplay}</strong>. Using whole sign houses, today's transiting planets fall in these areas of your life. Tap any card to learn more.
+                        Your rising sign is <strong style={{color:"#222",fontStyle:"normal"}}>{risingDisplay}</strong>. Using whole sign houses, today's transiting planets fall in these areas of your life. Tap any card to learn more.
                       </div>
                       {transitPlanets.map((tp, i) => {
                         const houseNum = getHouseFromSign(tp.sign, ascSign);
@@ -1890,7 +1957,7 @@ export default function Skyward() {
                           />
                         );
                       })}
-                      <div style={{marginTop:"0.75rem",fontSize:"0.7rem",color:"var(--text-light)",fontStyle:"italic"}}>
+                      <div style={{marginTop:"0.75rem",fontSize:"0.7rem",color:"#333",fontStyle:"italic"}}>
                         Whole sign houses · {risingDisplay} rising · Calculated via Astrologer API
                       </div>
                     </div>
