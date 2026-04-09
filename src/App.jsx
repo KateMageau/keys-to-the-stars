@@ -1173,7 +1173,6 @@ export default function Skyward() {
   const viewDayName = DAY_NAMES_FULL[viewDate.getDay()];
 
   const viewDayData = transitData?.[viewMonthKey]?.[viewDayNum] || null;
-  const outerPlanets = ["jupiter","saturn","uranus","neptune","pluto"];
 
   const [showLongTerm, setShowLongTerm] = useState(false);
   const [chartError, setChartError] = useState(null);
