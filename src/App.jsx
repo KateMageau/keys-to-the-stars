@@ -558,10 +558,11 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
   border-bottom: 1px solid var(--bg-mid); font-size: 0.82rem; color: var(--text); gap: 0.75rem; }
 .ev-row:last-child { border-bottom: none; }
 .ev-row-name { font-family: 'Playfair Display', serif; }
-.ev-row-badge { font-size: 0.58rem; padding: 0.1rem 0.45rem; border-radius: 10px; margin-left: 0.4rem; }
-.badge-transit { background: #ede8f7; color: var(--lav-deep); }
-.badge-moon    { background: #dff0f4; color: #3a6070; }
-.badge-void    { background: #faeee6; color: #8c4e28; }
+.ev-row-badge { font-size: 0.75rem; padding: 0.1rem 0.45rem; border-radius: 10px; margin-left: 0.4rem; }
+.badge-transit { background: #ede8f7; color: #4a3080; }
+.badge-moon    { background: #dff0f4; color: #1a4050; }
+.badge-void    { background: #faeee6; color: #7a3010; }
+.badge-aspect  { background: #e8eaf6; color: #2c3070; }
 .ev-meta { display: flex; gap: 0.85rem; font-size: 0.67rem; color: var(--text-light); white-space: nowrap; }
 
 /* Birth section */
@@ -603,14 +604,14 @@ body { font-family: 'Lato', sans-serif; font-weight: 300; background: var(--dusk
 .hc-name { font-family: 'Playfair Display', serif; font-size: 0.98rem; color: var(--text); margin-bottom: 0.3rem; }
 .hc-body { font-size: 0.8rem; line-height: 1.68; color: var(--text-mid); }
 
-/* Unified sky tile card — used for moon, aspects, planets in signs */
-.sky-card { background: white; border: 1px solid var(--bg-mid); border-radius: 8px; padding: 0.7rem 0.9rem; margin-bottom: 0.5rem; display: flex; flex-direction: column; gap: 0.25rem; }
-.sky-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
-.sky-card-title { font-family: 'Playfair Display', serif; font-size: 0.92rem; color: var(--text); flex: 1; }
-.sky-card-pill { font-size: 0.62rem; background: var(--bg-light); color: var(--lav-deep); border-radius: 20px; padding: 0.15rem 0.55rem; white-space: nowrap; border: 1px solid rgba(120,60,180,0.12); flex-shrink: 0; }
-.sky-card-body { font-size: 0.78rem; line-height: 1.65; color: var(--text-mid); }
-.sky-card-sub { font-size: 0.68rem; color: var(--text-light); }
-.sky-section-label { font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--lav-deep); margin-bottom: 0.5rem; margin-top: 0.85rem; }
+/* Unified sky tile card — compact, accessible */
+.sky-card { background: white; border: 1px solid var(--bg-mid); border-radius: 8px; padding: 0.45rem 0.7rem; margin-bottom: 0.35rem; display: flex; flex-direction: column; gap: 0.1rem; }
+.sky-card-top { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+.sky-card-title { font-family: 'Playfair Display', serif; font-size: 0.92rem; color: #111; flex: 1; }
+.sky-card-pill { font-size: 0.75rem; background: var(--bg-light); color: #333; border-radius: 20px; padding: 0.12rem 0.55rem; white-space: nowrap; border: 1px solid rgba(80,60,120,0.18); flex-shrink: 0; }
+.sky-card-body { font-size: 0.875rem; line-height: 1.65; color: #222; }
+.sky-card-sub { font-size: 0.75rem; color: #555; }
+.sky-section-label { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: #222; margin-bottom: 0.4rem; margin-top: 0.85rem; font-weight: 600; }
 .placeholder-note { font-style: italic; font-size: 0.82rem; color: var(--text-light);
   line-height: 1.7; border-left: 3px solid var(--lav); padding-left: 0.85rem; }
 
@@ -893,7 +894,6 @@ function AspectCard({ a, pill, durLabel }) {
         </div>
         {pill && <span className="sky-card-pill">{pill}</span>}
       </div>
-      {durLabel && <div className="sky-card-sub">{durLabel} · tap any word to learn more</div>}
       {defsOpen && anyWords && (
         <div className="defs-panel" style={{ marginTop:"0.5rem" }}>
           <div className="defs-top">
@@ -1082,7 +1082,7 @@ export default function Skyward() {
           symbol:   `${a.planet1_symbol}${a.aspect_symbol}${a.planet2_symbol}`,
           time:     "",
           duration: "",
-          type:     "transit",
+          type:     "aspect",
         });
       }
     }
@@ -1122,7 +1122,7 @@ export default function Skyward() {
                   symbol:   `${planet.symbol}→${sign.symbol}`,
                   time:     "",
                   duration: "",
-                  type:     "moon", // use moon style (teal) for sign changes
+                  type:     "transit",
                 });
               }
             }
@@ -1175,6 +1175,7 @@ export default function Skyward() {
   const viewDayData = transitData?.[viewMonthKey]?.[viewDayNum] || null;
   const outerPlanets = ["jupiter","saturn","uranus","neptune","pluto"];
 
+  const [showLongTerm, setShowLongTerm] = useState(false);
   const [chartError, setChartError] = useState(null);
 
   // Parse birth date string into parts
@@ -1297,7 +1298,7 @@ export default function Skyward() {
   const selEvents = selectedDay ? (activeCalendarEvents[selectedDay] || []) : [];
 
   const badgeClass = (type) => `ev-row-badge badge-${type}`;
-  const badgeLabel = (type) => type === "void" ? "v/c" : type === "moon" ? "moon" : "transit";
+  const badgeLabel = (type) => type === "void" ? "v/c" : type === "moon" ? "moon" : type === "aspect" ? "aspect" : "transit";
 
   return (
     <>
@@ -1359,8 +1360,26 @@ export default function Skyward() {
             </div>
           )}
 
+          {/* Jump-to navigation */}
+          <div style={{ background:"var(--bg-light)", padding:"0.5rem 2.5rem", borderBottom:"1px solid var(--bg-mid)", display:"flex", gap:"0.5rem", flexWrap:"wrap" }}>
+            {[
+              { label:"Today", href:"#today" },
+              { label:"This Week", href:"#week" },
+              { label:"Month", href:"#month" },
+              { label:"Birth Chart", href:"#birth-chart" },
+            ].map(({ label, href }) => (
+              <a key={href} href={href}
+                style={{ fontSize:"0.8rem", color:"#333", textDecoration:"none", padding:"0.25rem 0.75rem",
+                  background:"white", borderRadius:20, border:"1px solid rgba(80,60,120,0.2)",
+                  fontWeight:500, transition:"all 0.15s" }}
+                onMouseEnter={e => e.target.style.background="#ede8f7"}
+                onMouseLeave={e => e.target.style.background="white"}
+              >{label}</a>
+            ))}
+          </div>
+
           {/* TODAY */}
-          <section className="sec">
+          <section className="sec" id="today">
             <div className="sec-hdr">
               <span className="sec-title">{viewDay === 0 ? "Today's Sky" : viewDay === -1 ? `Yesterday, ${viewMonthName} ${viewDayNum}` : `${viewDayName}, ${viewMonthName} ${viewDayNum}`}</span>
               <div style={{ display:"flex", gap:"0.4rem", alignItems:"center" }}>
@@ -1407,27 +1426,33 @@ export default function Skyward() {
 
             {/* ── Planetary Aspects & Transitions ──────────────────── */}
             {(() => {
-              // Sign ingresses for this day
               const pd = viewDayData?.planets || {};
               const ingresses = [];
               Object.entries(pd).forEach(([pname, pdata]) => {
                 if (!pdata?.sign) return;
                 const rangeKey = `${pname}-${pdata.sign}`;
                 const r = planetSignRanges[rangeKey];
-                // It's an ingress if this is the first day of that planet-sign combo
                 if (r && r.start === fmtDate(viewYear, viewMonthNum, viewDayNum)) {
                   ingresses.push({ pname, pdata, rangeKey, r });
                 }
               });
 
               const allAspects = viewDayData?.aspects || [];
+              const moonAspects    = allAspects.filter(a => a.planet1 === "moon" || a.planet2 === "moon");
+              const nonMoonAspects = allAspects.filter(a => a.planet1 !== "moon" && a.planet2 !== "moon");
+
               if (allAspects.length === 0 && ingresses.length === 0) return null;
 
               return (
                 <>
-                  <div className="sky-section-label" style={{ marginTop:"0.85rem" }}>Planetary Aspects &amp; Transitions</div>
+                  <div className="sky-section-label" style={{ marginTop:"0.85rem", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+                    <span>Planetary Aspects &amp; Transitions</span>
+                  </div>
+                  <div style={{ fontSize:"0.8rem", color:"#555", marginBottom:"0.6rem", fontStyle:"italic" }}>
+                    Tap any underlined word to learn its meaning.
+                  </div>
 
-                  {/* Sign ingresses first */}
+                  {/* Sign ingresses */}
                   {ingresses.map(({ pname, pdata, rangeKey }) => {
                     const planet = PLANETS[pname];
                     const sign   = SIGNS[pdata.sign];
@@ -1439,35 +1464,46 @@ export default function Skyward() {
                           <span className="sky-card-title">{planet.symbol} {planet.name} enters {sign.symbol} {sign.name}</span>
                           {pill && <span className="sky-card-pill">{pill}</span>}
                         </div>
-                        <div className="sky-card-sub">Planet sign change today</div>
                       </div>
                     );
                   })}
 
-                  {/* Moon aspects — show just the date */}
-                  {allAspects.filter(a => a.planet1 === "moon" || a.planet2 === "moon").map((a, i) => (
-                    <AspectCard
-                      key={`moon-asp-${i}`}
-                      a={a}
-                      pill={fmtDate(viewYear, viewMonthNum, viewDayNum)}
-                      durLabel="hours"
-                    />
-                  ))}
+                  {/* Moon aspects — short, always visible */}
+                  {moonAspects.length > 0 && (
+                    <>
+                      <div style={{ fontSize:"0.7rem", color:"#666", letterSpacing:"0.08em", textTransform:"uppercase", margin:"0.5rem 0 0.3rem" }}>Today's aspects</div>
+                      {moonAspects.map((a, i) => (
+                        <AspectCard
+                          key={`moon-asp-${i}`}
+                          a={a}
+                          pill={fmtDate(viewYear, viewMonthNum, viewDayNum)}
+                        />
+                      ))}
+                    </>
+                  )}
 
-                  {/* Non-moon aspects — show date range from lookup */}
-                  {allAspects.filter(a => a.planet1 !== "moon" && a.planet2 !== "moon").map((a, i) => {
-                    const key  = `${a.planet1}-${a.aspect}-${a.planet2}`;
-                    const pill = dateRangePill(key, aspectRanges);
-                    const bothOuter = outerPlanets.includes(a.planet1) && outerPlanets.includes(a.planet2);
-                    return (
-                      <AspectCard
-                        key={`asp-${i}`}
-                        a={a}
-                        pill={pill}
-                        durLabel={bothOuter ? "weeks–months" : "days"}
-                      />
-                    );
-                  })}
+                  {/* Non-moon aspects — longer, collapsed */}
+                  {nonMoonAspects.length > 0 && (
+                    <>
+                      <div style={{ fontSize:"0.7rem", color:"#666", letterSpacing:"0.08em", textTransform:"uppercase", margin:"0.65rem 0 0.3rem", display:"flex", alignItems:"center", gap:"0.6rem" }}>
+                        Longer aspects
+                        <button className="see-more no-print" onClick={() => setShowLongTerm(v => !v)} style={{ fontSize:"0.7rem", marginLeft:0 }}>
+                          {showLongTerm ? "Collapse ↑" : `Show ${nonMoonAspects.length} ↓`}
+                        </button>
+                      </div>
+                      {showLongTerm && nonMoonAspects.map((a, i) => {
+                        const key  = `${a.planet1}-${a.aspect}-${a.planet2}`;
+                        const pill = dateRangePill(key, aspectRanges);
+                        return (
+                          <AspectCard
+                            key={`asp-${i}`}
+                            a={a}
+                            pill={pill}
+                          />
+                        );
+                      })}
+                    </>
+                  )}
                 </>
               );
             })()}
@@ -1514,7 +1550,7 @@ export default function Skyward() {
           </section>
 
           {/* THIS WEEK */}
-          <section className="sec">
+          <section className="sec" id="week">
             <div className="sec-hdr">
               <span className="sec-title">This Week</span>
               <span className="sec-meta">Aspects & sign changes · days with nothing notable are skipped</span>
@@ -1602,7 +1638,7 @@ export default function Skyward() {
           </section>
 
           {/* CALENDAR */}
-          <section className="sec">
+          <section className="sec" id="month">
             <div className="sec-hdr">
               <span className="sec-title">{currentMonthName} {currentYear}</span>
               <span className="sec-meta">All transits, moon ingresses & void of course · Click any day</span>
@@ -1693,16 +1729,41 @@ export default function Skyward() {
                 {selEvents.length === 0
                   ? <div style={{color:"var(--text-light)",fontStyle:"italic",fontSize:"0.82rem"}}>No major transits on this day.</div>
                   : <div className="cal-detail-grid">
-                      {selEvents.map((ev, i) => (
-                        <div key={i} className="ev-row">
-                          <span className="ev-name">
-                            {ev.label}
-                            <span className={badgeClass(ev.type)} style={{marginLeft:"0.4rem"}}>{badgeLabel(ev.type)}</span>
-                          </span>
-                          <span className="ev-time">{ev.time} PST</span>
-                          <span className="ev-dur">{ev.duration}</span>
-                        </div>
-                      ))}
+                      {selEvents.map((ev, i) => {
+                        // Try to get date range for this event
+                        let dateRange = ev.duration || "";
+                        if (ev.type === "moon" && ev.label.includes("enters")) {
+                          const signName = ev.label.replace("Moon enters ","").toLowerCase().replace(/[^a-z]/g,"");
+                          const pill = dateRangePill(`moon-${signName}`, planetSignRanges);
+                          if (pill) dateRange = pill;
+                        } else if (ev.type === "transit" && ev.label.includes("enters")) {
+                          const pName = Object.keys(PLANETS).find(k => ev.label.startsWith(PLANETS[k].name));
+                          const sName = Object.keys(SIGNS).find(k => ev.label.includes(SIGNS[k].name));
+                          if (pName && sName) {
+                            const pill = dateRangePill(`${pName}-${sName}`, planetSignRanges);
+                            if (pill) dateRange = pill;
+                          }
+                        } else if (ev.type === "aspect") {
+                          // Find aspect key from label symbols
+                          const p1 = Object.keys(PLANETS).find(k => ev.label.includes(PLANETS[k].name + " ") || ev.label.startsWith(PLANETS[k].name));
+                          const p2 = Object.keys(PLANETS).find(k => k !== p1 && ev.label.includes(PLANETS[k].name));
+                          const asp = Object.keys(ASPECTS).find(k => ev.label.includes(ASPECTS[k].symbol) || ev.label.includes(ASPECTS[k].name));
+                          if (p1 && p2 && asp) {
+                            const pill = dateRangePill(`${p1}-${asp}-${p2}`, aspectRanges) || dateRangePill(`${p2}-${asp}-${p1}`, aspectRanges);
+                            if (pill) dateRange = pill;
+                          }
+                        }
+                        return (
+                          <div key={i} className="ev-row">
+                            <span className="ev-name">
+                              {ev.label}
+                              <span className={badgeClass(ev.type)} style={{marginLeft:"0.4rem"}}>{badgeLabel(ev.type)}</span>
+                            </span>
+                            <span className="ev-time">{ev.time ? ev.time + " PST" : ""}</span>
+                            <span className="ev-dur">{dateRange}</span>
+                          </div>
+                        );
+                      })}
                     </div>
                 }
                 {DAY_SUMMARIES[selectedDay] && (
@@ -1724,7 +1785,7 @@ export default function Skyward() {
           </section>
 
           {/* MOON PHASES */}
-          <section className="sec">
+          <section className="sec" id="moon-phases">
             <div className="sec-hdr">
               <span className="sec-title">Moon Phases</span>
               <span className="sec-meta">The 8 phases · click any to learn its meaning</span>
@@ -1737,7 +1798,7 @@ export default function Skyward() {
           </section>
 
           {/* BIRTH CHART */}
-          <section className="sec birth-section">
+          <section className="sec birth-section" id="birth-chart">
             <div className="sec-hdr">
               <span className="sec-title">Your Chart</span>
               <span className="sec-meta">See which houses today's transits activate for you</span>
