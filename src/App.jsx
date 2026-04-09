@@ -448,7 +448,7 @@ const STARS = Array.from({ length: 90 }, (_, i) => ({
 
 // ─── CSS ─────────────────────────────────────────────────────────────────────
 const css = `
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Poppins:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:wght@300;400;500;600&display=swap');
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --lav: #c5b8d8; --lav-mid: #b0a0cc; --lav-deep: #9d8fc0;
@@ -478,7 +478,7 @@ body { font-family: 'Poppins', sans-serif; font-weight: 400; background: var(--d
 .hdr { background: linear-gradient(135deg, var(--dusk) 0%, #1a1040 100%);
   padding: 1.75rem 2.5rem 1.4rem; border-bottom: 2px solid rgba(197,184,216,0.18);
   display: flex; justify-content: space-between; align-items: flex-end; }
-.logo { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 400; color: var(--lav); letter-spacing: 0.05em; }
+.logo { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 400; color: var(--lav); letter-spacing: 0.05em; }
 .logo em { color: var(--gold-lt); font-style: italic; }
 .logo-sub { font-size: 0.875rem; letter-spacing: 0.2em; font-weight: 600; color: rgba(197,184,216,0.45); margin-top: 0.25rem; }
 .hdr-right { text-align: right; color: rgba(197,184,216,0.55); font-size: 0.875rem; letter-spacing: 0.04em; line-height: 1.9; }
@@ -496,7 +496,7 @@ body { font-family: 'Poppins', sans-serif; font-weight: 400; background: var(--d
 .sec { padding: 1.75rem 2.5rem; border-bottom: 1px solid var(--bg-mid); }
 .sec:last-child { border-bottom: none; }
 .sec-hdr { display: flex; align-items: baseline; gap: 0.85rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
-.sec-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 500; color: #222; }
+.sec-title { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 500; color: #222; }
 .sec-meta { font-size: 0.875rem; letter-spacing: 0.12em; font-weight: 600; color: #333; }
 .see-more { background: none; border: 1px solid var(--lav-mid); border-radius: 5px;
   padding: 0.3rem 0.9rem; font-size: 0.875rem; letter-spacing: 0.1em; font-weight: 600;
@@ -509,7 +509,7 @@ body { font-family: 'Poppins', sans-serif; font-weight: 400; background: var(--d
 .t-main { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 1rem;
   padding: 0.9rem 1.2rem; cursor: pointer; background: white; }
 .t-phrase { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem;
-  font-family: 'Playfair Display', serif; font-size: 1rem; color: #111; }
+  font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: #111; }
 .tw { cursor: pointer; border-bottom: 1px dotted var(--lav-deep); padding-bottom: 1px; transition: color 0.15s, border-color 0.15s; }
 .tw:hover, .tw.on { color: var(--ink); border-bottom-color: var(--ink); font-weight: 500; }
 .tw-p { color: #222; }
@@ -530,7 +530,7 @@ body { font-family: 'Poppins', sans-serif; font-weight: 400; background: var(--d
 .defs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0.85rem; }
 .def { }
 .def-lbl { font-size: 0.875rem; letter-spacing: 0.18em; font-weight: 600; color: #333; margin-bottom: 0.28rem; }
-.def-ttl { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: #111; margin-bottom: 0.3rem; }
+.def-ttl { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; color: #111; margin-bottom: 0.3rem; }
 .def-body { font-size: 0.8rem; line-height: 1.7; color: #222; }
 .def-combo { background: white; border-left: 3px solid var(--lav-deep); border-radius: 0 6px 6px 0;
   padding: 0.7rem 0.95rem; grid-column: 1 / -1; margin-top: 0.25rem; }
@@ -553,11 +553,11 @@ body { font-family: 'Poppins', sans-serif; font-weight: 400; background: var(--d
 .ev.moon    { background: #dff0f4; color: #3a6070; }
 .ev.void    { background: #faeee6; color: #8c4e28; font-style: italic; }
 .cal-detail { background: white; border: 1px solid var(--bg-mid); border-radius: 9px; padding: 1.1rem 1.4rem; margin-top: 0.85rem; }
-.cal-d-date { font-family: 'Playfair Display', serif; font-size: 1rem; color: #222; margin-bottom: 0.85rem; }
+.cal-d-date { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: #222; margin-bottom: 0.85rem; }
 .ev-row { display: flex; align-items: baseline; justify-content: space-between; padding: 0.45rem 0;
   border-bottom: 1px solid var(--bg-mid); font-size: 0.875rem; color: #111; gap: 0.75rem; }
 .ev-row:last-child { border-bottom: none; }
-.ev-row-name { font-family: 'Playfair Display', serif; }
+.ev-row-name { font-family: 'Cormorant Garamond', serif; }
 .ev-row-badge { font-size: 0.875rem; padding: 0.1rem 0.45rem; border-radius: 10px; margin-left: 0.4rem; }
 .badge-transit { background: #ede8f7; color: #4a3080; }
 .badge-moon    { background: #dff0f4; color: #1a4050; }
@@ -587,7 +587,7 @@ body { font-family: 'Poppins', sans-serif; font-weight: 400; background: var(--d
 }
 .resource-card:hover { border-color: var(--lav-mid); box-shadow: 0 2px 10px rgba(120,60,180,0.09); }
 .rc-emoji { font-size: 1.4rem; line-height: 1; flex-shrink: 0; margin-top: 0.1rem; }
-.rc-title { font-family: 'Playfair Display', serif; font-size: 0.88rem; color: #111; margin-bottom: 0.15rem; }
+.rc-title { font-family: 'Cormorant Garamond', serif; font-size: 0.88rem; color: #111; margin-bottom: 0.15rem; }
 .rc-sub { font-size: 0.875rem; color: #333; line-height: 1.45; }
 .support-card {
   display: flex; align-items: flex-start; gap: 0.65rem;
@@ -601,13 +601,13 @@ body { font-family: 'Poppins', sans-serif; font-weight: 400; background: var(--d
 .house-intro { font-size: 0.875rem; color: #333; margin-bottom: 1rem; font-style: italic; line-height: 1.6; }
 .house-card { background: white; border: 1px solid var(--bg-mid); border-radius: 8px; padding: 0.85rem 1.05rem; margin-bottom: 0.6rem; }
 .hc-top { font-size: 0.6rem; letter-spacing: 0.13em; font-weight: 600; color: #333; margin-bottom: 0.25rem; }
-.hc-name { font-family: 'Playfair Display', serif; font-size: 0.98rem; color: #111; margin-bottom: 0.3rem; }
+.hc-name { font-family: 'Cormorant Garamond', serif; font-size: 0.98rem; color: #111; margin-bottom: 0.3rem; }
 .hc-body { font-size: 0.8rem; line-height: 1.68; color: #222; }
 
 /* Unified sky tile card — compact, accessible */
 .sky-card { background: white; border: 1px solid var(--bg-mid); border-radius: 8px; padding: 0.45rem 0.7rem; margin-bottom: 0.35rem; display: flex; flex-direction: column; gap: 0.1rem; }
 .sky-card-top { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
-.sky-card-title { font-family: 'Playfair Display', serif; font-size: 0.92rem; color: #111; flex: 1; }
+.sky-card-title { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: #111; flex: 1; }
 .sky-card-pill { font-size: 0.875rem; background: var(--bg-light); color: #333; border-radius: 20px; padding: 0.12rem 0.55rem; white-space: nowrap; border: 1px solid rgba(80,60,120,0.18); flex-shrink: 0; }
 .sky-card-body { font-size: 0.875rem; line-height: 1.65; color: #222; }
 .sky-card-sub { font-size: 0.875rem; color: #555; }
@@ -620,7 +620,7 @@ body { font-family: 'Poppins', sans-serif; font-weight: 400; background: var(--d
 .cal-detail-grid .ev-row { display: contents; }
 .cal-detail-grid .ev-row > * { padding: 0.42rem 0; border-bottom: 1px solid var(--bg-mid); font-size: 0.875rem; }
 .cal-detail-grid .ev-row:last-child > * { border-bottom: none; }
-.cal-detail-grid .ev-name { color: #111; font-family: 'Playfair Display', serif; }
+.cal-detail-grid .ev-name { color: #111; font-family: 'Cormorant Garamond', serif; }
 .cal-detail-grid .ev-time { color: #333; font-size: 0.875rem; white-space: nowrap; text-align: right; }
 .cal-detail-grid .ev-dur  { color: #333; font-size: 0.875rem; white-space: nowrap; text-align: right; }
 
@@ -670,7 +670,7 @@ body { font-family: 'Poppins', sans-serif; font-weight: 400; background: var(--d
 .phase-emoji { font-size: 1rem; line-height: 1; }
 
 .phase-name {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 0.875rem;
   color: #111;
 }
@@ -728,7 +728,7 @@ body { font-family: 'Poppins', sans-serif; font-weight: 400; background: var(--d
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 0.9rem;
   color: #111;
 }
@@ -936,6 +936,111 @@ function AspectCard({ a, pill, durLabel }) {
   );
 }
 
+// ─── CALENDAR EVENT ROW — expandable definitions in day detail ───────────────
+function CalendarEventRow({ ev, dateRange, badgeClass, badgeLabel }) {
+  const [open, setOpen] = useState(false);
+  // Try to find definitions for this event
+  const defs = [];
+  if (ev.type === "moon" && ev.label.includes("enters")) {
+    const signName = ev.label.replace("Moon enters ","").toLowerCase().replace(/[♈♉♊♋♌♍♎♏♐♑♒♓]/g,"").trim();
+    const sign = SIGNS[signName];
+    if (sign) defs.push({ title: sign.name, body: sign.meaning });
+  }
+  if (ev.type === "transit" && ev.label.includes("enters")) {
+    const pName = Object.keys(PLANETS).find(k => ev.label.startsWith(PLANETS[k].name));
+    const sName = Object.keys(SIGNS).find(k => ev.label.includes(SIGNS[k].name));
+    if (pName) defs.push({ title: PLANETS[pName].name, body: PLANETS[pName].meaning });
+    if (sName) defs.push({ title: SIGNS[sName].name, body: SIGNS[sName].meaning });
+  }
+  const hasInfo = defs.length > 0;
+  return (
+    <div className="ev-row" style={{ display:"block", borderBottom:"1px solid var(--bg-mid)", paddingBottom:"0.5rem", marginBottom:"0.25rem" }}>
+      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", cursor: hasInfo ? "pointer" : "default" }}
+        onClick={() => hasInfo && setOpen(v => !v)}>
+        <span className="ev-name" style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:"1rem", color:"#111" }}>
+          {ev.label}
+          <span className={badgeClass(ev.type)} style={{marginLeft:"0.4rem"}}>{badgeLabel(ev.type)}</span>
+        </span>
+        <div style={{ display:"flex", gap:"0.5rem", alignItems:"center" }}>
+          <span style={{ fontSize:"0.875rem", color:"#555" }}>{dateRange}</span>
+          {hasInfo && <span style={{ fontSize:"0.75rem", color:"#555" }}>{open ? "▲" : "▼"}</span>}
+        </div>
+      </div>
+      {open && defs.map((d, i) => (
+        <div key={i} style={{ marginTop:"0.4rem", paddingLeft:"0.5rem", borderLeft:"2px solid var(--bg-mid)" }}>
+          <div style={{ fontSize:"0.875rem", fontWeight:600, color:"#333", marginBottom:"0.2rem" }}>{d.title}</div>
+          <div style={{ fontSize:"0.875rem", color:"#111", lineHeight:1.65 }}>{d.body}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ─── INGRESS CARD — planet enters new sign, expandable ───────────────────────
+function IngressCard({ pname, sign, pill }) {
+  const [open, setOpen] = useState(false);
+  const planet = PLANETS[pname];
+  if (!planet || !sign) return null;
+  return (
+    <div className="sky-card" onClick={() => setOpen(v => !v)}
+      style={{ borderLeft:"3px solid var(--gold-lt)", cursor:"pointer" }}>
+      <div className="sky-card-top">
+        <span className="sky-card-title">{planet.symbol} {planet.name} enters {sign.symbol} {sign.name}</span>
+        <div style={{ display:"flex", alignItems:"center", gap:"0.4rem", flexShrink:0 }}>
+          {pill && <span className="sky-card-pill">{pill}</span>}
+          <span style={{ fontSize:"0.75rem", color:"#555" }}>{open ? "▲" : "▼"}</span>
+        </div>
+      </div>
+      <div style={{ fontSize:"0.875rem", color:"#555" }}>Planet sign change today</div>
+      {open && (
+        <div style={{ marginTop:"0.5rem", borderTop:"1px solid var(--bg-mid)", paddingTop:"0.5rem" }}>
+          <div style={{ fontSize:"0.875rem", color:"#222", lineHeight:1.65, marginBottom:"0.5rem" }}>
+            <strong style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:"1rem" }}>{planet.name}:</strong> {planet.meaning}
+          </div>
+          <div style={{ fontSize:"0.875rem", color:"#222", lineHeight:1.65 }}>
+            <strong style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:"1rem" }}>{sign.name}:</strong> {sign.meaning}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── PLANET SIGN CARD — expandable with definitions ──────────────────────────
+function PlanetSignCard({ name, p, pill }) {
+  const [open, setOpen] = useState(false);
+  const planet = PLANETS[name];
+  const sign   = SIGNS[p.sign];
+  if (!planet || !sign) return null;
+  const combo = COMBINATIONS[`${name}-${p.sign}`];
+  return (
+    <div className="sky-card" onClick={() => setOpen(v => !v)} style={{ cursor:"pointer" }}>
+      <div className="sky-card-top">
+        <span className="sky-card-title">{planet.symbol} {planet.name} in {sign.symbol} {sign.name}{p.retrograde ? " ℞" : ""}</span>
+        <div style={{ display:"flex", alignItems:"center", gap:"0.4rem", flexShrink:0 }}>
+          {pill && <span className="sky-card-pill">{pill}</span>}
+          <span style={{ fontSize:"0.75rem", color:"#555" }}>{open ? "▲" : "▼"}</span>
+        </div>
+      </div>
+      {open && (
+        <div style={{ marginTop:"0.5rem", borderTop:"1px solid var(--bg-mid)", paddingTop:"0.5rem" }}>
+          <div style={{ fontSize:"0.875rem", color:"#222", lineHeight:1.65, marginBottom:"0.5rem" }}>
+            <strong style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:"1rem" }}>{planet.name}:</strong> {planet.meaning}
+          </div>
+          <div style={{ fontSize:"0.875rem", color:"#222", lineHeight:1.65, marginBottom:"0.5rem" }}>
+            <strong style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:"1rem" }}>{sign.name}:</strong> {sign.meaning}
+          </div>
+          {combo && (
+            <div style={{ fontSize:"0.875rem", color:"#222", lineHeight:1.65, borderTop:"1px solid var(--bg-mid)", paddingTop:"0.5rem", marginTop:"0.5rem" }}>
+              <strong style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:"1rem" }}>{planet.name} in {sign.name}:</strong> {combo}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── EXPANDABLE MOON MEANING ─────────────────────────────────────────────────
 function ExpandableMoonMeaning({ text }) {
   const [expanded, setExpanded] = useState(false);
@@ -987,24 +1092,41 @@ function VoidOfCourseNote() {
 // ─── EXPANDABLE HOUSE CARD ───────────────────────────────────────────────────
 function ExpandableHouseCard({ planetData, tp, house, comboMeaning, cap }) {
   const [open, setOpen] = useState(false);
+  const sign = SIGNS[tp.sign];
   return (
     <div className="house-card" onClick={() => setOpen(v => !v)} style={{ cursor:"pointer" }}>
       <div className="hc-top" style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-        <span>{planetData?.symbol} {tp.name} in {cap(tp.sign)} — {house.name}</span>
-        <span style={{ fontSize:"0.875rem", color:"var(--lav-deep)" }}>{open ? "▲" : "▼"}</span>
+        <span style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:"1.05rem", color:"#111" }}>
+          {planetData?.symbol} {tp.name} in {cap(tp.sign)} — {house.name}
+        </span>
+        <span style={{ fontSize:"0.875rem", color:"#555", flexShrink:0, marginLeft:"0.5rem" }}>{open ? "▲" : "▼"}</span>
       </div>
-      <div className="hc-body">{house.meaning}</div>
+
+      {/* House description — always visible */}
+      <div style={{ marginTop:"0.4rem" }}>
+        <div style={{ fontSize:"0.75rem", fontWeight:600, color:"#444", marginBottom:"0.2rem" }}>{house.name}</div>
+        <div className="hc-body">{house.meaning}</div>
+      </div>
+
+      {/* Planet in sign — expands on tap */}
       {open && (
         <div style={{ marginTop:"0.65rem", borderTop:"1px solid var(--bg-mid)", paddingTop:"0.65rem" }}>
           {comboMeaning ? (
             <>
-              <div style={{ fontSize:"0.875rem", letterSpacing:"0.14em", fontWeight:600, color:"var(--lav-deep)", marginBottom:"0.3rem" }}>
+              <div style={{ fontSize:"0.75rem", fontWeight:600, color:"#444", marginBottom:"0.3rem" }}>
                 {tp.name} in {cap(tp.sign)}
               </div>
-              <div style={{ fontSize:"0.875rem", lineHeight:1.7, color:"#222" }}>{comboMeaning}</div>
+              <div style={{ fontSize:"0.875rem", lineHeight:1.7, color:"#111" }}>{comboMeaning}</div>
+            </>
+          ) : sign ? (
+            <>
+              <div style={{ fontSize:"0.75rem", fontWeight:600, color:"#444", marginBottom:"0.3rem" }}>
+                {cap(tp.sign)}
+              </div>
+              <div style={{ fontSize:"0.875rem", lineHeight:1.7, color:"#111" }}>{sign.meaning}</div>
             </>
           ) : (
-            <div style={{ fontSize:"0.875rem", color:"#333", fontStyle:"italic" }}>
+            <div style={{ fontSize:"0.875rem", color:"#555", fontStyle:"italic" }}>
               Tap the planet or sign name in Today's Sky to learn more about {tp.name} in {cap(tp.sign)}.
             </div>
           )}
@@ -1545,18 +1667,9 @@ export default function Skyward() {
 
                   {/* Sign ingresses */}
                   {ingresses.map(({ pname, pdata, rangeKey }) => {
-                    const planet = PLANETS[pname];
-                    const sign   = SIGNS[pdata.sign];
-                    if (!planet || !sign) return null;
+                    const sign = SIGNS[pdata.sign];
                     const pill = dateRangePill(rangeKey, planetSignRanges);
-                    return (
-                      <div key={`ingress-${pname}`} className="sky-card" style={{ borderLeft:"3px solid var(--gold-lt)" }}>
-                        <div className="sky-card-top">
-                          <span className="sky-card-title">{planet.symbol} {planet.name} enters {sign.symbol} {sign.name}</span>
-                          {pill && <span className="sky-card-pill">{pill}</span>}
-                        </div>
-                      </div>
-                    );
+                    return <IngressCard key={`ingress-${pname}`} pname={pname} sign={sign} pill={pill} />;
                   })}
 
                   {/* Moon aspects — short, always visible */}
@@ -1607,19 +1720,9 @@ export default function Skyward() {
               const cards = planetOrder.map(name => {
                 const p = pd[name];
                 if (!p?.sign) return null;
-                const planet = PLANETS[name];
-                const sign   = SIGNS[p.sign];
-                if (!planet || !sign) return null;
                 const rangeKey = `${name}-${p.sign}`;
                 const pill = dateRangePill(rangeKey, planetSignRanges);
-                return (
-                  <div key={name} className="sky-card">
-                    <div className="sky-card-top">
-                      <span className="sky-card-title">{planet.symbol} {planet.name} in {sign.symbol} {sign.name}{p.retrograde ? " ℞" : ""}</span>
-                      {pill && <span className="sky-card-pill">{pill}</span>}
-                    </div>
-                  </div>
-                );
+                return <PlanetSignCard key={name} name={name} p={p} pill={pill} />;
               }).filter(Boolean);
               if (cards.length === 0) return null;
               return (
@@ -1704,20 +1807,10 @@ export default function Skyward() {
                     })()}
 
                     {dayIngresses.map(({ pname, pdata }) => {
-                      const planet = PLANETS[pname];
-                      const sign   = SIGNS[pdata.sign];
-                      if (!planet || !sign) return null;
+                      const sign = SIGNS[pdata.sign];
                       const rk   = `${pname}-${pdata.sign}`;
                       const pill = dateRangePill(rk, planetSignRanges);
-                      return (
-                        <div key={`ing-${pname}`} className="sky-card" style={{ borderLeft:"3px solid var(--gold-lt)" }}>
-                          <div className="sky-card-top">
-                            <span className="sky-card-title">{planet.symbol} {planet.name} enters {sign.symbol} {sign.name}</span>
-                            {pill && <span className="sky-card-pill">{pill}</span>}
-                          </div>
-                          <div className="sky-card-sub">Planet sign change</div>
-                        </div>
-                      );
+                      return <IngressCard key={`ing-${pname}`} pname={pname} sign={sign} pill={pill} />;
                     })}
                   </div>
                 );
@@ -1819,9 +1912,8 @@ export default function Skyward() {
                 <div className="cal-d-date">{currentMonthName} {selectedDay}, {currentYear}</div>
                 {selEvents.length === 0
                   ? <div style={{color:"#333",fontStyle:"italic",fontSize:"0.875rem"}}>No major transits on this day.</div>
-                  : <div className="cal-detail-grid">
+                  : <div>
                       {selEvents.map((ev, i) => {
-                        // Try to get date range for this event
                         let dateRange = ev.duration || "";
                         if (ev.type === "moon" && ev.label.includes("enters")) {
                           const signName = ev.label.replace("Moon enters ","").toLowerCase().replace(/[^a-z]/g,"");
@@ -1834,26 +1926,8 @@ export default function Skyward() {
                             const pill = dateRangePill(`${pName}-${sName}`, planetSignRanges);
                             if (pill) dateRange = pill;
                           }
-                        } else if (ev.type === "aspect") {
-                          // Find aspect key from label symbols
-                          const p1 = Object.keys(PLANETS).find(k => ev.label.includes(PLANETS[k].name + " ") || ev.label.startsWith(PLANETS[k].name));
-                          const p2 = Object.keys(PLANETS).find(k => k !== p1 && ev.label.includes(PLANETS[k].name));
-                          const asp = Object.keys(ASPECTS).find(k => ev.label.includes(ASPECTS[k].symbol) || ev.label.includes(ASPECTS[k].name));
-                          if (p1 && p2 && asp) {
-                            const pill = dateRangePill(`${p1}-${asp}-${p2}`, aspectRanges) || dateRangePill(`${p2}-${asp}-${p1}`, aspectRanges);
-                            if (pill) dateRange = pill;
-                          }
                         }
-                        return (
-                          <div key={i} className="ev-row">
-                            <span className="ev-name">
-                              {ev.label}
-                              <span className={badgeClass(ev.type)} style={{marginLeft:"0.4rem"}}>{badgeLabel(ev.type)}</span>
-                            </span>
-                            <span className="ev-time">{ev.time ? ev.time + " PST" : ""}</span>
-                            <span className="ev-dur">{dateRange}</span>
-                          </div>
-                        );
+                        return <CalendarEventRow key={i} ev={ev} dateRange={dateRange} badgeClass={badgeClass} badgeLabel={badgeLabel} />;
                       })}
                     </div>
                 }
@@ -2108,7 +2182,7 @@ export default function Skyward() {
                   { q:"What is a trine?", a:"A trine is a 120° angle between two planets. It is the most harmonious aspect — the planets flow easily together without resistance. Trines represent natural gifts that may be taken for granted precisely because they come so easily." },
                 ].map((item, i) => (
                   <details key={i} style={{ borderBottom:"1px solid var(--bg-mid)", padding:"0.65rem 0" }}>
-                    <summary style={{ fontSize:"0.875rem", fontWeight:500, color:"#111", cursor:"pointer", fontFamily:"'Playfair Display', serif" }}>
+                    <summary style={{ fontSize:"0.875rem", fontWeight:500, color:"#111", cursor:"pointer", fontFamily:"'Cormorant Garamond', serif" }}>
                       {item.q}
                     </summary>
                     <p style={{ fontSize:"0.875rem", color:"#333", lineHeight:1.7, marginTop:"0.5rem", paddingLeft:"0.5rem" }}>
