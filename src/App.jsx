@@ -939,39 +939,83 @@ function AspectCard({ a, pill, durLabel }) {
 // ─── CALENDAR EVENT ROW — expandable definitions in day detail ───────────────
 function CalendarEventRow({ ev, dateRange, badgeClass, badgeLabel }) {
   const [open, setOpen] = useState(false);
-  // Try to find definitions for this event
   const defs = [];
+
   if (ev.type === "moon" && ev.label.includes("enters")) {
-    const signName = ev.label.replace("Moon enters ","").toLowerCase().replace(/[♈♉♊♋♌♍♎♏♐♑♒♓]/g,"").trim();
+    const signName = ev.label.replace("Moon enters ","").toLowerCase().replace(/[♈♉♊♋♌♍♎♏♐♑♒♓\s]/g,"").trim();
     const sign = SIGNS[signName];
+    const combo = COMBINATIONS[`moon-${signName}`];
     if (sign) defs.push({ title: sign.name, body: sign.meaning });
+    if (combo) defs.push({ title: `Moon in ${sign?.name || signName}`, body: combo });
   }
   if (ev.type === "transit" && ev.label.includes("enters")) {
     const pName = Object.keys(PLANETS).find(k => ev.label.startsWith(PLANETS[k].name));
     const sName = Object.keys(SIGNS).find(k => ev.label.includes(SIGNS[k].name));
     if (pName) defs.push({ title: PLANETS[pName].name, body: PLANETS[pName].meaning });
     if (sName) defs.push({ title: SIGNS[sName].name, body: SIGNS[sName].meaning });
+    if (pName && sName) {
+      const combo = COMBINATIONS[`${pName}-${sName}`];
+      if (combo) defs.push({ title: `${PLANETS[pName].name} in ${SIGNS[sName].name}`, body: combo });
+    }
   }
+
   const hasInfo = defs.length > 0;
   return (
-    <div className="ev-row" style={{ display:"block", borderBottom:"1px solid var(--bg-mid)", paddingBottom:"0.5rem", marginBottom:"0.25rem" }}>
+    <div style={{ borderBottom:"1px solid var(--bg-mid)", paddingBottom:"0.5rem", marginBottom:"0.4rem" }}>
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", cursor: hasInfo ? "pointer" : "default" }}
         onClick={() => hasInfo && setOpen(v => !v)}>
-        <span className="ev-name" style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:"1rem", color:"#111" }}>
+        <span style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:"1rem", color:"#111",
+          textDecoration: hasInfo ? "underline" : "none",
+          textDecorationColor:"rgba(80,60,120,0.3)", textUnderlineOffset:"3px" }}>
           {ev.label}
           <span className={badgeClass(ev.type)} style={{marginLeft:"0.4rem"}}>{badgeLabel(ev.type)}</span>
         </span>
-        <div style={{ display:"flex", gap:"0.5rem", alignItems:"center" }}>
-          <span style={{ fontSize:"0.875rem", color:"#555" }}>{dateRange}</span>
+        <div style={{ display:"flex", gap:"0.5rem", alignItems:"center", flexShrink:0 }}>
+          {dateRange && <span style={{ fontSize:"0.875rem", color:"#555" }}>{dateRange}</span>}
           {hasInfo && <span style={{ fontSize:"0.75rem", color:"#555" }}>{open ? "▲" : "▼"}</span>}
         </div>
       </div>
       {open && defs.map((d, i) => (
-        <div key={i} style={{ marginTop:"0.4rem", paddingLeft:"0.5rem", borderLeft:"2px solid var(--bg-mid)" }}>
-          <div style={{ fontSize:"0.875rem", fontWeight:600, color:"#333", marginBottom:"0.2rem" }}>{d.title}</div>
+        <div key={i} style={{ marginTop:"0.4rem", paddingLeft:"0.75rem", borderLeft:"2px solid var(--bg-mid)" }}>
+          <div style={{ fontSize:"0.875rem", fontWeight:600, color:"#333", marginBottom:"0.2rem",
+            fontFamily:"'Cormorant Garamond', serif" }}>{d.title}</div>
           <div style={{ fontSize:"0.875rem", color:"#111", lineHeight:1.65 }}>{d.body}</div>
         </div>
       ))}
+    </div>
+  );
+}
+
+// ─── MOON INGRESS CARD — expandable moon sign change ─────────────────────────
+function MoonIngressCard({ moonSign, pill, cap }) {
+  const [open, setOpen] = useState(false);
+  const sign = SIGNS[moonSign];
+  const combo = COMBINATIONS[`moon-${moonSign}`];
+  if (!sign) return null;
+  return (
+    <div className="sky-card" onClick={() => setOpen(v => !v)} style={{ cursor:"pointer" }}>
+      <div className="sky-card-top">
+        <span className="sky-card-title" style={{ textDecoration:"underline", textDecorationColor:"rgba(80,60,120,0.3)", textUnderlineOffset:"3px" }}>
+          ☽ Moon enters {sign.symbol} {cap(moonSign)}
+        </span>
+        <div style={{ display:"flex", alignItems:"center", gap:"0.4rem", flexShrink:0 }}>
+          {pill && <span className="sky-card-pill">{pill}</span>}
+          <span style={{ fontSize:"0.75rem", color:"#555" }}>{open ? "▲" : "▼"}</span>
+        </div>
+      </div>
+      <div style={{ fontSize:"0.875rem", color:"#555" }}>Moon sign change</div>
+      {open && (
+        <div style={{ marginTop:"0.5rem", borderTop:"1px solid var(--bg-mid)", paddingTop:"0.5rem" }}>
+          <div style={{ fontSize:"0.875rem", color:"#222", lineHeight:1.65, marginBottom: combo ? "0.5rem" : 0 }}>
+            <strong style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:"1rem" }}>{sign.name}:</strong> {sign.meaning}
+          </div>
+          {combo && (
+            <div style={{ fontSize:"0.875rem", color:"#222", lineHeight:1.65, borderTop:"1px solid var(--bg-mid)", paddingTop:"0.5rem", marginTop:"0.5rem" }}>
+              <strong style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:"1rem" }}>Moon in {sign.name}:</strong> {combo}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -1016,7 +1060,7 @@ function PlanetSignCard({ name, p, pill }) {
   return (
     <div className="sky-card" onClick={() => setOpen(v => !v)} style={{ cursor:"pointer" }}>
       <div className="sky-card-top">
-        <span className="sky-card-title">{planet.symbol} {planet.name} in {sign.symbol} {sign.name}{p.retrograde ? " ℞" : ""}</span>
+        <span className="sky-card-title" style={{ textDecoration:"underline", textDecorationColor:"rgba(80,60,120,0.3)", textUnderlineOffset:"3px" }}>{planet.symbol} {planet.name} in {sign.symbol} {sign.name}{p.retrograde ? " ℞" : ""}</span>
         <div style={{ display:"flex", alignItems:"center", gap:"0.4rem", flexShrink:0 }}>
           {pill && <span className="sky-card-pill">{pill}</span>}
           <span style={{ fontSize:"0.75rem", color:"#555" }}>{open ? "▲" : "▼"}</span>
@@ -1792,18 +1836,9 @@ export default function Skyward() {
                     <div className="week-date-lbl">{dName}, {mName} {dNum}</div>
 
                     {moonIngress && (() => {
-                      const sign = SIGNS[moonIngress];
                       const rk   = `moon-${moonIngress}`;
                       const pill = dateRangePill(rk, planetSignRanges);
-                      return (
-                        <div className="sky-card">
-                          <div className="sky-card-top">
-                            <span className="sky-card-title">☽ Moon enters {sign?.symbol || ""} {cap(moonIngress)}</span>
-                            {pill && <span className="sky-card-pill">{pill}</span>}
-                          </div>
-                          <div className="sky-card-sub">Moon sign change</div>
-                        </div>
-                      );
+                      return <MoonIngressCard key="moon-ing" moonSign={moonIngress} pill={pill} cap={cap} />;
                     })()}
 
                     {dayIngresses.map(({ pname, pdata }) => {
