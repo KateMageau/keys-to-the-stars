@@ -1475,7 +1475,6 @@ export default function Skyward() {
   // Annual data provides the base aspects and planet signs
   const voidOfCourseInfo = detailedDayData?.void_of_course || null;
   const moonIngressTime  = detailedDayData?.moon?.ingress_time || null;
-  const planetSignChangeTimes = detailedDayData?.planet_sign_changes || null;
 
   const [showLongTerm, setShowLongTerm] = useState(false);
   const [chartError, setChartError] = useState(null);
