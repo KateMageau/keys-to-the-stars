@@ -2045,6 +2045,50 @@ export default function Skyward() {
             <div className="sec-hdr">
               <span className="sec-title">{currentMonthName} {currentYear}</span>
               <span className="sec-meta">Aspects &amp; transits · Click any day for details</span>
+              <button className="see-more no-print" onClick={() => {
+                // Build CSV from transit data for current month
+                const DAY_NAMES = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+                const rows = ["Date,Day,Moon Sign,Moon Phase,Illumination,Void of Course,Moon Enters,Planet Sign Changes,Aspects"];
+                for (let d = 1; d <= daysInCurrentMonth; d++) {
+                  const dayData = transitData?.[monthKey]?.[d];
+                  const detDay  = detailedData?.days?.[d];
+                  const date    = new Date(currentYear, currentMonth - 1, d);
+                  const dateStr = `${MONTH_NAMES_FULL[currentMonth-1]} ${d}`;
+                  const dayName = DAY_NAMES[date.getDay()];
+                  const moonSign   = dayData?.moon?.sign ? cap(dayData.moon.sign) : "";
+                  const moonPhase  = dayData?.moon?.phase ? cap(dayData.moon.phase.replace(/_/g," ")) : "";
+                  const illum      = dayData?.moon?.illumination ? Math.round(dayData.moon.illumination) + "%" : "";
+                  const voc        = detDay?.void_of_course?.note || (dayData?.moon?.ingress ? "Yes" : "");
+                  const enters     = dayData?.moon?.ingress ? `Moon enters ${cap(dayData.moon.ingress)}` : "";
+                  // Planet sign changes
+                  const planetChanges = [];
+                  if (detDay?.planet_sign_changes) {
+                    Object.entries(detDay.planet_sign_changes).forEach(([p, info]) => {
+                      planetChanges.push(`${cap(p)} enters ${cap(info.to)} ~${info.time}`);
+                    });
+                  }
+                  // Aspects (non-moon, max 3)
+                  const aspectList = (dayData?.aspects || [])
+                    .filter(a => a.planet1 !== "moon" && a.planet2 !== "moon")
+                    .slice(0, 3)
+                    .map(a => `${cap(a.planet1)} ${a.aspect} ${cap(a.planet2)}`);
+                  // Escape commas for CSV
+                  const esc = (s) => s.includes(",") ? `"${s}"` : s;
+                  rows.push([dateStr, dayName, moonSign, moonPhase, illum,
+                    esc(voc), esc(enters), esc(planetChanges.join("; ")), esc(aspectList.join("; "))
+                  ].join(","));
+                }
+                const csv = rows.join("\n");
+                const blob = new Blob([csv], { type: "text/csv" });
+                const url  = URL.createObjectURL(blob);
+                const a    = document.createElement("a");
+                a.href = url;
+                a.download = `keys-to-the-stars-${currentYear}-${String(currentMonth).padStart(2,"0")}.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
+              }}>
+                ↓ Export CSV
+              </button>
             </div>
             <div style={{ fontSize:"0.875rem", fontStyle:"italic", color:"#333", marginBottom:"0.5rem", lineHeight:1.55 }}>
               Days and times are calculated in Pacific Time (PST/PDT) — Seattle / Los Angeles. Add 1 hour for Mountain · 2 for Central · 3 for Eastern.
