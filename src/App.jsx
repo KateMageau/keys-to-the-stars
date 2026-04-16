@@ -1858,29 +1858,30 @@ export default function Skyward() {
               });
 
               // Use detailed 3-hour snapshots for aspects when available
-              // Merge aspects across all snapshots — more appearances = more sustained = more relevant
               let allAspects = [];
+              const aspectFirstTime = {}; // key → first time seen in snapshots
               if (detailedDayData?.snapshots?.length > 0) {
                 const aspectCounts = {};
                 const aspectData   = {};
                 for (const snap of detailedDayData.snapshots) {
                   if (snap.error) continue;
                   for (const a of (snap.aspects || [])) {
-                    // Normalize key so moon-trine-sun and sun-trine-moon are the same
                     const key = [a.planet1, a.aspect, a.planet2].sort().join("-");
+                    if (!aspectCounts[key]) {
+                      aspectFirstTime[key] = snap.time_pst || snap.hour + ":00";
+                    }
                     aspectCounts[key] = (aspectCounts[key] || 0) + 1;
-                    if (!aspectData[key]) aspectData[key] = a; // store first occurrence
+                    if (!aspectData[key]) aspectData[key] = a;
                   }
                 }
-                // Sort: moon aspects first, then by count (most sustained), filter to min 2 snapshots
                 allAspects = Object.entries(aspectCounts)
-                  .filter(([, count]) => count >= 2) // must appear in at least 2 snapshots
+                  .filter(([, count]) => count >= 2)
                   .sort(([ka, ca], [kb, cb]) => {
                     const aMoon = ka.includes("moon");
                     const bMoon = kb.includes("moon");
                     if (aMoon && !bMoon) return -1;
                     if (!aMoon && bMoon) return 1;
-                    return cb - ca; // higher count first
+                    return cb - ca;
                   })
                   .map(([key]) => aspectData[key]);
               } else {
@@ -1898,7 +1899,7 @@ export default function Skyward() {
                     <span>Planetary Aspects &amp; Transitions</span>
                   </div>
                   <div style={{ fontSize:"0.875rem", color:"#555", marginBottom:"0.6rem", fontStyle:"italic" }}>
-                    Tap any underlined word to learn its meaning. Aspects are compiled from 3-hour snapshots — most exact times are within a few hours of shown.
+                    Tap any underlined word to learn its meaning.{detailedDayData ? " Times from 3-hour data." : " Times approximate (noon data)."}
                   </div>
 
                   {/* Sign ingresses */}
@@ -1911,21 +1912,25 @@ export default function Skyward() {
                     return <IngressCard key={`ingress-${pname}`} pname={pname} sign={sign} pill={pill} />;
                   })}
 
-                  {/* Moon aspects — short, always visible */}
+                  {/* Moon aspects — always visible, show approximate time */}
                   {moonAspects.length > 0 && (
                     <>
                       <div style={{ fontSize:"0.875rem", color:"#666", letterSpacing:"0.08em", fontWeight:600, margin:"0.5rem 0 0.3rem" }}>Today's aspects</div>
-                      {moonAspects.map((a, i) => (
-                        <AspectCard
-                          key={`moon-asp-${i}`}
-                          a={a}
-                          pill={fmtDate(viewYear, viewMonthNum, viewDayNum)}
-                        />
-                      ))}
+                      {moonAspects.map((a, i) => {
+                        const key = [a.planet1, a.aspect, a.planet2].sort().join("-");
+                        const timeStr = aspectFirstTime[key] ? `~${aspectFirstTime[key]} PST` : fmtDate(viewYear, viewMonthNum, viewDayNum);
+                        return (
+                          <AspectCard
+                            key={`moon-asp-${i}`}
+                            a={a}
+                            pill={timeStr}
+                          />
+                        );
+                      })}
                     </>
                   )}
 
-                  {/* Non-moon aspects — longer, collapsed */}
+                  {/* Planet aspects — collapsed by default */}
                   {nonMoonAspects.length > 0 && (
                     <>
                       <div style={{ fontSize:"0.875rem", color:"#666", letterSpacing:"0.08em", fontWeight:600, margin:"0.65rem 0 0.3rem", display:"flex", alignItems:"center", gap:"0.6rem" }}>
@@ -1934,9 +1939,10 @@ export default function Skyward() {
                           {showLongTerm ? "Collapse ↑" : `Show ${nonMoonAspects.length} ↓`}
                         </button>
                       </div>
-                      {nonMoonAspects.map((a, i) => {
-                        const key  = `${a.planet1}-${a.aspect}-${a.planet2}`;
-                        const pill = dateRangePill(key, aspectRanges);
+                      {showLongTerm && nonMoonAspects.map((a, i) => {
+                        const key  = [a.planet1, a.aspect, a.planet2].sort().join("-");
+                        const pill = dateRangePill(`${a.planet1}-${a.aspect}-${a.planet2}`, aspectRanges)
+                                  || dateRangePill(`${a.planet2}-${a.aspect}-${a.planet1}`, aspectRanges);
                         return (
                           <AspectCard
                             key={`asp-${i}`}
