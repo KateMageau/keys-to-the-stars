@@ -2,7 +2,7 @@
   "meta": {
     "year": 2026,
     "month": 4,
-    "generated": "2026-04-09T22:33:00.680Z",
+    "generated": "2026-04-16T23:21:47.519Z",
     "interval_hours": 3,
     "snapshots_per_day": 8,
     "timezone": "America/Los_Angeles",
@@ -46765,10 +46765,10 @@
         "ingress_time": "3:00 PM"
       },
       "void_of_course": {
-        "start": "12:00 AM",
-        "end": "3:00 AM",
-        "endSign": null,
-        "note": "Void of course from ~12:00 AM until ~3:00 AM PST"
+        "start": "12:00 PM",
+        "end": "3:00 PM",
+        "endSign": "sco",
+        "note": "Void of course from ~12:00 PM until ~3:00 PM PST"
       },
       "planet_sign_changes": null,
       "snapshots": [
@@ -46948,63 +46948,186 @@
         {
           "hour": 3,
           "time_pst": "3:00 AM",
-          "moonSign": null,
+          "moonSign": "lib",
           "moonIngress": null,
           "moonPhase": null,
           "moonIllumination": null,
           "planets": {
             "sun": {
-              "sign": null,
-              "sign_symbol": null,
+              "sign": "tau",
               "retrograde": false
             },
             "moon": {
-              "sign": null,
-              "sign_symbol": null,
+              "sign": "lib",
               "retrograde": false
             },
             "mercury": {
-              "sign": null,
-              "sign_symbol": null,
+              "sign": "ari",
               "retrograde": false
             },
             "venus": {
-              "sign": null,
-              "sign_symbol": null,
+              "sign": "gem",
               "retrograde": false
             },
             "mars": {
-              "sign": null,
-              "sign_symbol": null,
+              "sign": "ari",
               "retrograde": false
             },
             "jupiter": {
-              "sign": null,
-              "sign_symbol": null,
+              "sign": "can",
               "retrograde": false
             },
             "saturn": {
-              "sign": null,
-              "sign_symbol": null,
+              "sign": "ari",
               "retrograde": false
             },
             "uranus": {
-              "sign": null,
-              "sign_symbol": null,
+              "sign": "gem",
               "retrograde": false
             },
             "neptune": {
-              "sign": null,
-              "sign_symbol": null,
+              "sign": "ari",
               "retrograde": false
             },
             "pluto": {
-              "sign": null,
-              "sign_symbol": null,
+              "sign": "aqu",
               "retrograde": false
             }
           },
-          "aspects": []
+          "aspects": [
+            {
+              "planet1": "sun",
+              "planet2": "pluto",
+              "planet1_symbol": "☉",
+              "planet2_symbol": "♇",
+              "aspect": "square",
+              "aspect_symbol": "□",
+              "sign1": "tau",
+              "sign2": "aqu",
+              "label": "☉ Sun □ ♇ Pluto"
+            },
+            {
+              "planet1": "moon",
+              "planet2": "mercury",
+              "planet1_symbol": "☽",
+              "planet2_symbol": "☿",
+              "aspect": "opposition",
+              "aspect_symbol": "☍",
+              "sign1": "lib",
+              "sign2": "ari",
+              "label": "☽ Moon ☍ ☿ Mercury"
+            },
+            {
+              "planet1": "moon",
+              "planet2": "jupiter",
+              "planet1_symbol": "☽",
+              "planet2_symbol": "♃",
+              "aspect": "square",
+              "aspect_symbol": "□",
+              "sign1": "lib",
+              "sign2": "can",
+              "label": "☽ Moon □ ♃ Jupiter"
+            },
+            {
+              "planet1": "mercury",
+              "planet2": "jupiter",
+              "planet1_symbol": "☿",
+              "planet2_symbol": "♃",
+              "aspect": "square",
+              "aspect_symbol": "□",
+              "sign1": "ari",
+              "sign2": "can",
+              "label": "☿ Mercury □ ♃ Jupiter"
+            },
+            {
+              "planet1": "venus",
+              "planet2": "saturn",
+              "planet1_symbol": "♀",
+              "planet2_symbol": "♄",
+              "aspect": "sextile",
+              "aspect_symbol": "⚹",
+              "sign1": "gem",
+              "sign2": "ari",
+              "label": "♀ Venus ⚹ ♄ Saturn"
+            },
+            {
+              "planet1": "venus",
+              "planet2": "uranus",
+              "planet1_symbol": "♀",
+              "planet2_symbol": "♅",
+              "aspect": "conjunction",
+              "aspect_symbol": "☌",
+              "sign1": "gem",
+              "sign2": "gem",
+              "label": "♀ Venus ☌ ♅ Uranus"
+            },
+            {
+              "planet1": "venus",
+              "planet2": "neptune",
+              "planet1_symbol": "♀",
+              "planet2_symbol": "♆",
+              "aspect": "sextile",
+              "aspect_symbol": "⚹",
+              "sign1": "gem",
+              "sign2": "ari",
+              "label": "♀ Venus ⚹ ♆ Neptune"
+            },
+            {
+              "planet1": "venus",
+              "planet2": "pluto",
+              "planet1_symbol": "♀",
+              "planet2_symbol": "♇",
+              "aspect": "trine",
+              "aspect_symbol": "△",
+              "sign1": "gem",
+              "sign2": "aqu",
+              "label": "♀ Venus △ ♇ Pluto"
+            },
+            {
+              "planet1": "mars",
+              "planet2": "jupiter",
+              "planet1_symbol": "♂",
+              "planet2_symbol": "♃",
+              "aspect": "square",
+              "aspect_symbol": "□",
+              "sign1": "ari",
+              "sign2": "can",
+              "label": "♂ Mars □ ♃ Jupiter"
+            },
+            {
+              "planet1": "mars",
+              "planet2": "saturn",
+              "planet1_symbol": "♂",
+              "planet2_symbol": "♄",
+              "aspect": "conjunction",
+              "aspect_symbol": "☌",
+              "sign1": "ari",
+              "sign2": "ari",
+              "label": "♂ Mars ☌ ♄ Saturn"
+            },
+            {
+              "planet1": "uranus",
+              "planet2": "neptune",
+              "planet1_symbol": "♅",
+              "planet2_symbol": "♆",
+              "aspect": "sextile",
+              "aspect_symbol": "⚹",
+              "sign1": "gem",
+              "sign2": "ari",
+              "label": "♅ Uranus ⚹ ♆ Neptune"
+            },
+            {
+              "planet1": "neptune",
+              "planet2": "pluto",
+              "planet1_symbol": "♆",
+              "planet2_symbol": "♇",
+              "aspect": "sextile",
+              "aspect_symbol": "⚹",
+              "sign1": "ari",
+              "sign2": "aqu",
+              "label": "♆ Neptune ⚹ ♇ Pluto"
+            }
+          ]
         },
         {
           "hour": 6,
