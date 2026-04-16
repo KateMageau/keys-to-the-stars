@@ -2104,11 +2104,14 @@ export default function Skyward() {
                 };
 
                 return (
-                  <div style={{ display:"flex", gap:"0.4rem", marginLeft:"auto" }}>
-                    <button className="see-more no-print" onClick={exportMonth}>
+                  <div style={{ display:"flex", gap:"0.4rem", marginLeft:"auto", alignItems:"center" }}>
+                    <span style={{ fontSize:"0.75rem", color:"#888", fontStyle:"italic" }}>CSV:</span>
+                    <button className="see-more no-print" onClick={exportMonth}
+                      style={{ fontSize:"0.7rem", padding:"0.2rem 0.6rem", opacity:0.7 }}>
                       ↓ {currentMonthName}
                     </button>
-                    <button className="see-more no-print" onClick={exportRest}>
+                    <button className="see-more no-print" onClick={exportRest}
+                      style={{ fontSize:"0.7rem", padding:"0.2rem 0.6rem", opacity:0.7 }}>
                       ↓ Rest of {currentYear}
                     </button>
                   </div>
