@@ -482,8 +482,8 @@ body { font-family: 'Poppins', sans-serif; font-weight: 400; background: var(--d
 /* Header */
 .hdr { background: linear-gradient(135deg, var(--dusk) 0%, #1a1040 100%);
   padding: 1rem 1.5rem; border-bottom: 2px solid rgba(197,184,216,0.18);
-  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; }
-.logo { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 400; color: var(--lav); letter-spacing: 0.05em; }
+  display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; gap: 1rem; }
+.logo { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 400; color: var(--lav); letter-spacing: 0.05em; text-align: center; width: 100%; display: block; }
 .logo em { color: var(--gold-lt); font-style: italic; }
 .logo-sub { font-size: 0.875rem; letter-spacing: 0.2em; font-weight: 600; color: rgba(197,184,216,0.45); margin-top: 0.25rem; }
 .hdr-right { text-align: right; color: rgba(197,184,216,0.55); font-size: 0.875rem; letter-spacing: 0.04em; line-height: 1.9; }
@@ -1658,11 +1658,11 @@ export default function Skyward() {
         <div className="card">
 
           {/* Header */}
-          <header className="hdr" style={{ display:"grid", gridTemplateColumns:"auto 1fr auto", alignItems:"center", gap:"1rem" }}>
+          <header className="hdr">
             {/* Logo — left */}
             <div style={{ flexShrink:0 }}>
               <img src="/Keys_to_the_Stars.png" alt="Keys to the Stars logo"
-                style={{ height:64, width:64, objectFit:"contain", borderRadius:8 }} />
+                style={{ height:90, width:90, objectFit:"contain", borderRadius:10 }} />
             </div>
             {/* Title — center */}
             <div style={{ textAlign:"center" }}>
@@ -1857,7 +1857,36 @@ export default function Skyward() {
                 }
               });
 
-              const allAspects = viewDayData?.aspects || [];
+              // Use detailed 3-hour snapshots for aspects when available
+              // Merge aspects across all snapshots — more appearances = more sustained = more relevant
+              let allAspects = [];
+              if (detailedDayData?.snapshots?.length > 0) {
+                const aspectCounts = {};
+                const aspectData   = {};
+                for (const snap of detailedDayData.snapshots) {
+                  if (snap.error) continue;
+                  for (const a of (snap.aspects || [])) {
+                    // Normalize key so moon-trine-sun and sun-trine-moon are the same
+                    const key = [a.planet1, a.aspect, a.planet2].sort().join("-");
+                    aspectCounts[key] = (aspectCounts[key] || 0) + 1;
+                    if (!aspectData[key]) aspectData[key] = a; // store first occurrence
+                  }
+                }
+                // Sort: moon aspects first, then by count (most sustained), filter to min 2 snapshots
+                allAspects = Object.entries(aspectCounts)
+                  .filter(([, count]) => count >= 2) // must appear in at least 2 snapshots
+                  .sort(([ka, ca], [kb, cb]) => {
+                    const aMoon = ka.includes("moon");
+                    const bMoon = kb.includes("moon");
+                    if (aMoon && !bMoon) return -1;
+                    if (!aMoon && bMoon) return 1;
+                    return cb - ca; // higher count first
+                  })
+                  .map(([key]) => aspectData[key]);
+              } else {
+                allAspects = viewDayData?.aspects || [];
+              }
+
               const moonAspects    = allAspects.filter(a => a.planet1 === "moon" || a.planet2 === "moon");
               const nonMoonAspects = allAspects.filter(a => a.planet1 !== "moon" && a.planet2 !== "moon");
 
@@ -1869,7 +1898,7 @@ export default function Skyward() {
                     <span>Planetary Aspects &amp; Transitions</span>
                   </div>
                   <div style={{ fontSize:"0.875rem", color:"#555", marginBottom:"0.6rem", fontStyle:"italic" }}>
-                    Tap any underlined word to learn its meaning. Times shown are estimated within a 3-hour window based on noon snapshots — exact times vary.
+                    Tap any underlined word to learn its meaning. Aspects are compiled from 3-hour snapshots — most exact times are within a few hours of shown.
                   </div>
 
                   {/* Sign ingresses */}
@@ -1900,12 +1929,12 @@ export default function Skyward() {
                   {nonMoonAspects.length > 0 && (
                     <>
                       <div style={{ fontSize:"0.875rem", color:"#666", letterSpacing:"0.08em", fontWeight:600, margin:"0.65rem 0 0.3rem", display:"flex", alignItems:"center", gap:"0.6rem" }}>
-                        Longer aspects
+                        Planet aspects active today
                         <button className="see-more no-print" onClick={() => setShowLongTerm(v => !v)} style={{ fontSize:"0.875rem", marginLeft:0 }}>
                           {showLongTerm ? "Collapse ↑" : `Show ${nonMoonAspects.length} ↓`}
                         </button>
                       </div>
-                      {showLongTerm && nonMoonAspects.map((a, i) => {
+                      {nonMoonAspects.map((a, i) => {
                         const key  = `${a.planet1}-${a.aspect}-${a.planet2}`;
                         const pill = dateRangePill(key, aspectRanges);
                         return (
