@@ -1940,7 +1940,6 @@ export default function Skyward() {
                         </button>
                       </div>
                       {showLongTerm && nonMoonAspects.map((a, i) => {
-                        const key  = [a.planet1, a.aspect, a.planet2].sort().join("-");
                         const pill = dateRangePill(`${a.planet1}-${a.aspect}-${a.planet2}`, aspectRanges)
                                   || dateRangePill(`${a.planet2}-${a.aspect}-${a.planet1}`, aspectRanges);
                         return (
