@@ -1683,7 +1683,7 @@ export default function Skyward() {
           {/* App description */}
           <div style={{ background:"var(--dusk)", padding:"0.75rem 2.5rem", borderBottom:"1px solid rgba(197,184,216,0.1)", textAlign:"center" }}>
             <p style={{ fontSize:"0.875rem", color:"rgba(197,184,216,0.75)", lineHeight:1.7, maxWidth:640, margin:"0 auto" }}>
-              Keys to the Stars is a living reference for the sky above you right now. It won't tell you what your chart means, but it will give you the words, symbols, and context to start reading it yourself.
+              Keys to the Stars is a real-time astrology reference. Look up what any planet, sign, or aspect actually means, synced to today's sky.
             </p>
           </div>
 
