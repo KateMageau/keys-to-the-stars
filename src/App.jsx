@@ -1827,14 +1827,9 @@ export default function Skyward() {
                         if (!nextSign) return null;
                         const sign = SIGNS[nextSign];
                         const combo = COMBINATIONS[`moon-${nextSign}`];
-                        const timeStr = moonIngressTime ? ` · enters ~${moonIngressTime} PST` : "";
+                        const timeStr = moonIngressTime ? ` · entering ~${moonIngressTime} PST` : "";
                         return (
-                          <div className="sky-card" style={{ borderLeft:"3px solid var(--moon)", opacity:0.85 }}>
-                            <div className="sky-card-top">
-                              <span className="sky-card-title">☽ Moon entering {sign?.symbol || ""} {cap(nextSign)}{timeStr}</span>
-                            </div>
-                            {combo && <div className="sky-card-body" style={{ fontStyle:"italic" }}>{combo.slice(0,160)}{combo.length > 160 ? "…" : ""}</div>}
-                          </div>
+                          <MoonIngressCard moonSign={nextSign} pill={timeStr.trim() || null} cap={cap} />
                         );
                       })()}
                     </>
@@ -1945,11 +1940,37 @@ export default function Skyward() {
             })()}
 
             {viewDay === 0 && DAY_SUMMARIES[currentDay] && (
-              <div className="summary-block">
+              <div className="summary-block" style={{ marginTop:"1rem" }}>
                 <div className="summary-label">Overall energy · {currentMonthName} {currentDay}</div>
                 <div className="summary-text">{DAY_SUMMARIES[currentDay]}</div>
               </div>
             )}
+
+            {/* ── Live day summary from aspects ─────────────────────── */}
+            {(() => {
+              const allAspects = viewDayData?.aspects || [];
+              const moonAsp = allAspects.find(a => a.planet1 === "moon" || a.planet2 === "moon");
+              const bigAsp  = allAspects.find(a => a.planet1 !== "moon" && a.planet2 !== "moon");
+              if (!moonAsp && !bigAsp) return null;
+              const parts = [];
+              if (moonAsp) {
+                const p1 = PLANETS[moonAsp.planet1], p2 = PLANETS[moonAsp.planet2];
+                const asp = ASPECTS[moonAsp.aspect];
+                if (p1 && p2 && asp) parts.push(`${p1.name} ${asp.name.toLowerCase()} ${p2.name} colors the emotional tone of the day`);
+              }
+              if (bigAsp) {
+                const p1 = PLANETS[bigAsp.planet1], p2 = PLANETS[bigAsp.planet2];
+                const asp = ASPECTS[bigAsp.aspect];
+                if (p1 && p2 && asp) parts.push(`${p1.name} ${asp.name.toLowerCase()} ${p2.name} is active in the background`);
+              }
+              if (parts.length === 0) return null;
+              return (
+                <div className="summary-block" style={{ marginTop:"1rem" }}>
+                  <div className="summary-label">Active aspects · {viewMonthName} {viewDayNum}</div>
+                  <div className="summary-text">{parts.join(". ")}.</div>
+                </div>
+              );
+            })()}
           </section>
 
           {/* THIS WEEK */}
