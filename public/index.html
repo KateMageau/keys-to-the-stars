@@ -4,11 +4,36 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#1e1530" />
-    <meta name="description" content="Keys to the Stars — Astrology literacy for everyone. Understand transits, planets, signs, aspects and houses in plain language." />
-    <meta name="google-site-verification" content="ghLDnBIxbSujDLV2Uig1snoTle8qOsIfstR5xF4J3Js" />
+
+    <!-- Primary description -->
+    <meta name="description" content="Keys to the Stars is a real-time astrology reference. Look up what any planet, sign, or aspect actually means, synced to today's sky." />
     <title>Keys to the Stars</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="%PUBLIC_URL%/Favicon_-_Keys_to_the_Stars.png" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/Keys_to_the_Stars.png" />
+
+    <!-- PWA manifest -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+    <!-- Open Graph (Threads, Facebook, iMessage) -->
+    <meta property="og:title" content="Keys to the Stars" />
+    <meta property="og:description" content="Keys to the Stars is a real-time astrology reference. Look up what any planet, sign, or aspect actually means, synced to today's sky." />
+    <meta property="og:image" content="https://keystothestars.com/Keys_to_the_Stars.png" />
+    <meta property="og:url" content="https://keystothestars.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Keys to the Stars" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Keys to the Stars" />
+    <meta name="twitter:description" content="Keys to the Stars is a real-time astrology reference. Look up what any planet, sign, or aspect actually means, synced to today's sky." />
+    <meta name="twitter:image" content="https://keystothestars.com/Keys_to_the_Stars.png" />
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <!-- Google tag (gtag.js) -->
+
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-X3PREGPXMY"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -16,30 +41,18 @@
       gtag('js', new Date());
       gtag('config', 'G-X3PREGPXMY');
     </script>
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-<meta name="theme-color" content="#1e1530" />
-    <!-- Favicon -->
-<link rel="icon" type="image/png" href="%PUBLIC_URL%/Favicon_-_Keys_to_the_Stars.png" />
-<link rel="apple-touch-icon" href="%PUBLIC_URL%/Keys_to_the_Stars.png" />
-
-<!-- Open Graph / social preview -->
-<meta property="og:title" content="Keys to the Stars" />
-<meta property="og:description" content="Keys to the Stars is a real-time astrology reference. Look up what any planet, sign, or aspect actually means, synced to today's sky." />
-<meta property="og:image" content="https://keystothestars.com/Keys_to_the_Stars.png" />
-<meta property="og:url" content="https://keystothestars.com" />
-<meta property="og:type" content="website" />
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://keystothestars.com/Keys_to_the_Stars.png" />
   </head>
-  <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-      navigator.serviceWorker.register('/service-worker.js');
-    });
-  }
-</script>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+
+    <!-- PWA Service Worker -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/service-worker.js');
+        });
+      }
+    </script>
   </body>
 </html>
