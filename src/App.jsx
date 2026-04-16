@@ -1825,8 +1825,6 @@ export default function Skyward() {
                       {(() => {
                         const nextSign = normalizeSign(viewDayData?.moon?.ingress);
                         if (!nextSign) return null;
-                        const sign = SIGNS[nextSign];
-                        const combo = COMBINATIONS[`moon-${nextSign}`];
                         const timeStr = moonIngressTime ? ` · entering ~${moonIngressTime} PST` : "";
                         return (
                           <MoonIngressCard moonSign={nextSign} pill={timeStr.trim() || null} cap={cap} />
