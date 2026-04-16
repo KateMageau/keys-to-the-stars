@@ -481,8 +481,8 @@ body { font-family: 'Poppins', sans-serif; font-weight: 400; background: var(--d
 
 /* Header */
 .hdr { background: linear-gradient(135deg, var(--dusk) 0%, #1a1040 100%);
-  padding: 1.75rem 2.5rem 1.4rem; border-bottom: 2px solid rgba(197,184,216,0.18);
-  display: flex; justify-content: space-between; align-items: flex-end; }
+  padding: 1rem 1.5rem; border-bottom: 2px solid rgba(197,184,216,0.18);
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; }
 .logo { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 400; color: var(--lav); letter-spacing: 0.05em; }
 .logo em { color: var(--gold-lt); font-style: italic; }
 .logo-sub { font-size: 0.875rem; letter-spacing: 0.2em; font-weight: 600; color: rgba(197,184,216,0.45); margin-top: 0.25rem; }
@@ -1658,23 +1658,31 @@ export default function Skyward() {
         <div className="card">
 
           {/* Header */}
-          <header className="hdr">
-            <div>
-              <div className="logo">Keys to the <em>Stars</em></div>
-              <div className="logo-sub">Astrology literacy · Whole sign houses · PST</div>
+          <header className="hdr" style={{ display:"grid", gridTemplateColumns:"auto 1fr auto", alignItems:"center", gap:"1rem" }}>
+            {/* Logo — left */}
+            <div style={{ flexShrink:0 }}>
+              <img src="/Keys_to_the_Stars.png" alt="Keys to the Stars logo"
+                style={{ height:64, width:64, objectFit:"contain", borderRadius:8 }} />
             </div>
+            {/* Title — center */}
+            <div style={{ textAlign:"center" }}>
+              <div className="logo">Keys to the <em>Stars</em></div>
+            </div>
+            {/* Right — date + buttons */}
             <div className="hdr-right">
-              <div>{today.toLocaleDateString("en-US", { weekday:"long", year:"numeric", month:"long", day:"numeric" })}</div>
-              <div style={{ display:"flex", gap:"0.4rem", justifyContent:"flex-end", flexWrap:"wrap" }}>
-                <button className="print-btn no-print" onClick={() => window.print()}>⎙ Print Calendar</button>
-                <button className="print-btn no-print" onClick={() => setShowInstall(v => !v)}>📲 Install App</button>
+              <div style={{ fontSize:"0.8rem", marginBottom:"0.35rem" }}>{today.toLocaleDateString("en-US", { weekday:"long", year:"numeric", month:"long", day:"numeric" })}</div>
+              <div style={{ display:"flex", gap:"0.35rem", justifyContent:"flex-end", flexWrap:"wrap" }}>
+                <button className="print-btn no-print" onClick={() => setShowInstall(v => !v)}
+                  style={{ fontSize:"0.6rem", padding:"0.2rem 0.6rem" }}>📲 Install</button>
+                <button className="print-btn no-print" onClick={() => window.print()}
+                  style={{ fontSize:"0.6rem", padding:"0.2rem 0.6rem" }}>⎙ Print</button>
               </div>
               {showInstall && (
-                <div style={{ marginTop:"0.5rem", fontSize:"0.75rem", lineHeight:1.8, color:"rgba(197,184,216,0.7)", maxWidth:240, textAlign:"right" }}>
-                  <strong style={{color:"rgba(197,184,216,0.9)"}}>iPhone/iPad:</strong> tap the Share button (box with arrow) in Safari → "Add to Home Screen"<br/>
-                  <strong style={{color:"rgba(197,184,216,0.9)"}}>Android:</strong> tap ⋮ in Chrome → "Add to Home Screen"<br/>
-                  <strong style={{color:"rgba(197,184,216,0.9)"}}>Mac (Safari):</strong> File menu → "Add to Dock"<br/>
-                  <strong style={{color:"rgba(197,184,216,0.9)"}}>Chrome desktop:</strong> click ⋮ → "Cast, Save and Share" → "Install page as app"
+                <div style={{ marginTop:"0.5rem", fontSize:"0.72rem", lineHeight:1.8, color:"rgba(197,184,216,0.7)", maxWidth:220, textAlign:"right" }}>
+                  <strong style={{color:"rgba(197,184,216,0.9)"}}>iPhone/iPad:</strong> Share → "Add to Home Screen"<br/>
+                  <strong style={{color:"rgba(197,184,216,0.9)"}}>Android:</strong> ⋮ → "Add to Home Screen"<br/>
+                  <strong style={{color:"rgba(197,184,216,0.9)"}}>Mac Safari:</strong> File → "Add to Dock"<br/>
+                  <strong style={{color:"rgba(197,184,216,0.9)"}}>Chrome:</strong> ⋮ → "Install page as app"
                 </div>
               )}
             </div>
@@ -2259,7 +2267,7 @@ export default function Skyward() {
           <section className="sec birth-section" id="birth-chart">
             <div className="sec-hdr">
               <span className="sec-title">Your Chart</span>
-              <span className="sec-meta">See which houses today's transits activate for you</span>
+              <span className="sec-meta">See which houses today's transits activate · whole sign system</span>
             </div>
             <div className={showHouses || chartLoading ? "birth-grid" : ""}>
               <div>
@@ -2334,7 +2342,7 @@ export default function Skyward() {
                   return (
                     <div className="house-results">
                       <div className="house-intro">
-                        With <strong style={{color:"#222",fontStyle:"normal"}}>{activeRisingDisplay}</strong> rising, here's where today's transiting planets fall in your natal houses — tap any card to learn more. This is today's sky through your chart, not a full birth chart reading.
+                        With <strong style={{color:"#222",fontStyle:"normal"}}>{activeRisingDisplay}</strong> rising and whole sign houses, here's where today's transiting planets fall in your natal houses — tap any card to learn more. This is today's sky through your chart, not a personality reading.
                       </div>
                       {nearCusp && (
                         <div style={{ fontSize:"0.875rem", color:"#555", marginBottom:"0.75rem", background:"var(--bg-light)", borderRadius:8, padding:"0.65rem 0.85rem", lineHeight:1.65 }}>
