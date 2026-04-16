@@ -537,7 +537,8 @@ body { font-family: 'Poppins', sans-serif; font-weight: 400; background: var(--d
 .def-combo .def-lbl { color: var(--gold); }
 
 /* Calendar */
-.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 1px; background: var(--bg-mid);
+.cal-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 1px; background: var(--bg-mid); min-width: 420px;
   border: 1px solid var(--bg-mid); border-radius: 10px; overflow: hidden; }
 .cal-dh { background: var(--dusk); color: rgba(197,184,216,0.65); font-size: 0.875rem;
   letter-spacing: 0.12em; font-weight: 600; text-align: center; padding: 0.45rem; }
@@ -1263,6 +1264,7 @@ export default function Skyward() {
     try { localStorage.setItem("kts_birth_data", JSON.stringify(next)); } catch {}
   };
   const [showHouses, setShowHouses] = useState(false);
+  const [altRising, setAltRising] = useState(null); // override rising sign
   const [moonBarPhase, setMoonBarPhase] = useState(false);
   const [chartData, setChartData] = useState(null);
   const [chartLoading, setChartLoading] = useState(false);
@@ -1475,6 +1477,7 @@ export default function Skyward() {
   // Annual data provides the base aspects and planet signs
   const voidOfCourseInfo = detailedDayData?.void_of_course || null;
   const moonIngressTime  = detailedDayData?.moon?.ingress_time || null;
+  const planetSignChangeTimes = detailedDayData?.planet_sign_changes || null;
 
   const [showLongTerm, setShowLongTerm] = useState(false);
   const [chartError, setChartError] = useState(null);
@@ -1628,6 +1631,13 @@ export default function Skyward() {
             </div>
           </header>
 
+          {/* App description */}
+          <div style={{ background:"var(--dusk)", padding:"0.75rem 2.5rem", borderBottom:"1px solid rgba(197,184,216,0.1)", textAlign:"center" }}>
+            <p style={{ fontSize:"0.875rem", color:"rgba(197,184,216,0.75)", lineHeight:1.7, maxWidth:640, margin:"0 auto" }}>
+              Keys to the Stars is a living reference for the sky above you right now. It won't tell you what your chart means, but it will give you the words, symbols, and context to start reading it yourself.
+            </p>
+          </div>
+
           {/* Moon bar */}
           <div className="moon-bar">
             <div className={`moon-bar-item ${moonBarPhase?"active":""}`}
@@ -1746,7 +1756,24 @@ export default function Skyward() {
                     {moonMeaning && <ExpandableMoonMeaning text={moonMeaning} />}
                   </div>
                   {isMoonIngress && (
-                    <VoidOfCourseNote voidInfo={voidOfCourseInfo} ingressTime={moonIngressTime} ingressSign={viewDayData?.moon?.ingress} cap={cap} />
+                    <>
+                      <VoidOfCourseNote voidInfo={voidOfCourseInfo} ingressTime={moonIngressTime} ingressSign={viewDayData?.moon?.ingress} cap={cap} />
+                      {(() => {
+                        const nextSign = viewDayData?.moon?.ingress;
+                        if (!nextSign) return null;
+                        const sign = SIGNS[nextSign];
+                        const combo = COMBINATIONS[`moon-${nextSign}`];
+                        const timeStr = moonIngressTime ? ` · enters ~${moonIngressTime} PST` : "";
+                        return (
+                          <div className="sky-card" style={{ borderLeft:"3px solid var(--moon)", opacity:0.85 }}>
+                            <div className="sky-card-top">
+                              <span className="sky-card-title">☽ Moon entering {sign?.symbol || ""} {cap(nextSign)}{timeStr}</span>
+                            </div>
+                            {combo && <div className="sky-card-body" style={{ fontStyle:"italic" }}>{combo.slice(0,160)}{combo.length > 160 ? "…" : ""}</div>}
+                          </div>
+                        );
+                      })()}
+                    </>
                   )}
                 </>
               );
@@ -1776,14 +1803,17 @@ export default function Skyward() {
                   <div className="sky-section-label" style={{ marginTop:"0.85rem", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
                     <span>Planetary Aspects &amp; Transitions</span>
                   </div>
-                  <div style={{ fontSize:"0.8rem", color:"#555", marginBottom:"0.6rem", fontStyle:"italic" }}>
-                    Tap any underlined word to learn its meaning.
+                  <div style={{ fontSize:"0.875rem", color:"#555", marginBottom:"0.6rem", fontStyle:"italic" }}>
+                    Tap any underlined word to learn its meaning. Times shown are estimated within a 3-hour window based on noon snapshots — exact times vary.
                   </div>
 
                   {/* Sign ingresses */}
                   {ingresses.map(({ pname, pdata, rangeKey }) => {
                     const sign = SIGNS[pdata.sign];
-                    const pill = dateRangePill(rangeKey, planetSignRanges);
+                    const dateRange = dateRangePill(rangeKey, planetSignRanges);
+                    // Use precise time from detailed data if available
+                    const changeTime = planetSignChangeTimes?.[pname]?.time;
+                    const pill = changeTime ? `~${changeTime} PST · ${dateRange || ""}`.trim().replace(/·\s*$/, "") : dateRange;
                     return <IngressCard key={`ingress-${pname}`} pname={pname} sign={sign} pill={pill} />;
                   })}
 
@@ -1976,6 +2006,7 @@ export default function Skyward() {
               </div>
             </details>
 
+            <div className="cal-wrap">
             <div className="cal-grid">
               {["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d => (
                 <div key={d} className="cal-dh">{d}</div>
@@ -2011,6 +2042,7 @@ export default function Skyward() {
                   </>}
                 </div>
               ))}
+            </div>
             </div>
 
             {selectedDay && (
@@ -2134,13 +2166,60 @@ export default function Skyward() {
                     });
                   }
 
+                  // Cusp detection — check if rising is within 3° of a sign boundary
+                  const allSignKeys = ["aries","taurus","gemini","cancer","leo","virgo","libra","scorpio","sagittarius","capricorn","aquarius","pisces"];
+                  const risingIdx = allSignKeys.indexOf(ascSign);
+                  const prevSignKey = risingIdx > 0 ? allSignKeys[risingIdx - 1] : allSignKeys[11];
+                  const nextSignKey = risingIdx < 11 ? allSignKeys[risingIdx + 1] : allSignKeys[0];
+                  const firstHouseDeg = subj.first_house?.position ?? subj.ascendant?.position ?? null;
+                  const nearCusp = firstHouseDeg !== null && (firstHouseDeg % 30 < 3 || firstHouseDeg % 30 > 27);
+                  const activeRising = altRising || ascSign;
+                  const activeRisingDisplay = cap(activeRising);
+
                   return (
                     <div className="house-results">
-                      <div className="house-intro">
-                        Your rising sign is <strong style={{color:"#222",fontStyle:"normal"}}>{risingDisplay}</strong>. Using whole sign houses, today's transiting planets fall in these areas of your life. Tap any card to learn more.
+                      <div style={{ fontSize:"0.875rem", color:"#555", marginBottom:"0.85rem", lineHeight:1.65, fontStyle:"italic", borderLeft:"3px solid var(--bg-mid)", paddingLeft:"0.75rem" }}>
+                        This shows where today's transiting planets fall in your natal houses — not your full birth chart or a personality reading. It's a snapshot of the sky through your lens.
                       </div>
+                      <div className="house-intro">
+                        Your rising sign is <strong style={{color:"#222",fontStyle:"normal"}}>{activeRisingDisplay}</strong>. Using whole sign houses, today's transiting planets fall in these areas of your life. Tap any card to learn more.
+                      </div>
+                      {nearCusp && (
+                        <div style={{ fontSize:"0.875rem", color:"#555", marginBottom:"0.75rem", background:"var(--bg-light)", borderRadius:8, padding:"0.65rem 0.85rem", lineHeight:1.65 }}>
+                          Your rising sign is near a sign boundary, so birth time precision matters here. If {activeRisingDisplay} doesn't resonate as your rising sign, try the adjacent sign:
+                          <div style={{ display:"flex", gap:"0.5rem", marginTop:"0.5rem", flexWrap:"wrap" }}>
+                            {activeRising !== prevSignKey && (
+                              <button className="see-more" onClick={() => setAltRising(activeRising === prevSignKey ? null : prevSignKey)}>
+                                Try {cap(prevSignKey)} rising
+                              </button>
+                            )}
+                            {activeRising !== nextSignKey && (
+                              <button className="see-more" onClick={() => setAltRising(activeRising === nextSignKey ? null : nextSignKey)}>
+                                Try {cap(nextSignKey)} rising
+                              </button>
+                            )}
+                            {altRising && (
+                              <button className="see-more" onClick={() => setAltRising(null)}>
+                                Reset to {risingDisplay}
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                      {!nearCusp && altRising === null && ascSign && (
+                        <div style={{ fontSize:"0.875rem", color:"#999", marginBottom:"0.5rem" }}>
+                          <button style={{ background:"none", border:"none", color:"#888", cursor:"pointer", fontSize:"0.875rem", textDecoration:"underline", padding:0 }}
+                            onClick={() => setAltRising(prevSignKey)}>
+                            Doesn't feel right? Try {cap(prevSignKey)} or
+                          </button>{" "}
+                          <button style={{ background:"none", border:"none", color:"#888", cursor:"pointer", fontSize:"0.875rem", textDecoration:"underline", padding:0 }}
+                            onClick={() => setAltRising(nextSignKey)}>
+                            {cap(nextSignKey)} rising instead
+                          </button>
+                        </div>
+                      )}
                       {transitPlanets.map((tp, i) => {
-                        const houseNum = getHouseFromSign(tp.sign, ascSign);
+                        const houseNum = getHouseFromSign(tp.sign, activeRising);
                         const house = houseNum ? HOUSES[houseNum] : null;
                         if (!house) return null;
                         const planetData = PLANETS[tp.name.toLowerCase()];
@@ -2158,7 +2237,7 @@ export default function Skyward() {
                         );
                       })}
                       <div style={{marginTop:"0.75rem",fontSize:"0.875rem",color:"#333",fontStyle:"italic"}}>
-                        Whole sign houses · {risingDisplay} rising · Calculated via Astrologer API
+                        Whole sign houses · {activeRisingDisplay} rising · Calculated via Astrologer API · Times ±3 hrs
                       </div>
                     </div>
                   );
