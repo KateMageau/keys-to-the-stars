@@ -1670,10 +1670,11 @@ export default function Skyward() {
                 <button className="print-btn no-print" onClick={() => setShowInstall(v => !v)}>📲 Install App</button>
               </div>
               {showInstall && (
-                <div style={{ marginTop:"0.5rem", fontSize:"0.75rem", lineHeight:1.65, color:"rgba(197,184,216,0.7)", maxWidth:220, textAlign:"right" }}>
-                  <strong style={{color:"rgba(197,184,216,0.9)"}}>iPhone:</strong> tap Share → Add to Home Screen<br/>
-                  <strong style={{color:"rgba(197,184,216,0.9)"}}>Android:</strong> tap ⋮ → Add to Home Screen<br/>
-                  <strong style={{color:"rgba(197,184,216,0.9)"}}>Desktop:</strong> look for ⊕ in your browser bar
+                <div style={{ marginTop:"0.5rem", fontSize:"0.75rem", lineHeight:1.8, color:"rgba(197,184,216,0.7)", maxWidth:240, textAlign:"right" }}>
+                  <strong style={{color:"rgba(197,184,216,0.9)"}}>iPhone/iPad:</strong> tap the Share button (box with arrow) in Safari → "Add to Home Screen"<br/>
+                  <strong style={{color:"rgba(197,184,216,0.9)"}}>Android:</strong> tap ⋮ in Chrome → "Add to Home Screen"<br/>
+                  <strong style={{color:"rgba(197,184,216,0.9)"}}>Mac (Safari):</strong> File menu → "Add to Dock"<br/>
+                  <strong style={{color:"rgba(197,184,216,0.9)"}}>Chrome desktop:</strong> click ⋮ → "Cast, Save and Share" → "Install page as app"
                 </div>
               )}
             </div>
@@ -1760,9 +1761,22 @@ export default function Skyward() {
 
             {/* ── Moon in Sign ─────────────────────────────────────── */}
             {(() => {
+              // Normalize sign names from detailed data (may be abbreviated e.g. "Ari" → "aries")
+              const detailedSignMap = {
+                "Ari":"aries","Tau":"taurus","Gem":"gemini","Can":"cancer",
+                "Leo":"leo","Vir":"virgo","Lib":"libra","Sco":"scorpio",
+                "Sag":"sagittarius","Cap":"capricorn","Aqu":"aquarius","Pis":"pisces"
+              };
+              const normalizeSign = (s) => {
+                if (!s) return null;
+                const lower = s.toLowerCase();
+                return detailedSignMap[s] || detailedSignMap[s.charAt(0).toUpperCase() + s.slice(1,3)] || lower;
+              };
+
               // Use hour-0 snapshot from detailed data if available (more accurate than noon)
               const hour0snap  = detailedDayData?.snapshots?.[0];
-              const moonSign   = (hour0snap && !hour0snap.error ? hour0snap.moonSign : null) || viewDayData?.moon?.sign || null;
+              const rawMoonSign = (hour0snap && !hour0snap.error ? hour0snap.moonSign : null) || viewDayData?.moon?.sign || null;
+              const moonSign   = normalizeSign(rawMoonSign);
               const moonPhase  = (hour0snap && !hour0snap.error ? hour0snap.moonPhase : null) || viewDayData?.moon?.phase || null;
               const moonSymbol = moonSign ? (SIGN_SYMBOLS?.[moonSign] || "") : (viewDayData?.moon?.sign_symbol || "");
               if (!moonSign) return null;
@@ -1807,9 +1821,9 @@ export default function Skyward() {
                   </div>
                   {isMoonIngress && (
                     <>
-                      <VoidOfCourseNote voidInfo={voidOfCourseInfo} ingressTime={moonIngressTime} ingressSign={viewDayData?.moon?.ingress} cap={cap} />
+                      <VoidOfCourseNote voidInfo={voidOfCourseInfo} ingressTime={moonIngressTime} ingressSign={normalizeSign(viewDayData?.moon?.ingress)} cap={cap} />
                       {(() => {
-                        const nextSign = viewDayData?.moon?.ingress;
+                        const nextSign = normalizeSign(viewDayData?.moon?.ingress);
                         if (!nextSign) return null;
                         const sign = SIGNS[nextSign];
                         const combo = COMBINATIONS[`moon-${nextSign}`];
