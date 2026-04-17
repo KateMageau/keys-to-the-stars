@@ -1858,35 +1858,36 @@ export default function Skyward() {
               });
 
               // Use detailed 3-hour snapshots for aspects when available
+              // Find the snapshot with MINIMUM orb for each aspect — that's closest to exact time
               let allAspects = [];
-              const aspectFirstTime = {}; // key → first time seen in snapshots
+              const aspectBestTime = {}; // key → time of most-exact snapshot
               if (detailedDayData?.snapshots?.length > 0) {
-                const aspectCounts = {};
-                const aspectData   = {};
+                const aspectMinOrb  = {}; // key → smallest orb seen
+                const aspectCounts  = {}; // key → how many snapshots it appears in
+                const aspectData    = {}; // key → aspect object
                 for (const snap of detailedDayData.snapshots) {
-                  if (snap.error || snap.hour === 0) continue; // skip midnight — likely yesterday's aspects still in orb
+                  if (snap.error || snap.hour === 0) continue;
                   for (const a of (snap.aspects || [])) {
                     const key = [a.planet1, a.aspect, a.planet2].sort().join("-");
-                    if (!aspectCounts[key]) {
-                      // Store midpoint time — if first seen at 9 AM, peak is ~10:30 AM
-                      const midHour = snap.hour + 1.5;
-                      const midDisplay = midHour >= 12
-                        ? `${midHour === 12 ? 12 : Math.floor(midHour - 12)}:${midHour % 1 === 0.5 ? "30" : "00"} PM`
-                        : `${Math.floor(midHour)}:${midHour % 1 === 0.5 ? "30" : "00"} AM`;
-                      aspectFirstTime[key] = snap.time_pst || midDisplay;
-                    }
                     aspectCounts[key] = (aspectCounts[key] || 0) + 1;
                     if (!aspectData[key]) aspectData[key] = a;
+                    // Track which snapshot has the tightest orb
+                    const orb = a.orb ?? 99;
+                    if (aspectMinOrb[key] === undefined || orb < aspectMinOrb[key]) {
+                      aspectMinOrb[key] = orb;
+                      aspectBestTime[key] = snap.time_pst || `${snap.hour}:00`;
+                    }
                   }
                 }
                 allAspects = Object.entries(aspectCounts)
-                  .filter(([, count]) => count >= 2)
-                  .sort(([ka, ca], [kb, cb]) => {
+                  .filter(([, count]) => count >= 1) // show if it appears in any non-midnight snapshot
+                  .sort(([ka], [kb]) => {
                     const aMoon = ka.includes("moon");
                     const bMoon = kb.includes("moon");
                     if (aMoon && !bMoon) return -1;
                     if (!aMoon && bMoon) return 1;
-                    return cb - ca;
+                    // Sort by tightest orb — most exact aspects first
+                    return (aspectMinOrb[ka] || 99) - (aspectMinOrb[kb] || 99);
                   })
                   .map(([key]) => aspectData[key]);
               } else {
@@ -1904,7 +1905,7 @@ export default function Skyward() {
                     <span>Planetary Aspects &amp; Transitions</span>
                   </div>
                   <div style={{ fontSize:"0.875rem", color:"#555", marginBottom:"0.6rem", fontStyle:"italic" }}>
-                    Tap any underlined word to learn its meaning.{detailedDayData ? " Times from 3-hour data." : " Times approximate (noon data)."}
+                    Tap any underlined word to learn its meaning.{detailedDayData ? " Times show when each aspect is most exact, within ~3 hours." : " Times approximate (noon data)."}
                   </div>
 
                   {/* Sign ingresses */}
@@ -1923,7 +1924,7 @@ export default function Skyward() {
                       <div style={{ fontSize:"0.875rem", color:"#666", letterSpacing:"0.08em", fontWeight:600, margin:"0.5rem 0 0.3rem" }}>Today's aspects</div>
                       {moonAspects.map((a, i) => {
                         const key = [a.planet1, a.aspect, a.planet2].sort().join("-");
-                        const timeStr = aspectFirstTime[key] ? `~${aspectFirstTime[key]} PST` : fmtDate(viewYear, viewMonthNum, viewDayNum);
+                        const timeStr = aspectBestTime[key] ? `~${aspectBestTime[key]} PST` : fmtDate(viewYear, viewMonthNum, viewDayNum);
                         return (
                           <AspectCard
                             key={`moon-asp-${i}`}
